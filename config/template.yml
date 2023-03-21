@@ -1,0 +1,19 @@
+primary:
+keys:
+  Root:
+    type: str
+  Shot:
+    type: str
+  Task:
+    type: str
+  dir:
+    type: str
+  version:
+    type: int
+
+paths:
+  rootDir: "C"
+  desk: '@rootDir\{dir}'
+  test: '@desk\{Shot}\{Task}'
+  nuke: '@test\nuke\{Shot}-{Task}-base-v{version}.nk'
+  test_diff: '@desk\nuke\{Shot}-{Task}-base-v{version}.nk'
