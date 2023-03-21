@@ -28,21 +28,44 @@ class Template(object):
 
     @property
     def keys(self):
+        """
+        List of all tokens in Order they appear in path
+        :return: [list]
+        """
         return self._ordered_keys
 
     @property
     def clean_definition(self):
+        """
+        Match definition for easily replace token with value
+
+        C\%(dir)s\%(Shot)s\%(Task)s\nuke\%(Shot)s-%(Task)s-base-v%(version)s.nk"
+        :return: [str]
+        """
         return self._clean_definition
 
     @property
     def static_tokens(self):
+        """
+        Get non-token element from definition
+        "C\{dir}\nuke\{Shot}-{Task}-base-v{version}.nk"
+        :return: [list] ["\nuke\", "-base-v", ".nk"]
+        """
         return self._get_static_tokens(self.definition)
 
     ## MAIN FUNCTIONS
 
     def validate(self, path):
         path_fields = self.get_fields(path)
-        return True if path_fields else False
+
+        if not path_fields:
+            return None
+
+        # IS ALL FIELDS ARE MATCHING
+        if len(path_fields) != len(self._keys):
+            return None
+
+        return path_fields is not None
 
     def apply_fields(self, fields):
         return self._clean_definition % fields
@@ -54,7 +77,6 @@ class Template(object):
         definition_split = self._clean_definition.split(os.sep)
         len_path = len(path_split)
         len_defi = len(definition_split)
-
         if len_path != len_defi:
             return
 
@@ -87,7 +109,14 @@ class Template(object):
                 else:
                     token_name = re.findall(constants.REGEX_STR_INT, tokens[0])[0]
                     value = path_split[i]
+                    # if special character
+                    if re.findall(r"[-.]", value): #TODO sad way to filter
+                        return
                     fields[token_name] = self._get_key_value(token_name, value)
+
+            else:
+                if path_split[i] != definition_split[i]:
+                    return
 
         return fields
 

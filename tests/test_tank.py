@@ -20,5 +20,10 @@ class TestGetTemplateFromPath(unittest.TestCase):
         path = "C\\Desk\\010\\cmp"
         expected = "test"
         template = self.tank.template_from_path(path)
-        print(template)
-        # self.assertEqual(TankError, template.name)
+        self.assertEqual(expected, template.name)
+
+    def test_some_case_3(self):
+        path = "C\\Desk\\nuke\\010-cmp-base-v1.nk"
+        expected = "test_diff"
+        template = self.tank.template_from_path(path)
+        self.assertEqual(expected, template.name)

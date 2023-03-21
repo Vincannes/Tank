@@ -1,3 +1,4 @@
+from pprint import pprint
 
 from app.domain.errors import TankError
 from app.domain.config import read_templates
@@ -20,7 +21,7 @@ class Tank(object):
     def template_from_path(self, path):
 
         matched_templates = self.templates_from_path(path)
-        print(matched_templates)
+
         if len(matched_templates) == 0:
             return None
         elif len(matched_templates) == 1:
