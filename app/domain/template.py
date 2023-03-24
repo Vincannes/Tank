@@ -135,6 +135,14 @@ class Template(object):
         return cleaned_definition
 
     def _get_key_value(self, token, value):
+        """
+        Convert value of key from is type
+        ie: Token type = int
+        value convert into int
+        :param token:
+        :param value:
+        :return:
+        """
         for key in self.keys:
             if key.name != token:
                 continue
@@ -203,4 +211,5 @@ if __name__ == "__main__":
 
     path = "C\\Desk\\010\\cmp\\nuke\\010-cmp-base-v1.nk"
     template_fields = template.get_fields(path)
+    print()
     print(template_fields)
