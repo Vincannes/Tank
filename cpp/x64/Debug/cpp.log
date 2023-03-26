@@ -1,3 +1,7 @@
-﻿  template_obj.cpp
+﻿  main.cpp
+  templates_obj.cpp
+  template_keys.cpp
+  template_obj.cpp
   The contents of <filesystem> are available only with C++17 or later.
+  Génération de code en cours...
   cpp.vcxproj -> D:\Desk\python\Tank\cpp\x64\Debug\cpp.exe

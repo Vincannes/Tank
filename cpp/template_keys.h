@@ -10,14 +10,12 @@ class TemplateKey
 {
 
 	public:
-			
 		// prototypes
-		TemplateKey(std::string name);
 		TemplateKey(std::string name, std::string default_value);
 		
 		// accesseurs
 		std::string getName() const;
-		std::string getDefault();
+		std::string getDefault() const;
 
 		// manipulateurs
 		//...

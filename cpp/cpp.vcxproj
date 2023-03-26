@@ -129,11 +129,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="templates_obj.cpp" />
     <ClCompile Include="template_keys.cpp" />
     <ClCompile Include="template_obj.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="templates_obj.h" />
     <ClInclude Include="template_keys.h" />
     <ClInclude Include="template_obj.h" />
   </ItemGroup>

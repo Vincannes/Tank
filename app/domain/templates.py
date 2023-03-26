@@ -8,9 +8,11 @@ from app.domain.template_keys import StringKey, IntegerKey, TimestampKey
 class Templates(object):
 
     def __init__(self, templates):
+        pprint(templates)
         self.__template_dict = templates
         self._conform_path = ConformPath(self.__template_dict)
         self._templates = self.load_templates()
+        pprint(self._templates)
 
     @property
     def templates(self):

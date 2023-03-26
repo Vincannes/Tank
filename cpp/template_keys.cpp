@@ -6,10 +6,6 @@
 
 // ######## TemplateKey ######## 
 
-TemplateKey::TemplateKey(std::string name){
-	this->_name = name;
-}
-
 TemplateKey::TemplateKey(std::string name, std::string default_value)
 {
 	this->_name = name;
@@ -23,7 +19,7 @@ std::string TemplateKey::getName() const {
 	return this->_name;
 }
 
-std::string TemplateKey::getDefault(){
+std::string TemplateKey::getDefault() const {
 	return this->_default_value;
 };
 
