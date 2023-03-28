@@ -1,8 +1,8 @@
 import unittest
 from pprint import pprint
 
-from app.domain.errors import TankError
-from app.domain.tank import Tank
+from prototype.domain.errors import TankError
+from prototype.domain.tank import Tank
 
 
 class TestGetTemplateFromPath(unittest.TestCase):

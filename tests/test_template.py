@@ -1,8 +1,8 @@
 
 import unittest
 
-from app.domain.template import Template
-from app.domain.template_keys import StringKey, IntegerKey
+from prototype.domain.template import Template
+from prototype.domain.template_keys import StringKey, IntegerKey
 
 
 class TestApplyField(unittest.TestCase):
