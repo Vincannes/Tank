@@ -1,8 +1,8 @@
 import unittest
 from pprint import pprint
 
-from app.domain.config import read_templates
-from app.domain.templates import Templates
+from prototype.domain.config import read_templates
+from prototype.domain.templates import Templates
 
 
 class TestApplyField(unittest.TestCase):
