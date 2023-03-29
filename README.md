@@ -8,7 +8,7 @@ Convert mixing database from a software to another.
 ```bash
 cd ./build
 cmake -G "MinGW Makefiles" ..
-make # C:\MinGW\bin\mingw32-make.exe
+C:\mingw64\bin\mingw32-make.exe
 ```
 
 Unix

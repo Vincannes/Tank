@@ -23,7 +23,7 @@
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{f124ca9e-88e7-40e3-8508-e6ec5b776c68}</ProjectGuid>
     <RootNamespace>cpp</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -71,6 +71,10 @@
     <Import Project="boost_x64_release.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <PublicIncludeDirectories>C:\Program Files (x86)\YAML_CPP\include;$(PublicIncludeDirectories)</PublicIncludeDirectories>
+    <LibraryPath>C:\Program Files (x86)\RapidJSON\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -105,10 +109,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\RapidJSON\include</AdditionalIncludeDirectories>
+      <AdditionalModuleDependencies>
+      </AdditionalModuleDependencies>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Program Files (x86)\RapidJSON\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies);</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -130,6 +139,7 @@
   <ItemGroup>
     <ClCompile Include="conform_path.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="tank.cpp" />
     <ClCompile Include="templates_obj.cpp" />
     <ClCompile Include="template_keys.cpp" />
     <ClCompile Include="template_obj.cpp" />
@@ -137,10 +147,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="conform_path.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="tank.h" />
     <ClInclude Include="templates_obj.h" />
     <ClInclude Include="template_keys.h" />
     <ClInclude Include="template_obj.h" />
     <ClInclude Include="utils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="cpp.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
