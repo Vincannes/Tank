@@ -10,6 +10,12 @@
 //#include "templates_obj.h"
 using namespace rapidjson;
 
+// to compile
+// g++ *.cpp hello -I"D:\Desk\python\Tank\lib\rapidjson\include"  
+// -I <include> 
+// -l <library> (.a)
+
+ 
 int main() {
 	std::map<std::string, std::map<std::string, std::string>> templatePaths;
 	std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> templateKeys;
@@ -26,16 +32,6 @@ int main() {
         std::cout << m.name.GetString() << "   " << m.value.GetString() << std::endl;
     }
     std::cout << "end" << std::endl;
-    /*
-    // 2. Modify it by DOM.
-    s.SetInt(s.GetInt() + 1);
-
-    // 3. Stringify the DOM
-    StringBuffer buffer;
-    Writer<StringBuffer> writer(buffer);
-    config.Accept(writer);
-    */
-    // Output {"project":"rapidjson","stars":11}
 
     /*
     // Conversion du noeud YAML en dictionnaire

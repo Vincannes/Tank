@@ -1,7 +1,8 @@
 # =============================================================================
-# YAML
+# JSON
 # =============================================================================
-add_subdirectory(yaml-cpp)
 
-add_subdirectory(rapidjson)
-
+add_library(
+	rapidjson
+)
+target_include_directories(cxxurl PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/rapidjson")
