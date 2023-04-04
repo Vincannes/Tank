@@ -1,4 +1,3 @@
-primary:
 keys:
   Root:
     type: str
