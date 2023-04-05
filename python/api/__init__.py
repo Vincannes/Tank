@@ -1,6 +1,6 @@
 from ctypes import cdll
 
-example = cdll.LoadLibrary("D:\\Desk\\python\\Tank\\cpp\\build\\Debug\\TankLib.dll")
+example = cdll.LoadLibrary("D:\\Desk\\python\\Tank\\cpp\\lib\\Debug\\TankLib.dll")
 
 print(dir(example))
 

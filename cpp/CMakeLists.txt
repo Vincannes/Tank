@@ -29,11 +29,12 @@ include_directories(${pybind11_INCLUDE_DIR})
 
 # Ajouter les fichiers source
 file(GLOB_RECURSE SOURCES  ${SOURCE_DIR}/*.cpp)
-add_library(TankLib SHARED ${SOURCES})
+# add_library(TankLib SHARED ${SOURCES}) # create .dll
+add_library(TankLib STATIC ${SOURCES}) # create .lib
 
 # Ajouter des drapeaux de compilation
 target_compile_options(TankLib PRIVATE -Wall)
-# set_target_properties(TankLib PROPERTIES POSITION_INDEPENDENT_CODE ON)
+set_target_properties(TankLib PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
 pybind11_add_module(tank_module ${SOURCE_DIR}/binder.cpp)
 target_link_libraries(tank_module PRIVATE TankLib utils ConformPath Template_keys Template_obj Templates_obj)
@@ -43,9 +44,8 @@ target_link_libraries(TankLib PRIVATE ${PYTHON_DIR}/libs/python39.lib)
 # set_target_properties(TankLib PROPERTIES OUTPUT_NAME "TankLib")
 
 # Définir l'emplacement de sortie de la bibliothèque partagée (DLL)
-# set_target_properties(TankLib PROPERTIES OUTPUT_NAME "TankLib.dll")
-# set_target_properties(TankLib PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/build")
-# set_target_properties(TankLib PROPERTIES ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/lib")
+set_target_properties(TankLib PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/build")
+set_target_properties(TankLib PROPERTIES ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/lib")
 
 # set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/build")
 

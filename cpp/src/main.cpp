@@ -2,6 +2,8 @@
 #include <string>
 #include <vector>
 
+#include "template_obj.h"
+#include "templates_obj.h"
 #include "tank_obj.h"
 
 // to compile
@@ -58,12 +60,12 @@ int main(int argc, char *argv[]) {
 	//	std::cout << a->first << "  " << a->second.getDefinition() << std::endl;
 	//}
 
-	Tank tank = Tank(paths, keys);
-    std::map<std::string, Template> templatesObj = tank.templates;
+	// Tank tank = Tank(paths, keys);
+    // std::map<std::string, Template> templatesObj = tank.templates;
     
-    for (auto a = tank.templates.begin(); a != tank.templates.end(); ++a) {
-		std::cout << a->first << "  " << a->second.getDefinition() << std::endl;
-	}
+    // for (auto a = tank.templates.begin(); a != tank.templates.end(); ++a) {
+	// 	std::cout << a->first << "  " << a->second.getDefinition() << std::endl;
+	// }
     
     //if (argc>2) return 0;
 
