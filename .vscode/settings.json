@@ -73,6 +73,9 @@
         "regex": "cpp",
         "stop_token": "cpp",
         "thread": "cpp",
-        "xlocbuf": "cpp"
-    }
+        "xlocbuf": "cpp",
+        "typeindex": "cpp",
+        "unordered_set": "cpp"
+    },
+    "cmake.sourceDirectory": "${workspaceFolder}/cpp/libraries/json/tests/cmake_add_subdirectory"
 }

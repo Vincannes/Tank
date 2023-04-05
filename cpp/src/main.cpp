@@ -2,8 +2,7 @@
 #include <string>
 #include <vector>
 
-#include "tank.h"
-#include "main_tank.h"
+#include "tank_obj.h"
 
 // to compile
 // g++ *.cpp -o hello
@@ -59,7 +58,7 @@ int main(int argc, char *argv[]) {
 	//	std::cout << a->first << "  " << a->second.getDefinition() << std::endl;
 	//}
 
-	Tank tank = run(paths, keys);
+	Tank tank = Tank(paths, keys);
     std::map<std::string, Template> templatesObj = tank.templates;
     
     for (auto a = tank.templates.begin(); a != tank.templates.end(); ++a) {
