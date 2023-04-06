@@ -24,17 +24,18 @@ std::string Template::getName() const
 	return this -> _name;
 }
 
-std::string Template::getDefinition()
+std::string Template::getDefinition() const
 {
 	return this->_definition;
 }
 
-std::vector<std::string> Template::getStaticTokens()
+std::vector<std::string> Template::getStaticTokens() const
 {
 	return _get_static_token(this->_orig_definition);
 }
 
-std::vector<std::string> Template::getOrderedKeys() {
+std::vector<std::string> Template::getOrderedKeys() const
+{
 
 	return _get_ordered_keys(this->_orig_definition);
 }
@@ -57,12 +58,12 @@ std::string Template::apply_fields(std::map<std::string, std::string> fields)
 				pos += it->second.length();
 			}
 			else {
-				// La cl� n'a pas �t� trouv�e dans le dictionnaire
+				// La cle n'a pas ete trouvee dans le dictionnaire
 				pos = end_pos + 1;
 			}
 		}
 		else {
-			// Parenth�se fermante manquante
+			// Parenthese fermante manquante
 			pos = pos + 2;
 		}
 	}
@@ -71,7 +72,7 @@ std::string Template::apply_fields(std::map<std::string, std::string> fields)
 }
 
 
-std::map<std::string, std::string> Template::getFields(std::string path)
+std::map<std::string, std::string> Template::getFields(std::string path) 
 {
 	std::map<std::string, std::string> fields = {};
 
@@ -170,7 +171,8 @@ std::string Template::_get_clean_definition(const std::string definition) {
 }
 
 
-std::vector<std::string> Template::_get_static_token(const std::string definition) {
+std::vector<std::string> Template::_get_static_token(const std::string definition) const
+{
 
 	std::regex rgx("\\\\?\\{[^\\}]*\\}");
 	std::vector<std::string> result;
@@ -192,7 +194,8 @@ std::vector<std::string> Template::_get_static_token(const std::string definitio
 }
 
 
-std::vector<std::string> Template::_get_ordered_keys(const std::string definition) {
+std::vector<std::string> Template::_get_ordered_keys(const std::string definition) const
+{
 
 	std::regex re("\\{(.*?)\\}");
 	std::vector<std::string> matches;

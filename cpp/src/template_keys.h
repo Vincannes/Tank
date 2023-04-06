@@ -26,12 +26,12 @@ class TemplateKey
 };
 
 
-class StringKey : public TemplateKey
+class StringTemplateKey : public TemplateKey
 {
 
 	public:
 
-		StringKey(std::string name, std::string default_value) noexcept;
+		StringTemplateKey(std::string name, std::string default_value) noexcept;
 		int getType();
 
 	private:
@@ -40,12 +40,12 @@ class StringKey : public TemplateKey
 };
 
 
-class IntegerKey : public TemplateKey
+class IntegerTemplateKey : public TemplateKey
 {
 
 public:
 
-	IntegerKey(std::string name, std::string default_value) noexcept;
+	IntegerTemplateKey(std::string name, std::string default_value) noexcept;
 	int getType();
 
 private:

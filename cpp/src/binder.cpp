@@ -1,23 +1,21 @@
-
+#include <vector>
 #include <string>
-#include <pybind11/pybind11.h>
+#include <iostream>
 
 #include "tank_obj.h"
+// #include <pybind11/pybind11.h>
+// #include <pybind11/stl.h>
 
-namespace py = pybind11;
+// namespace py = pybind11;
 
+// PYBIND11_MODULE(tank_module, m) {
+//     py::class_<Tank>(m, "PyTank")cms
 
-Tank run(std::string paths, std::string keys){
-
-    Tank tank(paths, keys);
-    return tank;
-
-}
-
-
-// PYBIND11_MODULE(tank, m){
-
-//     m.doc() = R"Add documentation here";
-
-//     m.def("get_tank", &run);
+//         .def(py::init<std::string, std::string>())
+//         // .def_readwrite("_templatePathsString", &Tank::_templatePathsString)
+//         // .def_readwrite("_templateKeysString", &Tank::_templateKeysString)
+//         // .def_readwrite("templatesDict", &Tank::templatesDict)
+//         // .def_readwrite("pathsdict", &Tank::pathsdict)
+//         // .def_readwrite("keydict", &Tank::keydict);
+//         ;
 // }

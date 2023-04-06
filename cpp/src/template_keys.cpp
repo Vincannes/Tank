@@ -24,29 +24,29 @@ std::string TemplateKey::getDefault() const {
 };
 
 
-// ######## StringKey ######## 
+// ######## StringTemplateKey ######## 
 
-StringKey::StringKey(std::string name, std::string default_value) noexcept : TemplateKey(name, default_value), _istype(1)
+StringTemplateKey::StringTemplateKey(std::string name, std::string default_value) noexcept : TemplateKey(name, default_value), _istype(1)
 {
 
 }
 
 
-int StringKey::getType() {
+int StringTemplateKey::getType() {
 
 	return this->_istype;
 }
 
 
-// ######## IntegerKey ######## 
+// ######## IntegerTemplateKey ######## 
 
-IntegerKey::IntegerKey(std::string name, std::string default_value) noexcept : TemplateKey(name, default_value), _istype(2)
+IntegerTemplateKey::IntegerTemplateKey(std::string name, std::string default_value) noexcept : TemplateKey(name, default_value), _istype(2)
 {
 
 }
 
 
-int IntegerKey::getType() {
+int IntegerTemplateKey::getType() {
 
 	return this->_istype;
 }

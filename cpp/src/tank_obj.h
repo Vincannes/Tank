@@ -11,7 +11,7 @@ class Tank
 {
 public:
     // prototypes
-    Tank(std::string _templatePathsString, std::string _templateKeysString);
+    Tank(std::string, std::string);
     std::map<std::string, Template> templates;
 
     Templates createTemplates(std::map<std::string, std::map<std::string, std::string>>, 

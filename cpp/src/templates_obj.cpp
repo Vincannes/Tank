@@ -46,11 +46,11 @@ std::vector<TemplateKey> Templates::listOfALlKeys()
 			}
 		}
 		if (isTypeValue == "str") {
-			StringKey s1(name, isDefaultValue);
+			StringTemplateKey s1(name, isDefaultValue);
 			keysList.push_back(s1);
 		}
 		if (isTypeValue == "int") {
-			IntegerKey t1(name, isDefaultValue);
+			IntegerTemplateKey t1(name, isDefaultValue);
 			keysList.push_back(t1);
 		}
 	}

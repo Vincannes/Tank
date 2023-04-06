@@ -4,7 +4,7 @@
 cmake_minimum_required (VERSION 3.8)
 
 project(tank)
-# cmake .. & cmake --build .
+# cls & cmake .. & cmake --build .
 # Définir la version C++ pour CMake
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -17,7 +17,7 @@ set(pybind11_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/pybind11/include)
 set(PYTHON_INCLUDE_DIR ${PYTHON_DIR}/include)
 
 # Ajoutez une source à l'exécutable de ce projet.
-add_executable(tank_exec ${SOURCE_DIR}/main.cpp)
+# add_executable(tank_exec ${SOURCE_DIR}/main.cpp)
 
 # Ajouter des dossiers
 include_directories(${SOURCE_DIR})
@@ -37,11 +37,14 @@ target_compile_options(TankLib PRIVATE -Wall)
 set_target_properties(TankLib PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
 pybind11_add_module(tank_module ${SOURCE_DIR}/binder.cpp)
-target_link_libraries(tank_module PRIVATE TankLib utils ConformPath Template_keys Template_obj Templates_obj)
-target_link_libraries(TankLib PRIVATE ${PYTHON_DIR}/libs/python39.lib)
+# target_link_libraries(tank_module PRIVATE Tank utils ConformPath Template_keys Template_obj Templates_obj)
+# target_link_libraries(TankLib PRIVATE ${PYTHON_DIR}/libs/python39.lib)
+
+# PYBIND11_MODULE(module_name, m){ /* bindings */ }
 
 # Définir le nom de la bibliothèque
 # set_target_properties(TankLib PROPERTIES OUTPUT_NAME "TankLib")
+set_target_properties(tank_module PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/lib")
 
 # Définir l'emplacement de sortie de la bibliothèque partagée (DLL)
 set_target_properties(TankLib PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/build")
