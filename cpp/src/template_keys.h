@@ -32,10 +32,8 @@ class StringTemplateKey : public TemplateKey
 	public:
 
 		StringTemplateKey(std::string name, std::string default_value) noexcept;
-		int getType();
 
 	private:
-		int _istype;
 		
 };
 
@@ -46,10 +44,8 @@ class IntegerTemplateKey : public TemplateKey
 public:
 
 	IntegerTemplateKey(std::string name, std::string default_value) noexcept;
-	int getType();
 
 private:
-	int _istype;
 
 };
 

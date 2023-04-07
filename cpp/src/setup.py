@@ -4,15 +4,15 @@ from distutils.core import setup, Extension
 # Notez bien le nom de l'extension `_tuto` prefixe par le caractere `_`
 
 tuto_module = Extension(
-    "_tank",
-    sources=["tank.cpp", "tank_wrap.cxx"],
+    "_tuto",
+    sources=["tank_obj.cpp", "binder_wrap.cxx"],
 )
 
 
 setup(
-    name="tank",
+    name="tuto",
     version="0.1",
-    author="trolardv",
+    author="Laurette Alexandre",
     ext_modules=[tuto_module],
-    py_modules=["tank"],
+    py_modules=["tuto"],
 )

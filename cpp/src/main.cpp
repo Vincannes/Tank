@@ -44,18 +44,18 @@ int main(int argc, char *argv[]) {
 	pathsDict = generatePathsDictionnaryFromString(paths);
 	keysDict = generateKeysDictionnaryFromString(keys);
 
-	// for (const auto& key : pathsDict["paths"]) {
-    //     std::cout << key.first << ":" << key.second << std::endl;
-	// }
+	for (const auto& key : pathsDict["paths"]) {
+        std::cout << key.first << ":" << key.second << std::endl;
+	}
 	
-	// std::cout << " " << std::endl;
+	std::cout << " " << std::endl;
 
-	// for (const auto& key : keysDict["keys"]) {
-    //     std::cout << key.first << ":" << std::endl;
-    //     for (const auto& subkey : key.second) {
-    //         std::cout << "    " << subkey.first << ":" << subkey.second << std::endl;
-    //     }
-	// }
+	for (const auto& key : keysDict["keys"]) {
+        std::cout << key.first << ":" << std::endl;
+        for (const auto& subkey : key.second) {
+            std::cout << "    " << subkey.first << ":" << subkey.second << std::endl;
+        }
+	}
 	
 	Tank tank_test(paths, keys);
 	for (auto a = tank_test.templates.begin(); a != tank_test.templates.end(); ++a) {

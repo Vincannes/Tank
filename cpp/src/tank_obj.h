@@ -25,8 +25,6 @@ private:
     
     std::map<std::string, std::map<std::string, std::string>> pathsdict;
     std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> keydict;
-    //std::map<std::string, std::map<std::string, std::string>> getPathsFromDict();
-    //std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> getKeysFromDict();
 };
 
 #endif // TANK_H
