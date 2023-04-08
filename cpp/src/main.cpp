@@ -2,8 +2,9 @@
 #include <string>
 #include <vector>
 
-#include "tank.h"
-#include "main_tank.h"
+#include "template_obj.h"
+#include "templates_obj.h"
+#include "tank_obj.h"
 
 // to compile
 // g++ *.cpp -o hello
@@ -36,20 +37,30 @@ int main(int argc, char *argv[]) {
 	std::string keys  = "{'Root' : {'type': 'str'}, 'dir' : {'type': 'str'}, 'Shot' : {'type': 'str'}, 'version' : {'type': 'int', 'default': '1'}, 'test' : {'type': 'str', 'default': 'aa'}}";
 	std::string paths = "{'rootDir': 'C', 'desk': '@rootDir\\{dir}', 'test': '@desk\\{Shot}\\{Task}', 'nuke': '@test\\nuke\\{Shot}-{Task}-base-v{version}.nk', 'test_diff': '@desk\\nuke\\{Shot}-{Task}-base-v{version}.nk'}}";
 
-	/*    
-	std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> pathsDict;
-	pathsDict = generateKeysDictionnaryFromString(keys);
+	std::cout << argv[1] << std::endl;
+	
+	std::map<std::string, std::map<std::string, std::string>> pathsDict;
+	std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> keysDict;
+	pathsDict = generatePathsDictionnaryFromString(paths);
+	keysDict = generateKeysDictionnaryFromString(keys);
 
-	for (const auto& key : pathsDict["keys"]) {
+	for (const auto& key : pathsDict["paths"]) {
+        std::cout << key.first << ":" << key.second << std::endl;
+	}
+	
+	std::cout << " " << std::endl;
+
+	for (const auto& key : keysDict["keys"]) {
         std::cout << key.first << ":" << std::endl;
         for (const auto& subkey : key.second) {
             std::cout << "    " << subkey.first << ":" << subkey.second << std::endl;
         }
 	}
-	*/
-	//for (auto a = tank.templates.begin(); a != tank.templates.end(); ++a) {
-	//	std::cout << a->first << "  " << a->second.getDefinition() << std::endl;
-	//}
+	
+	Tank tank_test(paths, keys);
+	for (auto a = tank_test.templates.begin(); a != tank_test.templates.end(); ++a) {
+		std::cout << a->first << "  " << a->second.getDefinition() << std::endl;
+	}
 
     // créer le dictionnaire "keys"
 
@@ -58,13 +69,6 @@ int main(int argc, char *argv[]) {
 	//for (auto a = templatesTest.templates.begin(); a != templatesTest.templates.end(); ++a) {
 	//	std::cout << a->first << "  " << a->second.getDefinition() << std::endl;
 	//}
-
-	Tank tank = run(paths, keys);
-    std::map<std::string, Template> templatesObj = tank.templates;
-    
-    for (auto a = tank.templates.begin(); a != tank.templates.end(); ++a) {
-		std::cout << a->first << "  " << a->second.getDefinition() << std::endl;
-	}
     
     //if (argc>2) return 0;
 

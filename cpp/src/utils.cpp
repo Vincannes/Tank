@@ -73,16 +73,13 @@ std::map<std::string, std::map<std::string, std::string>> generatePathsDictionna
     return pathsDict;
 }
 
+
 std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> generateKeysDictionnaryFromString(std::string yamlStr){
     std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> pathsDict;
 
 	// Supprime les accolades de la chaîne de caractères
     yamlStr.erase(0, 1);
     yamlStr.erase(yamlStr.size() - 1, 1);
-
-	std::cout << "" << std::endl;
-	std::cout << yamlStr << std::endl;
-	std::cout << "" << std::endl;
 
 	std::regex regex_splited("\\'},\\s*'");
 

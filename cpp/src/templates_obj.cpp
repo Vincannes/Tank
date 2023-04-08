@@ -11,7 +11,6 @@ Templates::Templates(std::map<std::string, std::map<std::string, std::string>> t
 {
 	this->_templates_path = templatePaths;
 	this->_templates_keys = templateKeys;
-	this->templates       = getTemplates();
 	this->_conform_path(_templates_path);
 }
 
@@ -46,11 +45,11 @@ std::vector<TemplateKey> Templates::listOfALlKeys()
 			}
 		}
 		if (isTypeValue == "str") {
-			StringKey s1(name, isDefaultValue);
+			StringTemplateKey s1(name, isDefaultValue);
 			keysList.push_back(s1);
 		}
 		if (isTypeValue == "int") {
-			IntegerKey t1(name, isDefaultValue);
+			IntegerTemplateKey t1(name, isDefaultValue);
 			keysList.push_back(t1);
 		}
 	}
@@ -59,7 +58,7 @@ std::vector<TemplateKey> Templates::listOfALlKeys()
 }
 
 
-std::map<std::string, Template> Templates::getTemplates() {
+std::map<std::string, Template> Templates::getTemplates(){
 
 	std::map<std::string, Template> templates;
 	std::vector<TemplateKey> keysList = listOfALlKeys();

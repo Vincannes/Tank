@@ -10,16 +10,16 @@
 #ifndef TEMPLATES_OBJ_H
 #define TEMPLATES_OBJ_H
 
-class Templates {
+class Templates
+{
 
 public:
 	// prototypes
 	Templates(std::map<std::string, std::map<std::string, std::string>> templatePaths, 
-		std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> templateKeys);
+		      std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> templateKeys);
 
 	// accesseurs
-	std::map<std::string, Template> templates;
-
+	std::map<std::string, Template> getTemplates();
 
 private:
 
@@ -30,7 +30,6 @@ private:
 	ConformPath _conform_path(std::map<std::string, std::map<std::string, std::string>>);
 
 	std::vector <TemplateKey> listOfALlKeys();
-	std::map<std::string, Template> getTemplates();
 
 };
 
