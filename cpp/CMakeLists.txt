@@ -42,7 +42,7 @@ set_target_properties(TankLib PROPERTIES ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_CURRE
 MESSAGE( [Main] " pybind11_INCLUDE_DIRS = ${pybind11_INCLUDE_DIRS}")
 MESSAGE( [Main] " pybind11_LIBRARIES = ${pybind11_LIBRARIES}")
 
-pybind11_add_module(tank_module ${SOURCE_DIR}/tank_obj.cpp ${SOURCE_DIR}/template_keys.cpp ${SOURCE_DIR}/utils.cpp)
+pybind11_add_module(tank_module ${SOURCE_DIR}/tank_obj.cpp ${SOURCE_DIR}/template_obj.cpp ${SOURCE_DIR}/template_keys.cpp ${SOURCE_DIR}/utils.cpp)
 # target_link_libraries(tank_module PRIVATE Tank utils Template_keys)
 target_link_libraries(TankLib PRIVATE ${PYTHON_DIR}/libs/python39.lib)
 

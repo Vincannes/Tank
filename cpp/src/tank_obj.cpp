@@ -12,11 +12,11 @@ Tank::Tank(std::string _templatePathsString, std::string _templateKeysString)
 {
     this->pathsdict            = generatePathsDictionnaryFromString(_templatePathsString);;
     this->keydict              = generateKeysDictionnaryFromString(_templateKeysString);
-    this->_templates           = getTemplates();
     this->_allKeys             = listOfALlKeys();
+    this->_templates           = _getTemplates();
 }
 
-std::map<std::string, int> Tank::getTemplates()
+std::map<std::string, TemplatePath> Tank::getTemplates()
 {
     return this->_templates;
 }
@@ -61,17 +61,14 @@ std::vector<TemplateKey> Tank::listOfALlKeys()
 }
 
 
-// std::map<std::string, TemplatePath> Tank::_getTemplates(){
-std::map<std::string, int> Tank::_getTemplates(){
+std::map<std::string, TemplatePath> Tank::_getTemplates(){
 
-	std::map<std::string, int> templates;
-	//std::vector<TemplateKey> keysList = this->_allKeys;
+	std::map<std::string, TemplatePath> templates;
 
 	for (auto outerIt = this->pathsdict["paths"].begin(); outerIt != this->pathsdict["paths"].end(); ++outerIt) {
 		std::string template_name = outerIt->first;
 		std::string template_path = this->pathsdict["paths"][template_name];
-		//TemplatePath templateObj(template_name, this->_allKeys, template_path);
-		int templateObj = 1;
+		TemplatePath templateObj(template_name, this->_allKeys, template_path);
 		templates.insert(std::make_pair(template_name, templateObj));
 	}
 	return templates;
