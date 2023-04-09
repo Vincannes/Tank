@@ -1,2 +1,2 @@
-D:/Desk/python/Tank/build/CMakeFiles/edit_cache.dir
-D:/Desk/python/Tank/build/CMakeFiles/rebuild_cache.dir
+D:/Desk/python/Tank/build/CMakeFiles/ALL_BUILD.dir
+D:/Desk/python/Tank/build/CMakeFiles/ZERO_CHECK.dir
