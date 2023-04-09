@@ -1,11 +1,10 @@
 import os
 import sys
-import ctypes
-import pybind11
 from pprint import pprint
 
-MODULE_PATH = 'D:\\Desk\\python\\Tank\\cpp\\build\\Release'
-sys.path.append(os.path.join(MODULE_PATH))
+CURR_DIR =  os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+MODULE_PATH = os.path.join(CURR_DIR,"cpp", "lib")
+sys.path.append(MODULE_PATH)
 
 import tank_module
 
@@ -20,6 +19,7 @@ print()
 x = tank_module.Tank(paths, keys)
 
 templates = x.get_templates()
+nuke_template = templates["nuke"]
 
 fields = {
     "dir": "test",
@@ -27,12 +27,18 @@ fields = {
     "version": "1",
     "Task": "cmp",
 }
+path = nuke_template.apply_fields(fields)
 
-for i, tempalte in templates.items():
-    print()
-    print(tempalte.name())
-    print(tempalte.definition())
-    print(tempalte.static_token())
-    print(tempalte.ordered_keys())
-    print(tempalte.apply_fields(fields))
-#     print(tempalte.get_fields())
+print(nuke_template)
+print(path)
+print(nuke_template.get_fields(path))
+
+# for i, tempalte in templates.items():
+#     print()
+#     print(tempalte.name())
+#     print(tempalte.definition())
+#     print(tempalte.static_token())
+#     print(tempalte.ordered_keys())
+#     print(tempalte.apply_fields(fields))
+
+
