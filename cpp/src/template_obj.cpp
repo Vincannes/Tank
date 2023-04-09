@@ -10,7 +10,7 @@
 #include "template_obj.h"
 #include "template_keys.h"
 
-Template::Template(std::string name, std::vector<TemplateKey> keys, std::string definition)
+TemplatePath::TemplatePath(std::string name, std::vector<TemplateKey> keys, std::string definition)
 {
 	this->_name = name;
 	this->_keys = keys;
@@ -19,22 +19,22 @@ Template::Template(std::string name, std::vector<TemplateKey> keys, std::string 
 
 }
 
-std::string Template::getName() const
+std::string TemplatePath::getName() const
 {
 	return this -> _name;
 }
 
-std::string Template::getDefinition() const
+std::string TemplatePath::getDefinition() const
 {
 	return this->_definition;
 }
 
-std::vector<std::string> Template::getStaticTokens() const
+std::vector<std::string> TemplatePath::getStaticTokens() const
 {
 	return _get_static_token(this->_orig_definition);
 }
 
-std::vector<std::string> Template::getOrderedKeys() const
+std::vector<std::string> TemplatePath::getOrderedKeys() const
 {
 
 	return _get_ordered_keys(this->_orig_definition);
@@ -43,7 +43,7 @@ std::vector<std::string> Template::getOrderedKeys() const
 
 // MAIN FUNCTIONS
 
-std::string Template::apply_fields(std::map<std::string, std::string> fields)
+std::string TemplatePath::apply_fields(std::map<std::string, std::string> fields)
 {
 	std::string result = this->_definition;
 	std::string::size_type pos = 0;
@@ -72,7 +72,7 @@ std::string Template::apply_fields(std::map<std::string, std::string> fields)
 }
 
 
-std::map<std::string, std::string> Template::getFields(std::string path) 
+std::map<std::string, std::string> TemplatePath::getFields(std::string path) 
 {
 	std::map<std::string, std::string> fields = {};
 
@@ -157,7 +157,7 @@ std::map<std::string, std::string> Template::getFields(std::string path)
 
 // MAIN REGEX FUNCTIONS
 
-std::string Template::_get_clean_definition(const std::string definition) {
+std::string TemplatePath::_get_clean_definition(const std::string definition) {
 
 	std::regex pattern("[{]");
 	std::regex pattern2("[}]");
@@ -172,7 +172,7 @@ std::string Template::_get_clean_definition(const std::string definition) {
 }
 
 
-std::vector<std::string> Template::_get_static_token(const std::string definition) const
+std::vector<std::string> TemplatePath::_get_static_token(const std::string definition) const
 {
 
 	std::regex rgx("\\\\?\\{[^\\}]*\\}");
@@ -195,7 +195,7 @@ std::vector<std::string> Template::_get_static_token(const std::string definitio
 }
 
 
-std::vector<std::string> Template::_get_ordered_keys(const std::string definition) const
+std::vector<std::string> TemplatePath::_get_ordered_keys(const std::string definition) const
 {
 
 	std::regex re("\\{(.*?)\\}");
@@ -214,7 +214,7 @@ std::vector<std::string> Template::_get_ordered_keys(const std::string definitio
 }
 
 
-std::vector<std::string> Template::getTokensFromPath(std::string path) {
+std::vector<std::string> TemplatePath::getTokensFromPath(std::string path) {
 
 	std::vector<std::string> words;
 	std::smatch match;

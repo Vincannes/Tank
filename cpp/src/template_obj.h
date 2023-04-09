@@ -10,12 +10,12 @@
 #define TEMPLATE_H
 
 
-class Template
+class TemplatePath
 {
 public:
 
 	// prototypes
-	Template(std::string name, std::vector<TemplateKey> keys, std::string definition);
+	TemplatePath(std::string name, std::vector<TemplateKey> keys, std::string definition);
 
 	// accesseurs
 	std::string getName() const;

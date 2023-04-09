@@ -3,7 +3,6 @@
 #include <string>
 #include <vector>
 
-
 // ######## TemplateKey ######## 
 
 TemplateKey::TemplateKey(std::string name, std::string default_value)
