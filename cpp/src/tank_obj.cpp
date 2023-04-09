@@ -71,6 +71,7 @@ std::map<std::string, TemplatePath> Tank::_getTemplates(){
 		TemplatePath templateObj(template_name, this->_allKeys, template_path);
 		templates.insert(std::make_pair(template_name, templateObj));
 	}
+
 	return templates;
 }
 
@@ -81,6 +82,24 @@ PYBIND11_MODULE(tank_module, m)
 
     py::class_<Tank>(m, "Tank")
         .def(py::init<std::string, std::string>())
-        .def("getTemplates", &Tank::getTemplates, "Get all templates");
+        .def("get_templates", &Tank::getTemplates, "Get all templates");
         ;
+
+	py::class_<TemplatePath>(m, "TemplatePath")
+        .def(py::init<std::string, std::vector<TemplateKey>, std::string>())
+        .def("name", &TemplatePath::getName)
+        .def("definition", &TemplatePath::getDefinition)
+        .def("static_token", &TemplatePath::getStaticTokens)
+        .def("ordered_keys", &TemplatePath::getOrderedKeys)
+        .def("apply_fields", &TemplatePath::apply_fields)
+        .def("ordered_keys", &TemplatePath::getFields);
+
+	py::class_<TemplateKey>(m, "TemplateKey")
+        .def(py::init<std::string, std::string>())
+        .def("name", &TemplateKey::getName, "Get key name")
+        .def("default_value", &TemplateKey::getDefault, "Get default value");
+    py::class_<StringTemplateKey>(m, "StringTemplateKey")
+        .def(py::init<std::string, std::string>());
+    py::class_<IntegerTemplateKey>(m, "IntegerTemplateKey")
+        .def(py::init<std::string, std::string>());
 }

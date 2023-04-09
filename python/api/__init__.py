@@ -18,6 +18,14 @@ paths = "{'rootDir': 'C', 'desk': '@rootDir\\{dir}', 'test': '@desk\\{Shot}\\{Ta
 # pprint(dir(tank_module))
 print()
 x = tank_module.Tank(paths, keys)
-print(x)
-print(x.getTemplates())
 
+templates = x.get_templates()
+
+for i, tempalte in templates.items():
+    print()
+    print(i, tempalte)
+    print(tempalte.name())
+    print(tempalte.definition())
+    print(tempalte.static_token())
+    print(tempalte.ordered_keys())
+#     print(tempalte.ordered_keys())
