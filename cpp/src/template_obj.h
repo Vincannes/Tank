@@ -39,6 +39,7 @@ private:
 	std::vector<std::string> _get_ordered_keys(std::string _definition) const;
 	std::vector<std::string> getTokensFromPath(std::string path);
 
+	
 };
 
 #endif // TEMPLATE_H

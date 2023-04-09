@@ -8,10 +8,6 @@
 
 #include "utils.h"
 
-#include <pybind11/pybind11.h>
-#include <pybind11/stl.h>
-
-namespace py = pybind11;
 
 std::vector<std::string> splitPath(const std::string& path) {
 	char delimiter = '\\';
@@ -115,17 +111,5 @@ std::map<std::string, std::map<std::string, std::map<std::string, std::string>>>
 		}
 	}
     return keysDict;
-}
-
-
-
-PYBIND11_MODULE(yaml_parser, m) {
-    m.doc() = "Python binding for yaml parser";
-    
-    m.def("splitPath", &splitPath, "Split a path into a vector of strings using '/' as separator");
-    m.def("joinListWithSeparator", &joinListWithSeparator, "Join a list of strings with a separator");
-    m.def("getKeyValueFromString", &getKeyValueFromString, "Parse a string in format 'key: value' and returns a pair with key and value");
-    m.def("generatePathsDictionnaryFromString", &generatePathsDictionnaryFromString, "Generate a dictionary of paths with their keys and values from a YAML string");
-    m.def("generateKeysDictionnaryFromString", &generateKeysDictionnaryFromString, "Generate a dictionary of keys with their paths and values from a YAML string");
 }
 
