@@ -21,11 +21,18 @@ x = tank_module.Tank(paths, keys)
 
 templates = x.get_templates()
 
+fields = {
+    "dir": "test",
+    "Shot": "sh_010",
+    "version": "1",
+    "Task": "cmp",
+}
+
 for i, tempalte in templates.items():
     print()
-    print(i, tempalte)
     print(tempalte.name())
     print(tempalte.definition())
     print(tempalte.static_token())
     print(tempalte.ordered_keys())
-#     print(tempalte.ordered_keys())
+    print(tempalte.apply_fields(fields))
+#     print(tempalte.get_fields())

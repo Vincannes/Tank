@@ -59,7 +59,7 @@ int main(int argc, char *argv[]) {
 	
 	Tank tank_test(paths, keys);
 	for (auto a = tank_test.getTemplates().begin(); a != tank_test.getTemplates().end(); ++a) {
-		std::cout << a->first << "  " << a->second << std::endl;
+		std::cout << a->first << "  " << a->second.getDefinition() << std::endl;
 	}
 
     // créer le dictionnaire "keys"

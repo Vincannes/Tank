@@ -3,8 +3,8 @@
 #include "utils.h"
 
 #include "template_obj.h"
+#include "conform_path.h"
 #include "template_keys.h"
-
 
 #ifndef TANK_H
 #define TANK_H
