@@ -8,6 +8,7 @@
 
 #include "utils.h"
 
+
 std::vector<std::string> splitPath(const std::string& path) {
 	char delimiter = '\\';
 
@@ -73,19 +74,15 @@ std::map<std::string, std::map<std::string, std::string>> generatePathsDictionna
     return pathsDict;
 }
 
+
 std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> generateKeysDictionnaryFromString(std::string yamlStr){
-    std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> pathsDict;
+    std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> keysDict;
 
 	// Supprime les accolades de la chaîne de caractères
     yamlStr.erase(0, 1);
     yamlStr.erase(yamlStr.size() - 1, 1);
-
-	std::cout << "" << std::endl;
-	std::cout << yamlStr << std::endl;
-	std::cout << "" << std::endl;
-
-	std::regex regex_splited("\\'},\\s*'");
-
+    
+	std::regex regex_splited("\\}, '"); // splited at }, '
 	std::sregex_token_iterator iter(yamlStr.begin(), yamlStr.end(), regex_splited, -1);
     std::sregex_token_iterator ende;
 
@@ -110,8 +107,9 @@ std::map<std::string, std::map<std::string, std::map<std::string, std::string>>>
 			std::string valValue = item.substr(colonPosValue+1);
 			keyValue.erase(std::remove(keyValue.begin(), keyValue.end(), '\''), keyValue.end()); // Remove ' from string
 			valValue.erase(std::remove(valValue.begin(), valValue.end(), '\''), valValue.end()); // Remove ' from string
-			pathsDict["keys"][key][keyValue] = valValue;
+			keysDict["keys"][key][keyValue] = valValue;
 		}
 	}
-    return pathsDict;
+    return keysDict;
 }
+

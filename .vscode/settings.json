@@ -73,6 +73,18 @@
         "regex": "cpp",
         "stop_token": "cpp",
         "thread": "cpp",
-        "xlocbuf": "cpp"
-    }
+        "xlocbuf": "cpp",
+        "typeindex": "cpp",
+        "unordered_set": "cpp",
+        "deque": "cpp",
+        "variant": "cpp",
+        "tank_obj.h": "c",
+        "templates_obj.h": "c",
+        "utils.h": "c",
+        "complex": "cpp",
+        "fstream": "cpp",
+        "numeric": "cpp"
+    },
+    "cmake.sourceDirectory": "${workspaceFolder}/cpp/libraries/json/tests/cmake_add_subdirectory",
+    "C_Cpp.errorSquiggles": "disabled"
 }

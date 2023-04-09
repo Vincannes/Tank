@@ -10,7 +10,7 @@
 #include "template_obj.h"
 #include "template_keys.h"
 
-Template::Template(std::string name, std::vector<TemplateKey> keys, std::string definition)
+TemplatePath::TemplatePath(std::string name, std::vector<TemplateKey> keys, std::string definition)
 {
 	this->_name = name;
 	this->_keys = keys;
@@ -19,22 +19,23 @@ Template::Template(std::string name, std::vector<TemplateKey> keys, std::string 
 
 }
 
-std::string Template::getName() const
+std::string TemplatePath::getName() const
 {
 	return this -> _name;
 }
 
-std::string Template::getDefinition()
+std::string TemplatePath::getDefinition() const
 {
 	return this->_definition;
 }
 
-std::vector<std::string> Template::getStaticTokens()
+std::vector<std::string> TemplatePath::getStaticTokens() const
 {
 	return _get_static_token(this->_orig_definition);
 }
 
-std::vector<std::string> Template::getOrderedKeys() {
+std::vector<std::string> TemplatePath::getOrderedKeys() const
+{
 
 	return _get_ordered_keys(this->_orig_definition);
 }
@@ -42,7 +43,7 @@ std::vector<std::string> Template::getOrderedKeys() {
 
 // MAIN FUNCTIONS
 
-std::string Template::apply_fields(std::map<std::string, std::string> fields)
+std::string TemplatePath::apply_fields(std::map<std::string, std::string> fields)
 {
 	std::string result = this->_definition;
 	std::string::size_type pos = 0;
@@ -57,12 +58,12 @@ std::string Template::apply_fields(std::map<std::string, std::string> fields)
 				pos += it->second.length();
 			}
 			else {
-				// La cl� n'a pas �t� trouv�e dans le dictionnaire
+				// La cle n'a pas ete trouvee dans le dictionnaire
 				pos = end_pos + 1;
 			}
 		}
 		else {
-			// Parenth�se fermante manquante
+			// Parenthese fermante manquante
 			pos = pos + 2;
 		}
 	}
@@ -71,7 +72,7 @@ std::string Template::apply_fields(std::map<std::string, std::string> fields)
 }
 
 
-std::map<std::string, std::string> Template::getFields(std::string path)
+std::map<std::string, std::string> TemplatePath::getFields(std::string path) 
 {
 	std::map<std::string, std::string> fields = {};
 
@@ -81,7 +82,7 @@ std::map<std::string, std::string> Template::getFields(std::string path)
 
 	// return dictionnaire vide si longueurs differents
 	if (path_splited.size() != definition_splited.size()) {
-		std::cout << "No fields find for this template " << std::endl;
+		std::cout << "No fields find for this template " << std::endl; // TODO Raise error gere
 		return fields;
 	}
 
@@ -97,7 +98,7 @@ std::map<std::string, std::string> Template::getFields(std::string path)
 	// Create REGEX pour separer les tokens a partir de chaque non Token dans le path
 	std::string static_parse = joinListWithSeparator(satic_token, '|'); // move - to the end
 
-	for (int i = 0; i < path_splited.size(); i++) {
+	for (size_t i = 0; i < path_splited.size(); i++) {
 
 		int is_token = std::regex_search(definition_splited[i], std::regex("\\%\\(.*\\)"));
 		if (is_token) {
@@ -107,7 +108,7 @@ std::map<std::string, std::string> Template::getFields(std::string path)
 			// Si un plusieurs patterns match
 			if (tokens.size() > 1) {
 
-				for (const auto& token_name : tokens)
+				for (const std::string token_name : tokens)
 				{
 					std::regex rgx(static_parse);
 					std::sregex_token_iterator iterDefin(definition_splited[i].begin(), definition_splited[i].end(), rgx, -1);
@@ -121,18 +122,20 @@ std::map<std::string, std::string> Template::getFields(std::string path)
 
 					if (sizePath != sizeDefinition) continue;
 
-					for (int token_index = 0; token_index < sizePath; token_index++) {
-						std::string token = token_def[token_index];
-						std::string value = tokens_val[token_index];
-						std::cout << "value " << value << std::endl;
-						// si value est dans list de static Tokens on passe
-						if (std::find(token_def.begin(), token_def.end(), value) != token_def.end()) {
-							continue;
-						}
+					for (size_t token_index = 0; token_index < sizePath; token_index++) {
+						if (token_index < token_def.size() && token_index < tokens_val.size()) {
+							std::string token = token_def[token_index];
+							std::string value = tokens_val[token_index];
 
-						std::vector<std::string> valueFromPath = getTokensFromPath(token);
-						for (const auto& token_name : valueFromPath) { // Verifier si plusieurs token trouve
-							fields[token_name] = value;
+							// si value est dans list de static Tokens on passe
+							if (std::find(token_def.begin(), token_def.end(), value) != token_def.end()) {
+								continue;
+							}
+
+							std::vector<std::string> valueFromPath = getTokensFromPath(token);
+							for (const auto& _token_name : valueFromPath) { // Verifier si plusieurs token trouve
+								fields[_token_name] = value;
+							}
 						}
 
 					}
@@ -142,9 +145,8 @@ std::map<std::string, std::string> Template::getFields(std::string path)
 			// Si un seul pattern match
 			else if (tokens.size() == 1) {
 				std::string token_name = tokens[0];
-				std::string value = path_splited[i];
-				//std::cout << "token_name  " << token_name << " value : " << value << std::endl;
-				fields[token_name] = value;
+				std::string token_value = path_splited[i];
+				fields[token_name] = token_value;
 			}
 		}
 	}
@@ -155,7 +157,7 @@ std::map<std::string, std::string> Template::getFields(std::string path)
 
 // MAIN REGEX FUNCTIONS
 
-std::string Template::_get_clean_definition(const std::string definition) {
+std::string TemplatePath::_get_clean_definition(const std::string definition) {
 
 	std::regex pattern("[{]");
 	std::regex pattern2("[}]");
@@ -170,7 +172,8 @@ std::string Template::_get_clean_definition(const std::string definition) {
 }
 
 
-std::vector<std::string> Template::_get_static_token(const std::string definition) {
+std::vector<std::string> TemplatePath::_get_static_token(const std::string definition) const
+{
 
 	std::regex rgx("\\\\?\\{[^\\}]*\\}");
 	std::vector<std::string> result;
@@ -192,7 +195,8 @@ std::vector<std::string> Template::_get_static_token(const std::string definitio
 }
 
 
-std::vector<std::string> Template::_get_ordered_keys(const std::string definition) {
+std::vector<std::string> TemplatePath::_get_ordered_keys(const std::string definition) const
+{
 
 	std::regex re("\\{(.*?)\\}");
 	std::vector<std::string> matches;
@@ -210,7 +214,7 @@ std::vector<std::string> Template::_get_ordered_keys(const std::string definitio
 }
 
 
-std::vector<std::string> Template::getTokensFromPath(std::string path) {
+std::vector<std::string> TemplatePath::getTokensFromPath(std::string path) {
 
 	std::vector<std::string> words;
 	std::smatch match;

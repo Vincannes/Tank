@@ -26,30 +26,26 @@ class TemplateKey
 };
 
 
-class StringKey : public TemplateKey
+class StringTemplateKey : public TemplateKey
 {
 
 	public:
 
-		StringKey(std::string name, std::string default_value) noexcept;
-		int getType();
+		StringTemplateKey(std::string name, std::string default_value) noexcept;
 
 	private:
-		int _istype;
 		
 };
 
 
-class IntegerKey : public TemplateKey
+class IntegerTemplateKey : public TemplateKey
 {
 
 public:
 
-	IntegerKey(std::string name, std::string default_value) noexcept;
-	int getType();
+	IntegerTemplateKey(std::string name, std::string default_value) noexcept;
 
 private:
-	int _istype;
 
 };
 
