@@ -68,11 +68,13 @@ int main(int argc, char *argv[]) {
 	// 	std::cout << a->first << "  " << a->second.getDefinition() << std::endl;
 	// }
 
+
 	TemplatePath nuke_tpl = tank_test.getTemplates()["nuke"];
 	std::string testpath = nuke_tpl.apply_fields(fields);
 	std::string testpathNot = "C\\test\\sh_010\\cmp\\sh_010-cmp-base-v1.nk";
 
-	// std::cout << nuke_tpl.validate(testpath) << std::endl;
+	TemplatePath aTesty = tank_test.templateFromPath(testpath);
+	std::cout << aTesty.getName() << std::endl;
 	// std::cout << nuke_tpl.validate(testpathNot) << std::endl;
 	
 	// std::cout << nuke_tpl.getName() << " " << nuke_tpl.getDefinition() << std::endl;

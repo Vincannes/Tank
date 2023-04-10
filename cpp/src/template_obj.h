@@ -16,7 +16,6 @@ public:
 
 	// prototypes
 	TemplatePath() = default;
-	// TemplatePath(std::string, std::vector <TemplateKey>, std::string);
 	TemplatePath(std::string, std::map<std::string, TemplateKey>, std::string);
 
 	// accesseurs
@@ -25,11 +24,10 @@ public:
 	std::string getDefinition() const;
 	std::vector<std::string> getStaticTokens() const;
 	std::vector<std::string> getOrderedKeys() const;
-	std::string apply_fields(std::map<std::string, std::string>);
 	std::map<std::string, std::string> getFields(std::string);
 
 	// manipulateurs
-	//...
+	std::string apply_fields(std::map<std::string, std::string>);
 
 private:
 	std::string _name;

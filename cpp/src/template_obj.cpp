@@ -9,9 +9,9 @@
 
 #include "utils.h"
 #include "template_obj.h"
+#include "conform_path.h"
 #include "template_keys.h"
 
-// TemplatePath::TemplatePath(std::string name, std::vector<TemplateKey> keys, std::string definition)
 TemplatePath::TemplatePath(std::string name, std::map<std::string, TemplateKey> keys, std::string definition)
 {
 	this->_name            = name;
@@ -95,7 +95,7 @@ std::map<std::string, std::string> TemplatePath::getFields(std::string path)
 
 	// return dictionnaire vide si longueurs differents
 	if (path_splited.size() != definition_splited.size()) {
-		std::cout << "No fields find for this template " << std::endl; // TODO Raise error gere
+		// std::cout << "No fields find for this template " << std::endl; // TODO Raise error gere
 		return fields;
 	}
 
@@ -228,6 +228,7 @@ std::vector<std::string> TemplatePath::_get_ordered_keys() const
 
 	return matches;
 }
+
 
 std::map<std::string, TemplateKey> TemplatePath::_keys_from_definition()
 {
