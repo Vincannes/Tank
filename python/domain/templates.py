@@ -1,8 +1,8 @@
 from pprint import pprint
 
-from prototype.domain.template import Template
-from prototype.domain.conform_paths import ConformPath
-from prototype.domain.template_keys import StringKey, IntegerKey, TimestampKey
+from python.domain.template import Template
+from python.domain.conform_paths import ConformPath
+from python.domain.template_keys import StringKey, IntegerKey, TimestampKey
 
 
 class Templates(object):

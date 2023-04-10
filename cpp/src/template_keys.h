@@ -11,6 +11,7 @@ class TemplateKey
 
 	public:
 		// prototypes
+		TemplateKey() = default;
 		TemplateKey(std::string name, std::string default_value);
 		
 		// accesseurs

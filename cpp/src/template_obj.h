@@ -3,7 +3,7 @@
 #include <map>
 #include <string>
 #include <vector>
-#include <iostream>
+
 #include "template_keys.h"
 
 #ifndef TEMPLATE_H
@@ -15,15 +15,17 @@ class TemplatePath
 public:
 
 	// prototypes
-	TemplatePath(std::string name, std::vector<TemplateKey> keys, std::string definition);
+	TemplatePath() = default;
+	TemplatePath(std::string, std::vector <TemplateKey>, std::string);
 
 	// accesseurs
+	bool validate(std::string);
 	std::string getName() const;
 	std::string getDefinition() const;
 	std::vector<std::string> getStaticTokens() const;
 	std::vector<std::string> getOrderedKeys() const;
-	std::string apply_fields(std::map<std::string, std::string> fields);
-	std::map<std::string, std::string> getFields(std::string path);
+	std::string apply_fields(std::map<std::string, std::string>);
+	std::map<std::string, std::string> getFields(std::string);
 
 	// manipulateurs
 	//...
@@ -31,13 +33,16 @@ public:
 private:
 	std::string _name;
 	std::string _definition;
-	std::string static_tokens;
 	std::string _orig_definition;
-	std::vector<TemplateKey> _keys;
-	std::string _get_clean_definition(std::string _definition);
-	std::vector<std::string> _get_static_token(std::string _definition) const;
-	std::vector<std::string> _get_ordered_keys(std::string _definition) const;
-	std::vector<std::string> getTokensFromPath(std::string path);
+	std::vector<std::string>_ordered_keys;
+	std::vector<std::string> _static_tokens;
+	std::vector <TemplateKey> _all_keys;
+	std::map<std::string, TemplateKey> _keys;
+	std::string _get_clean_definition(std::string);
+	std::vector<std::string> _get_static_token() const;
+	std::vector<std::string> _get_ordered_keys() const;
+	std::vector<std::string> getTokensFromPath(std::string);
+	std::map<std::string, TemplateKey> _keys_from_definition();
 
 	
 };

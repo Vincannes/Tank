@@ -11,6 +11,7 @@
 
 std::vector<std::string> splitPath(const std::string& path) {
 	char delimiter = '\\';
+	// std::string delimiter = os::sep;
 
 	std::vector<std::string> result;
 	std::stringstream ss(path);

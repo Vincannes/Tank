@@ -15,6 +15,8 @@ public:
     // prototypes
     Tank(std::string, std::string);
     std::map<std::string, TemplatePath> getTemplates();
+    // std::vector<TemplatePath> templatesFromPath(std::string)
+    std::vector<std::string> getAbstractPathsFromTemplate(std::string, std::map<std::string, std::string>);
 
 private:
 

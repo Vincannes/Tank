@@ -3,7 +3,6 @@
 #include <vector>
 
 #include "template_obj.h"
-// #include "templates_obj.h"
 #include "tank_obj.h"
 
 // to compile
@@ -20,6 +19,12 @@
 int main(int argc, char *argv[]) {
 	std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> keydict;
 	std::map<std::string, std::map<std::string, std::string>> pathsdict;
+	std::map<std::string, std::string> fields;
+	fields["dir"] = "test";
+	fields["Shot"] = "sh_010";
+	fields["Task"] = "cmp";
+	fields["version"] = "1";
+	fields["test"] = "bleu";
 
 	keydict["keys"]["Root"]["type"] = "str";
 	keydict["keys"]["Shot"]["type"] = "str";
@@ -44,23 +49,31 @@ int main(int argc, char *argv[]) {
 	pathsDict = generatePathsDictionnaryFromString(paths);
 	keysDict = generateKeysDictionnaryFromString(keys);
 
-	for (const auto& key : pathsDict["paths"]) {
-        std::cout << key.first << ":" << key.second << std::endl;
-	}
+	// for (const auto& key : pathsDict["paths"]) {
+    //     std::cout << key.first << ":" << key.second << std::endl;
+	// }
 	
-	std::cout << " " << std::endl;
+	// std::cout << " " << std::endl;
 
-	for (const auto& key : keysDict["keys"]) {
-        std::cout << key.first << ":" << std::endl;
-        for (const auto& subkey : key.second) {
-            std::cout << "    " << subkey.first << ":" << subkey.second << std::endl;
-        }
-	}
+	// for (const auto& key : keysDict["keys"]) {
+    //     std::cout << key.first << ":" << std::endl;
+    //     for (const auto& subkey : key.second) {
+    //         std::cout << "    " << subkey.first << ":" << subkey.second << std::endl;
+    //     }
+	// }
 	
 	Tank tank_test(paths, keys);
-	for (auto a = tank_test.getTemplates().begin(); a != tank_test.getTemplates().end(); ++a) {
-		std::cout << a->first << "  " << a->second.getDefinition() << std::endl;
-	}
+	// tank_test.getAbstractPathsFromTemplate("nuke", fields);
+	// for (auto a = tank_test.getTemplates().begin(); a != tank_test.getTemplates().end(); ++a) {
+	// 	std::cout << a->first << "  " << a->second.getDefinition() << std::endl;
+	// }
+
+	TemplatePath nuke_tpl = tank_test.getTemplates()["nuke"];
+	std::string testpath = nuke_tpl.apply_fields(fields);
+	// std::cout << nuke_tpl.validate(testpath) << std::endl;
+	
+	// std::cout << nuke_tpl.getName() << " " << nuke_tpl.getDefinition() << std::endl;
+	// tank_test.getAbstractPathsFromTemplate()
 
     // créer le dictionnaire "keys"
 

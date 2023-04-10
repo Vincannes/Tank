@@ -4,10 +4,10 @@
 #include "conform_path.h"
 #include "template_keys.h"
 
-#include <pybind11/pybind11.h>
-#include <pybind11/stl.h>
+// #include <pybind11/pybind11.h>
+// #include <pybind11/stl.h>
 
-namespace py = pybind11;
+// namespace py = pybind11;
 
 Tank::Tank(std::string _templatePathsString, std::string _templateKeysString)
 {
@@ -23,10 +23,29 @@ std::map<std::string, TemplatePath> Tank::getTemplates()
 }
 
 
-std::vector<TemplateKey> Tank::listOfALlKeys()
+// std::vector<TemplatePath> Tank::templatesFromPath(std::string path)
+// {
+// 	std::vector<TemplatePath> matched_templates;
+
+// 	for (auto a = this->_templates.begin(); a != this->_templates.end(); ++a) {
+// 		if(!a.validate(path)) continue;
+// 		matched_templates.push_back(a)
+// 	}
+	
+// 	return matched_templates;
+// }
+
+std::vector<std::string> Tank::getAbstractPathsFromTemplate(std::string, std::map<std::string, std::string>)
+{
+	std::vector<std::string> abstract_paths;
+
+	return abstract_paths;
+}
+
+
+std::vector <TemplateKey> Tank::listOfALlKeys()
 {
 	std::vector <TemplateKey> keysList{};
-	std::map<std::string, std::map<std::string, std::string>> pathsdict;
 
 	for (auto outerIt = this->keydict["keys"].begin(); outerIt != this->keydict["keys"].end(); ++outerIt) {
 
@@ -79,33 +98,35 @@ std::map<std::string, TemplatePath> Tank::_getTemplates(){
 }
 
 
-PYBIND11_MODULE(tank_module, m) 
-{
-    m.doc() = "Tank module";
+// PYBIND11_MODULE(tank_module, m) 
+// {
+//     m.doc() = "Tank module";
 
-    py::class_<Tank>(m, "Tank")
-        .def(py::init<std::string, std::string>())
-        .def("get_templates", &Tank::getTemplates, "Get all templates");
-        ;
+//     py::class_<Tank>(m, "Tank")
+//         .def(py::init<std::string, std::string>())
+//         .def("get_templates", &Tank::getTemplates, "Get all templates");
+//         .def("templates_from_path", &TemplatePath::templatesFromPath)
+//         .def("abstract_paths_from_template", &TemplatePath::getAbstractPathsFromTemplate)
+//         ;
 
-	py::class_<ConformPath>(m, "ConformPath")
-		.def(py::init<std::map<std::string, std::map<std::string, std::string>>>());
+// 	py::class_<ConformPath>(m, "ConformPath")
+// 		.def(py::init<std::map<std::string, std::map<std::string, std::string>>>());
 
-	py::class_<TemplatePath>(m, "TemplatePath")
-        .def(py::init<std::string, std::vector<TemplateKey>, std::string>())
-        .def("name", &TemplatePath::getName)
-        .def("definition", &TemplatePath::getDefinition)
-        .def("static_token", &TemplatePath::getStaticTokens)
-        .def("ordered_keys", &TemplatePath::getOrderedKeys)
-        .def("apply_fields", &TemplatePath::apply_fields)
-        .def("get_fields", &TemplatePath::getFields);
+// 	py::class_<TemplatePath>(m, "TemplatePath")
+//         .def(py::init<std::string, std::vector<TemplateKey>, std::string>())
+//         .def("name", &TemplatePath::getName)
+//         .def("definition", &TemplatePath::getDefinition)
+//         .def("static_token", &TemplatePath::getStaticTokens)
+//         .def("ordered_keys", &TemplatePath::getOrderedKeys)
+//         .def("apply_fields", &TemplatePath::apply_fields)
+//         .def("get_fields", &TemplatePath::getFields);
 
-	py::class_<TemplateKey>(m, "TemplateKey")
-        .def(py::init<std::string, std::string>())
-        .def("name", &TemplateKey::getName, "Get key name")
-        .def("default_value", &TemplateKey::getDefault, "Get default value");
-    py::class_<StringTemplateKey>(m, "StringTemplateKey")
-        .def(py::init<std::string, std::string>());
-    py::class_<IntegerTemplateKey>(m, "IntegerTemplateKey")
-        .def(py::init<std::string, std::string>());
-}
+// 	py::class_<TemplateKey>(m, "TemplateKey")
+//         .def(py::init<std::string, std::string>())
+//         .def("name", &TemplateKey::getName, "Get key name")
+//         .def("default_value", &TemplateKey::getDefault, "Get default value");
+//     py::class_<StringTemplateKey>(m, "StringTemplateKey")
+//         .def(py::init<std::string, std::string>());
+//     py::class_<IntegerTemplateKey>(m, "IntegerTemplateKey")
+//         .def(py::init<std::string, std::string>());
+// }
