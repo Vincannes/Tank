@@ -11,16 +11,17 @@
 #include "template_obj.h"
 #include "template_keys.h"
 
-TemplatePath::TemplatePath(std::string name, std::vector<TemplateKey> keys, std::string definition)
+// TemplatePath::TemplatePath(std::string name, std::vector<TemplateKey> keys, std::string definition)
+TemplatePath::TemplatePath(std::string name, std::map<std::string, TemplateKey> keys, std::string definition)
 {
 	this->_name            = name;
 	this->_all_keys        = keys;
 	this->_orig_definition = definition;
-	// this->_keys            = _keys_from_definition();
-	this->_ordered_keys    = _get_ordered_keys();
 	this->_definition      = _get_clean_definition(definition);
-	this->_static_tokens    = _get_static_token();
-	
+	this->_keys            = _keys_from_definition();
+	this->_ordered_keys    = _get_ordered_keys();
+	this->_static_tokens   = _get_static_token();
+
 }
 
 std::string TemplatePath::getName() const
@@ -36,15 +37,8 @@ std::string TemplatePath::getDefinition() const
 bool TemplatePath::validate(std::string path)
 {
 	std::map<std::string, std::string> path_fields = getFields(path);
-	std::cout << "path_fields.empty()" << std::endl;
-	std::cout << path_fields.empty() << std::endl;
 	if(path_fields.empty()) return false;
-
-	std::cout << "path_fields.dzqdqzdzqd()" << std::endl;
-	std::cout << path_fields.size() << "  "<< this->_keys.size() << std::endl;
-	// IS ALL FIELDS ARE MATCHING
-	if(path_fields.size() != this->_keys.size()) return false;
-
+	if(path_fields.size() != this->_keys.size()) return false; // IS ALL FIELDS ARE MATCHING
 	return true;
 }
 
@@ -235,6 +229,30 @@ std::vector<std::string> TemplatePath::_get_ordered_keys() const
 	return matches;
 }
 
+std::map<std::string, TemplateKey> TemplatePath::_keys_from_definition()
+{
+	std::map<std::string, TemplateKey> keys;
+
+	std::regex re("\\{(.*?)\\}");
+	std::sregex_iterator next(this->_orig_definition.begin(), this->_orig_definition.end(), re);
+	std::sregex_iterator end;
+
+	while (next != end) {
+
+		std::smatch match = *next;
+		std::string key_name = match.str(1);
+
+		for (auto const& pair : this->_all_keys) {
+        	if(key_name == pair.first){
+				keys.insert(std::make_pair(key_name, pair.second));
+			}
+    	}
+		next++;
+	}
+
+	return keys;
+}
+
 
 std::vector<std::string> TemplatePath::getTokensFromPath(std::string path) {
 
@@ -254,30 +272,4 @@ std::vector<std::string> TemplatePath::getTokensFromPath(std::string path) {
 	return words;
 }
 
-/*
-std::map<std::string, TemplateKey> TemplatePath::_keys_from_definition()
-{
-	std::map<std::string, TemplateKey> keys;
 
-	std::regex re("\\{(.*?)\\}");
-	std::sregex_iterator next(this->_orig_definition.begin(), this->_orig_definition.end(), re);
-	std::sregex_iterator end;
-
-	while (next != end) {
-		std::smatch match = *next;
-		std::string key_name = match.str(1);
-	
-		auto it = this->_all_keys.find(key_name);
-		// std::cout << it.first << std::endl;
-		if (it != this->_all_keys.end()) {
-			// L'élément a été trouvé
-			TemplateKey& foundKey = it->second;
-			keys.insert(std::make_pair(key_name, foundKey));
-		}
-
-		next++;
-	}
-	std::cout << "lkjlkj" << std::endl;
-	return keys;
-}
-*/

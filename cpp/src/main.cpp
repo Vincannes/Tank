@@ -39,7 +39,7 @@ int main(int argc, char *argv[]) {
 	pathsdict["paths"]["test"]        = "@desk\\{Shot}\\{Task}";
 	pathsdict["paths"]["test_diff"]   = "@desk\\nuke\\{Shot}-{Task}-base-v{version}.nk";
 
-	std::string keys  = "{'Root' : {'type': 'str'}, 'dir' : {'type': 'str'}, 'Shot' : {'type': 'str'}, 'version' : {'type': 'int', 'default': '1'}, 'test' : {'type': 'str', 'default': 'aa'}";
+	std::string keys  = "{'Root' : {'type': 'str'}, 'dir' : {'type': 'str'}, 'Shot' : {'type': 'str'}, 'version' : {'type': 'int', 'default': '1'}, 'Task' : {'type': 'str', 'default': 'aa'}";
 	std::string paths = "{'rootDir': 'C', 'desk': '@rootDir\\{dir}', 'test': '@desk\\{Shot}\\{Task}', 'nuke': '@test\\nuke\\{Shot}-{Task}-base-v{version}.nk', 'test_diff': '@desk\\nuke\\{Shot}-{Task}-base-v{version}.nk'}";
 
 	std::cout << argv[1] << std::endl;
@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
 	std::map<std::string, std::map<std::string, std::string>> pathsDict;
 	std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> keysDict;
 	pathsDict = generatePathsDictionnaryFromString(paths);
-	keysDict = generateKeysDictionnaryFromString(keys);
+	keysDict  = generateKeysDictionnaryFromString(keys);
 
 	// for (const auto& key : pathsDict["paths"]) {
     //     std::cout << key.first << ":" << key.second << std::endl;
@@ -70,7 +70,10 @@ int main(int argc, char *argv[]) {
 
 	TemplatePath nuke_tpl = tank_test.getTemplates()["nuke"];
 	std::string testpath = nuke_tpl.apply_fields(fields);
+	std::string testpathNot = "C\\test\\sh_010\\cmp\\sh_010-cmp-base-v1.nk";
+
 	// std::cout << nuke_tpl.validate(testpath) << std::endl;
+	// std::cout << nuke_tpl.validate(testpathNot) << std::endl;
 	
 	// std::cout << nuke_tpl.getName() << " " << nuke_tpl.getDefinition() << std::endl;
 	// tank_test.getAbstractPathsFromTemplate()

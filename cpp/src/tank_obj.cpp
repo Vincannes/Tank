@@ -13,7 +13,7 @@ Tank::Tank(std::string _templatePathsString, std::string _templateKeysString)
 {
     this->pathsdict            = generatePathsDictionnaryFromString(_templatePathsString);
     this->keydict              = generateKeysDictionnaryFromString(_templateKeysString);
-    this->_allKeys             = listOfALlKeys();
+    this->_allKeys             = dictOfAllKeys();
     this->_templates           = _getTemplates();
 }
 
@@ -75,6 +75,49 @@ std::vector <TemplateKey> Tank::listOfALlKeys()
 			IntegerTemplateKey t1(name, isDefaultValue);
 			keysList.push_back(t1);
 		}
+	}
+
+	return keysList;
+}
+
+
+std::map<std::string, TemplateKey> Tank::dictOfAllKeys()
+{
+	std::map<std::string, TemplateKey> keysList;
+
+	for (auto outerIt = this->keydict["keys"].begin(); outerIt != this->keydict["keys"].end(); ++outerIt) {
+
+		// bool isType;
+		bool isDefault;
+		std::string isTypeValue = "";
+		std::string isDefaultValue = "";
+		std::string name = removeSpaceInString(outerIt->first);
+
+		for (auto innerIt = outerIt->second.begin(); innerIt != outerIt->second.end(); ++innerIt) {
+
+			std::string key = innerIt->first;
+			std::string value = innerIt->second;
+			key   = removeSpaceInString(key); // remove space if exist in key
+			value = removeSpaceInString(value); // remove space if exist in key
+
+			if (key == "type") {
+				isTypeValue = value;
+			}
+			else if (key == "default") {
+				isDefault = true;
+				isDefaultValue = value;
+			}
+
+			if (isTypeValue == "str") {
+				StringTemplateKey s1(name, isDefaultValue);
+				keysList.insert(std::make_pair(name, s1));
+			}
+			if (isTypeValue == "int") {
+				IntegerTemplateKey t1(name, isDefaultValue);
+				keysList.insert(std::make_pair(name, t1));
+			}
+		}
+
 	}
 
 	return keysList;

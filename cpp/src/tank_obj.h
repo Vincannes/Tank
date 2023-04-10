@@ -20,13 +20,14 @@ public:
 
 private:
 
-    std::vector <TemplateKey> _allKeys;
+    std::map<std::string, TemplateKey> _allKeys;
     std::map<std::string, TemplatePath> _templates;
     std::map<std::string, std::string> templatesDict;
     std::map<std::string, std::map<std::string, std::string>> pathsdict;
     std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> keydict;
 
     std::vector <TemplateKey> listOfALlKeys();
+    std::map<std::string, TemplateKey> dictOfAllKeys();
     std::map<std::string, TemplatePath> _getTemplates();
 };
 

@@ -4,6 +4,7 @@
 #include <vector>
 #include <regex>
 #include <sstream>
+#include <algorithm>
 #include <utility> // pour std::pair
 
 #include "utils.h"
@@ -22,6 +23,13 @@ std::vector<std::string> splitPath(const std::string& path) {
 	return result;
 }
 
+std::string removeSpaceInString(std::string str)
+{
+	str.erase(std::remove_if(str.begin(), str.end(), [](char c) {
+		return std::isspace(static_cast<unsigned char>(c));
+	}), str.end());
+	return str;
+}
 
 std::string joinListWithSeparator(std::vector<std::string> list, char separator) {
 	std::string result = "";

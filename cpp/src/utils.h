@@ -8,6 +8,7 @@
 #include <utility> // pour std::pair
 
 
+std::string removeSpaceInString(std::string str);
 std::vector<std::string> splitPath(const std::string& path);
 std::string joinListWithSeparator(std::vector<std::string> list, char separator);
 std::pair<std::string, std::string> getKeyValueFromString(std::string stringToParse);
