@@ -2,8 +2,8 @@ import os
 import re
 from pprint import pprint
 
-from prototype import constants
-from prototype.domain.errors import TankError
+from python import constants
+from python.domain.errors import TankError
 
 
 class Template(object):

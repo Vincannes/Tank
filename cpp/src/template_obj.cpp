@@ -5,17 +5,22 @@
 #include <sstream>
 #include <iostream>
 #include <filesystem>
+#include <unordered_map>
 
 #include "utils.h"
 #include "template_obj.h"
+#include "conform_path.h"
 #include "template_keys.h"
 
-TemplatePath::TemplatePath(std::string name, std::vector<TemplateKey> keys, std::string definition)
+TemplatePath::TemplatePath(std::string name, std::map<std::string, TemplateKey> keys, std::string definition)
 {
-	this->_name = name;
-	this->_keys = keys;
+	this->_name            = name;
+	this->_all_keys        = keys;
 	this->_orig_definition = definition;
-	this->_definition = _get_clean_definition(definition);
+	this->_definition      = _get_clean_definition(definition);
+	this->_keys            = _keys_from_definition();
+	this->_ordered_keys    = _get_ordered_keys();
+	this->_static_tokens   = _get_static_token();
 
 }
 
@@ -29,15 +34,23 @@ std::string TemplatePath::getDefinition() const
 	return this->_definition;
 }
 
+bool TemplatePath::validate(std::string path)
+{
+	std::map<std::string, std::string> path_fields = getFields(path);
+	if(path_fields.empty()) return false;
+	if(path_fields.size() != this->_keys.size()) return false; // IS ALL FIELDS ARE MATCHING
+	return true;
+}
+
 std::vector<std::string> TemplatePath::getStaticTokens() const
 {
-	return _get_static_token(this->_orig_definition);
+	return this->_static_tokens;
 }
 
 std::vector<std::string> TemplatePath::getOrderedKeys() const
 {
 
-	return _get_ordered_keys(this->_orig_definition);
+	return this->_ordered_keys;
 }
 
 
@@ -82,7 +95,7 @@ std::map<std::string, std::string> TemplatePath::getFields(std::string path)
 
 	// return dictionnaire vide si longueurs differents
 	if (path_splited.size() != definition_splited.size()) {
-		std::cout << "No fields find for this template " << std::endl; // TODO Raise error gere
+		// std::cout << "No fields find for this template " << std::endl; // TODO Raise error gere
 		return fields;
 	}
 
@@ -106,7 +119,8 @@ std::map<std::string, std::string> TemplatePath::getFields(std::string path)
 			std::vector<std::string> tokens = getTokensFromPath(definition_splited[i]);
 
 			// Si un plusieurs patterns match
-			if (tokens.size() > 1) {
+			if (tokens.size() > 1) 
+			{
 
 				for (const std::string token_name : tokens)
 				{
@@ -172,13 +186,16 @@ std::string TemplatePath::_get_clean_definition(const std::string definition) {
 }
 
 
-std::vector<std::string> TemplatePath::_get_static_token(const std::string definition) const
+std::vector<std::string> TemplatePath::_get_static_token() const
 {
+	// Get non-token element from definition
+	// "C\{dir}\nuke\{Shot}-{Task}-base-v{version}.nk"
+	// :return: [list] ["\nuke\", "-base-v", ".nk"]
 
 	std::regex rgx("\\\\?\\{[^\\}]*\\}");
 	std::vector<std::string> result;
 
-	std::sregex_token_iterator current_match(definition.begin(), definition.end(), rgx, -1);
+	std::sregex_token_iterator current_match(this->_orig_definition.begin(), this->_orig_definition.end(), rgx, -1);
 	std::sregex_token_iterator last_match;
 
 	// Iterer sur tous les matches et ajouter les resultats a la liste
@@ -195,13 +212,12 @@ std::vector<std::string> TemplatePath::_get_static_token(const std::string defin
 }
 
 
-std::vector<std::string> TemplatePath::_get_ordered_keys(const std::string definition) const
+std::vector<std::string> TemplatePath::_get_ordered_keys() const
 {
-
 	std::regex re("\\{(.*?)\\}");
 	std::vector<std::string> matches;
 
-	std::sregex_iterator next(definition.begin(), definition.end(), re);
+	std::sregex_iterator next(this->_orig_definition.begin(), this->_orig_definition.end(), re);
 	std::sregex_iterator end;
 
 	while (next != end) {
@@ -211,6 +227,31 @@ std::vector<std::string> TemplatePath::_get_ordered_keys(const std::string defin
 	}
 
 	return matches;
+}
+
+
+std::map<std::string, TemplateKey> TemplatePath::_keys_from_definition()
+{
+	std::map<std::string, TemplateKey> keys;
+
+	std::regex re("\\{(.*?)\\}");
+	std::sregex_iterator next(this->_orig_definition.begin(), this->_orig_definition.end(), re);
+	std::sregex_iterator end;
+
+	while (next != end) {
+
+		std::smatch match = *next;
+		std::string key_name = match.str(1);
+
+		for (auto const& pair : this->_all_keys) {
+        	if(key_name == pair.first){
+				keys.insert(std::make_pair(key_name, pair.second));
+			}
+    	}
+		next++;
+	}
+
+	return keys;
 }
 
 
@@ -231,3 +272,5 @@ std::vector<std::string> TemplatePath::getTokensFromPath(std::string path) {
 
 	return words;
 }
+
+

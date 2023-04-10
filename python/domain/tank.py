@@ -1,8 +1,8 @@
 from pprint import pprint
 
-from prototype.domain.errors import TankError
-from prototype.domain.config import read_templates
-from prototype.domain.templates import Templates
+from python.domain.errors import TankError
+from python.domain.config import read_templates
+from python.domain.templates import Templates
 
 
 class Tank(object):
@@ -30,4 +30,8 @@ class Tank(object):
             return TankError("%d templates are matching the path '%s'.\n" % (
                 len(matched_templates), path))
 
+    def abstract_paths_from_template(self, template, fields):
+        abstract_paths = []
 
+        return abstract_paths
+    

@@ -28,8 +28,8 @@ keys = read_templates().get("keys")
 
 sgtk = tank_module.Tank(str(paths), str(keys))
 
-templates = sgtk.get_templates()
-nuke_template = templates["nuke"]
+tk = sgtk.get_templates()
+nuke_template = tk["nuke"]
 
 fields = {
     "dir": "test",
@@ -39,9 +39,12 @@ fields = {
 }
 path = nuke_template.apply_fields(fields)
 
-print(nuke_template)
-print(path)
-print(nuke_template.get_fields(path))
+print(sgtk.template_from_path(path).name())
+# print(nuke_template)
+# print(path)
+# print(nuke_template.get_fields(path))
+
+
 
 # for i, tempalte in templates.items():
 #     print()
