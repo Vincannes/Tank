@@ -1,9 +1,11 @@
 import os
 import sys
+import yaml
 from pprint import pprint
 
-CURR_DIR =  os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-MODULE_PATH = os.path.join(CURR_DIR,"cpp", "lib")
+TANK_DIR =  os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+MODULE_PATH = os.path.join(TANK_DIR, "cpp", "bin")
+CONFIG_PATH = os.path.join(TANK_DIR, "config", "template.yml")
 sys.path.append(MODULE_PATH)
 
 import tank_module
@@ -14,11 +16,19 @@ paths = "{'rootDir': 'C', 'desk': '@rootDir\\{dir}', 'test': '@desk\\{Shot}\\{Ta
        "'test_diff': '@desk\\nuke\\{Shot}-{Task}-base-v{version}.nk'}}"
 
 
-# pprint(dir(tank_module))
-print()
-x = tank_module.Tank(paths, keys)
+def read_templates():
+    templates = {}
+    with open(CONFIG_PATH, "r") as config:
+        templates = yaml.safe_load(config)
 
-templates = x.get_templates()
+    return templates
+
+paths = read_templates().get("paths")
+keys = read_templates().get("keys")
+
+sgtk = tank_module.Tank(str(paths), str(keys))
+
+templates = sgtk.get_templates()
 nuke_template = templates["nuke"]
 
 fields = {

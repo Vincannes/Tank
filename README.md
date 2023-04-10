@@ -15,7 +15,7 @@ cls & cmake .. & cmake --build . --config Release
 
 ## SimLink build cpp to ../cpp/lib 
 ```bash
-mklink /J D:\Desk\python\Tank\cpp\lib D:\Desk\python\Tank\cpp\build\Release 
+mklink /J D:\Desk\python\Tank\cpp\bin D:\Desk\python\Tank\cpp\build\Release 
 ```
 
 
