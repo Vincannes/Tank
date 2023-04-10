@@ -13,7 +13,6 @@ class Tank
 {
 public:
     // prototypes
-    Tank() = default;
     Tank(std::string, std::string);
     std::map<std::string, TemplatePath> getTemplates();
 
