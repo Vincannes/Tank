@@ -75,6 +75,8 @@ int main(int argc, char *argv[]) {
 
 	TemplatePath aTesty = tank_test.templateFromPath(testpath);
 	std::cout << aTesty.getName() << std::endl;
+	TemplatePath aTestya = tank_test.templateFromPath(testpathNot);
+	std::cout << aTestya.getName() << std::endl;
 	// std::cout << nuke_tpl.validate(testpathNot) << std::endl;
 	
 	// std::cout << nuke_tpl.getName() << " " << nuke_tpl.getDefinition() << std::endl;

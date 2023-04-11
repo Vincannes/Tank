@@ -1,7 +1,7 @@
 import unittest
 from pprint import pprint
 
-from prototype.domain.errors import TankError
+from python.domain.errors import TankError
 from prototype.domain.tank import Tank
 
 
