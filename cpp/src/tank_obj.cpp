@@ -28,11 +28,9 @@ TemplatePath Tank::templateFromPath(std::string path)
 	std::vector<TemplatePath> matched_templates = templatesFromPath(path);
 
 	if(matched_templates.size() == 0 ) {
-        // Si aucun modele n'a ete trouve, retourne un modele par défaut ou lance une exception
-        return TemplatePath();   
+        throw TankMatchingTemplatesError("Aucun modele trouve");
     } else if (matched_templates.size() > 1) {
-        // Si un seul modele a été trouve, retourne ce modele
-		return TemplatePath();
+        throw TankMatchingTemplatesError("Plusieurs modeles trouves");
 	} else {
 		return matched_templates[0];
 	}
@@ -188,4 +186,7 @@ PYBIND11_MODULE(tank_module, m)
         .def(py::init<std::string, std::string>());
     py::class_<IntegerTemplateKey>(m, "IntegerTemplateKey")
         .def(py::init<std::string, std::string>());
+
+	py::register_exception<TankMatchingTemplatesError>(m, "TankMatchingTemplatesError");
+
 }

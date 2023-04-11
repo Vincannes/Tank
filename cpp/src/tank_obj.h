@@ -2,6 +2,7 @@
 #include <string>
 #include "utils.h"
 
+#include "exception.h"
 #include "template_obj.h"
 #include "conform_path.h"
 #include "template_keys.h"
