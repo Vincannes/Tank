@@ -8,7 +8,7 @@ Convert mixing database from a software to another.
 
 ## Build cpp
 ```bash
-cls & g++ *.cpp -o main & main.exe dddddd 
+cls & g++ *.cpp -o main & main.exe 
 ```
 
 From folder cpp/build

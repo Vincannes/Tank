@@ -169,6 +169,25 @@ std::map<std::string, std::string> TemplatePath::getFields(std::string path)
 }
 
 
+std::vector<std::string> TemplatePath::missingKeys(std::map<std::string, std::string> fields)
+{
+	// >>> tk.templates["max_asset_work"].missing_keys({})
+    //         ['Step', 'sg_asset_type', 'Asset', 'version', 'name']
+
+    // >>> tk.templates["max_asset_work"].missing_keys({"name": "foo"})
+    //         ['Step', 'sg_asset_type', 'Asset', 'version']
+
+	std::vector<std::string> _missing_keys;
+
+	for (const auto& field : this->_all_keys) {
+        if (fields.count(field.first) == 0) {
+			_missing_keys.push_back(field.first);
+        }
+    }
+	return _missing_keys;
+}
+
+
 // MAIN REGEX FUNCTIONS
 
 std::string TemplatePath::_get_clean_definition(const std::string definition) {
