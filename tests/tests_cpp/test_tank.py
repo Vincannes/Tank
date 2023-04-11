@@ -1,8 +1,8 @@
-import unittest
-from pprint import pprint
-
+import os
 from Tank import sgtk
+from Tank import TankMatchingTemplatesError
 
+import unittest
 
 class TestGetTemplateFromPath(unittest.TestCase):
 
@@ -18,23 +18,25 @@ class TestGetTemplateFromPath(unittest.TestCase):
             "version": "1",
             "Task": "cmp",
         }
-        path = nuke_template.apply_fields(fields)
 
-
-    def test_some_case_1(self):
-        path = "C\\Desk\\010\\cmp\\nuke\\010-cmp-base-v1.nk"
+    def test_some_case_MATCH(self):
+        path = os.path.join("C", "test", "sh_010", "cmp", "nuke", "sh_010-cmp-base-v1.nk")
+        path = path.replace('\\', '\\\\')
         expected = "nuke"
-        template = self.tank.template_from_path(path)
-        print(template)
-        print(template.name())
-        print(template.definition())
-        self.assertEqual(expected, template.name())
+        template_name = self.tank.template_from_path(path).name()
+        self.assertEqual(expected, template_name)
 
-    # def test_some_case_2(self):
-    #     path = "C\\Desk\\010\\cmp"
-    #     expected = "test"
-    #     template = self.tank.template_from_path(path)
-    #     self.assertEqual(expected, template.name)
+    def test_some_case_NO_MATCH(self):
+        path = "C\\Desk\\010\\cmp\\nuke\\010-cmp-base-v1.nk"
+        with self.assertRaises(TankMatchingTemplatesError):
+            self.tank.template_from_path(path)
+
+    def test_some_case_2(self):
+        path = os.path.join("C", "test")
+        path = path.replace('\\', '\\\\')
+        expected = "desk"
+        template_name = self.tank.template_from_path(path).name()
+        self.assertEqual(expected, template_name)
 
     # def test_some_case_3(self):
     #     path = "C\\Desk\\nuke\\010-cmp-base-v1.nk"

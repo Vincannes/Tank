@@ -8,6 +8,7 @@ CONFIG_PATH = os.path.join(TANK_DIR, "config", "template.yml")
 sys.path.append(MODULE_PATH)
 
 import tank_module
+from tank_module import TankMatchingTemplatesError
 
 def read_templates():
     templates = {}
@@ -25,21 +26,24 @@ class sgtk(tank_module.Tank):
         super().__init__(str(paths), str(keys))
 
 
-# tk = tank_module.Tank(str(paths), str(keys))
 
+if __name__ == "__main__":
+    tk = sgtk()
 
-# print(nuke_template)
-# print(path)
-# print(nuke_template.get_fields(path))
+    templates = tk.get_templates()
+    nuke_template = templates["nuke"]
 
-
-
-# for i, tempalte in templates.items():
-#     print()
-#     print(tempalte.name())
-#     print(tempalte.definition())
-#     print(tempalte.static_token())
-#     print(tempalte.ordered_keys())
-#     print(tempalte.apply_fields(fields))
-
+    fields = {
+        "dir": "test",
+        "Shot": "sh_010",
+        "version": "1",
+        "Task": "cmp",
+    }
+    path = nuke_template.apply_fields(fields)
+    pathTest = "C\\test\\sh_010\\cmp\\nuke\\sh_010-cmp-base-v1.nk"
+    patthTest2 = os.path.join("C", "test", "sh_010", "cmp", "nuke", "sh_010-cmp-base-v1.nk")
+    patthTest2 = patthTest2.replace('\\', '\\\\')
+    print(nuke_template)
+    print(tk.template_from_path(path))
+    print(tk.template_from_path(patthTest2))
 

@@ -16,7 +16,7 @@
 // hello.exe "{'rootDir': 'C', 'desk': '@rootDir\\{dir}', 'test': '@desk\\{Shot}\\{Task}', 'nuke': '@test\\nuke\\{Shot}-{Task}-base-v{version}.nk', 'test_diff': '@desk\\nuke\\{Shot}-{Task}-base-v{version}.nk'}"
 
 
-int main(int argc, char *argv[]) {
+int main() {
 	std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> keydict;
 	std::map<std::string, std::map<std::string, std::string>> pathsdict;
 	std::map<std::string, std::string> fields;
@@ -42,8 +42,6 @@ int main(int argc, char *argv[]) {
 	std::string keys  = "{'Root' : {'type': 'str'}, 'dir' : {'type': 'str'}, 'Shot' : {'type': 'str'}, 'version' : {'type': 'int', 'default': '1'}, 'Task' : {'type': 'str', 'default': 'aa'}";
 	std::string paths = "{'rootDir': 'C', 'desk': '@rootDir\\{dir}', 'test': '@desk\\{Shot}\\{Task}', 'nuke': '@test\\nuke\\{Shot}-{Task}-base-v{version}.nk', 'test_diff': '@desk\\nuke\\{Shot}-{Task}-base-v{version}.nk'}";
 
-	std::cout << argv[1] << std::endl;
-	
 	std::map<std::string, std::map<std::string, std::string>> pathsDict;
 	std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> keysDict;
 	pathsDict = generatePathsDictionnaryFromString(paths);
@@ -68,15 +66,23 @@ int main(int argc, char *argv[]) {
 	// 	std::cout << a->first << "  " << a->second.getDefinition() << std::endl;
 	// }
 
-
 	TemplatePath nuke_tpl = tank_test.getTemplates()["nuke"];
 	std::string testpath = nuke_tpl.apply_fields(fields);
 	std::string testpathNot = "C\\test\\sh_010\\cmp\\sh_010-cmp-base-v1.nk";
+	// std::string testpathGood = "C\test\sh_010\cmp\nuke\sh_010-cmp-base-v1.nk";
 
-	TemplatePath aTesty = tank_test.templateFromPath(testpath);
-	std::cout << aTesty.getName() << std::endl;
-	TemplatePath aTestya = tank_test.templateFromPath(testpathNot);
-	std::cout << aTestya.getName() << std::endl;
+	std::vector<std::string> test = splitPath(testpathNot);
+	for(int i=0; i<test.size(); i++){
+		std::cout << test[i] << std::endl;
+	}
+
+	// TemplatePath aTesty = tank_test.templateFromPath(testpath);
+	// std::cout << aTesty.getName() << std::endl;
+	// TemplatePath aTestya = tank_test.templateFromPath(testpathNot);
+	// std::cout << aTestya.getName() << std::endl;
+	// TemplatePath aTestyaa = tank_test.templateFromPath(testpathGood);
+	// std::cout << aTestyaa.getName() << std::endl;
+
 	// std::cout << nuke_tpl.validate(testpathNot) << std::endl;
 	
 	// std::cout << nuke_tpl.getName() << " " << nuke_tpl.getDefinition() << std::endl;
