@@ -18,7 +18,7 @@ public:
     std::map<std::string, TemplatePath> getTemplates();
     TemplatePath templateFromPath(std::string);
     std::vector<TemplatePath> templatesFromPath(std::string);
-    // std::vector<std::string> getAbstractPathsFromTemplate(std::string, std::map<std::string, std::string>);
+    std::vector<std::string> getAbstractPathsFromTemplate(TemplatePath, std::map<std::string, std::string>);
 
 private:
 

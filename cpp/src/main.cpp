@@ -23,8 +23,8 @@ int main() {
 	fields["dir"] = "test";
 	fields["Shot"] = "sh_010";
 	fields["Task"] = "cmp";
-	fields["version"] = "1";
-	fields["test"] = "bleu";
+	// fields["version"] = "1";
+	// fields["Root"] = "bleu";
 
 	keydict["keys"]["Root"]["type"] = "str";
 	keydict["keys"]["Shot"]["type"] = "str";
@@ -40,7 +40,7 @@ int main() {
 	pathsdict["paths"]["test_diff"]   = "@desk\\nuke\\{Shot}-{Task}-base-v{version}.nk";
 
 	std::string keys  = "{'Root' : {'type': 'str'}, 'dir' : {'type': 'str'}, 'Shot' : {'type': 'str'}, 'version' : {'type': 'int', 'default': '1'}, 'Task' : {'type': 'str', 'default': 'aa'}";
-	std::string paths = "{'rootDir': 'C', 'desk': '@rootDir\\{dir}', 'test': '@desk\\{Shot}\\{Task}', 'nuke': '@test\\nuke\\{Shot}-{Task}-base-v{version}.nk', 'test_diff': '@desk\\nuke\\{Shot}-{Task}-base-v{version}.nk'}";
+	std::string paths = "{'rootDir': 'D:\\Desk\\python\\Tank\\tests\\project', 'desk': '@rootDir\\{dir}', 'test': '@desk\\{Shot}\\{Task}', 'nuke': '@test\\nuke\\{Shot}-{Task}-base-v{version}.nk', 'test_diff': '@desk\\nuke\\{Shot}-{Task}-base-v{version}.nk'}";
 
 	std::map<std::string, std::map<std::string, std::string>> pathsDict;
 	std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> keysDict;
@@ -61,20 +61,23 @@ int main() {
 	// }
 	
 	Tank tank_test(paths, keys);
-	// tank_test.getAbstractPathsFromTemplate("nuke", fields);
-	// for (auto a = tank_test.getTemplates().begin(); a != tank_test.getTemplates().end(); ++a) {
-	// 	std::cout << a->first << "  " << a->second.getDefinition() << std::endl;
-	// }
 
 	TemplatePath nuke_tpl = tank_test.getTemplates()["nuke"];
 	std::string testpath = nuke_tpl.apply_fields(fields);
-	std::string testpathNot = "C\\test\\sh_010\\cmp\\sh_010-cmp-base-v1.nk";
-	// std::string testpathGood = "C\test\sh_010\cmp\nuke\sh_010-cmp-base-v1.nk";
+	std::string testpathNot = "D:\\Desk\\python\\Tank\\tests\\project\\test\\sh_010\\cmp\\sh_010-cmp-base-v1.nk";
 
-	std::vector<std::string> test = splitPath(testpathNot);
-	for(int i=0; i<test.size(); i++){
-		std::cout << test[i] << std::endl;
-	}
+	// std::vector<std::string> test = nuke_tpl.missingKeys(fields);
+	// for(int i=0; i<test.size(); i++){
+	// 	std::cout << test[i] << std::endl;
+	// }
+
+	std::vector<std::string> abspaths = tank_test.getAbstractPathsFromTemplate(nuke_tpl, fields);
+
+	std::vector<std::string> xTest = listFilesFromPathPattern("D:\\Desk\\python\\Tank\\tests\\project\\test\\sh_010\\cmp\\nuke\\sh_010-cmp-base-v*.nk");
+
+	// for(int i=0; i<paths.size(); i++){
+	// 	std::cout << paths[i] << std::endl;
+	// }
 
 	// TemplatePath aTesty = tank_test.templateFromPath(testpath);
 	// std::cout << aTesty.getName() << std::endl;

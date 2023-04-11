@@ -23,6 +23,13 @@ std::vector<std::string> splitPath(const std::string& path) {
 	return result;
 }
 
+std::string dirNameFromString(const std::string path)
+{
+	std::filesystem::path filePath(path);
+	std::string directoryPath = filePath.parent_path().string();
+	return directoryPath;
+}
+
 std::string removeSpaceInString(std::string str)
 {
 	str.erase(std::remove_if(str.begin(), str.end(), [](char c) {
@@ -42,7 +49,6 @@ std::string joinListWithSeparator(std::vector<std::string> list, char separator)
 	return result;
 }
 
-
 std::pair<std::string, std::string> getKeyValueFromString(std::string stringToParse)
 {
     std::string::size_type colonPos = stringToParse.find(":");
@@ -57,7 +63,6 @@ std::pair<std::string, std::string> getKeyValueFromString(std::string stringToPa
     value.erase(value.size() - 1, 2);
     return std::make_pair(key, value);
 }
-
 
 std::map<std::string, std::map<std::string, std::string>> generatePathsDictionnaryFromString(std::string yamlStr){
 
@@ -82,7 +87,6 @@ std::map<std::string, std::map<std::string, std::string>> generatePathsDictionna
     pathsDict["paths"][result.first] = result.second;
     return pathsDict;
 }
-
 
 std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> generateKeysDictionnaryFromString(std::string yamlStr){
     std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> keysDict;
@@ -122,3 +126,31 @@ std::map<std::string, std::map<std::string, std::map<std::string, std::string>>>
     return keysDict;
 }
 
+
+std::vector<std::string>listFilesFromPathPattern(std::string pattern)
+{
+	std::vector<std::string> filesFind;
+
+	std::cout << dirNameFromString(pattern) << std::endl;
+
+	std::string directory = "/chemin/vers/repertoire"; // Chemin du répertoire
+    std::string pattern = "*.txt"; // Motif de nom de fichier
+
+	for (const auto &entry : fs::directory_iterator(directory)) {
+        // Utiliser fs::path pour accéder au chemin du fichier
+        fs::path filePath = entry.path();
+
+        // Utiliser fs::path::filename pour obtenir le nom du fichier sans le chemin
+        std::string fileName = filePath.filename().string();
+
+        // Utiliser fs::path::extension pour obtenir l'extension du fichier
+        std::string fileExtension = filePath.extension().string();
+
+        // Vérifier si le nom de fichier correspond au motif
+        if (fs::is_regular_file(entry) && fs::fnmatch(pattern, fileName)) {
+            std::cout << "Fichier trouvé : " << fileName << std::endl;
+        }
+    }
+
+	return filesFind;
+}

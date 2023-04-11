@@ -1,8 +1,8 @@
 #pragma once
 
 #include <map>
-#include <string>
 #include <vector>
+#include <string>
 
 #include "template_keys.h"
 
@@ -25,6 +25,7 @@ public:
 	std::vector<std::string> getStaticTokens() const;
 	std::vector<std::string> getOrderedKeys() const;
 	std::map<std::string, std::string> getFields(std::string);
+	std::vector<std::string> missingKeys(std::map<std::string, std::string>);
 
 	// manipulateurs
 	std::string apply_fields(std::map<std::string, std::string>);
