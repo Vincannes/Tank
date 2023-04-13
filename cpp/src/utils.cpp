@@ -6,6 +6,9 @@
 #include <sstream>
 #include <algorithm>
 #include <utility> // pour std::pair
+#include <filesystem>
+
+#include <dirent.h>
 
 #include "utils.h"
 
@@ -28,6 +31,18 @@ std::string dirNameFromString(const std::string path)
 	std::filesystem::path filePath(path);
 	std::string directoryPath = filePath.parent_path().string();
 	return directoryPath;
+}
+
+std::vector<std::string> pathListDir(std::string directory)
+{
+	std::vector<std::string> dirs;
+	std::filesystem::path dir(directory);
+    std::filesystem::directory_iterator end_iter;
+
+	for (std::filesystem::directory_iterator iter(dir); iter != end_iter; ++iter) {
+		dirs.push_back(iter->path().string());
+	}
+	return dirs;
 }
 
 std::string removeSpaceInString(std::string str)
@@ -126,31 +141,27 @@ std::map<std::string, std::map<std::string, std::map<std::string, std::string>>>
     return keysDict;
 }
 
+std::vector<std::string> listFilesFromPathPattern(const std::string& directory, std::string patternStr) {
+    
+	std::vector<std::string> matchingFiles;
+	std::vector<std::string> dirs = pathListDir(directory);
 
-std::vector<std::string>listFilesFromPathPattern(std::string pattern)
-{
-	std::vector<std::string> filesFind;
+	// Replace string pattern #FOR WINDOWS
+    size_t pos = 0;
+	std::string search = "\\";
+    std::string replacement = "\\\\";
+    while ((pos = patternStr.find(search, pos)) != std::string::npos) {
+        patternStr.replace(pos, search.length(), replacement);
+        pos += replacement.length();
+    }
+	std::regex regexPattern(patternStr);
 
-	std::cout << dirNameFromString(pattern) << std::endl;
-
-	std::string directory = "/chemin/vers/repertoire"; // Chemin du répertoire
-    std::string pattern = "*.txt"; // Motif de nom de fichier
-
-	for (const auto &entry : fs::directory_iterator(directory)) {
-        // Utiliser fs::path pour accéder au chemin du fichier
-        fs::path filePath = entry.path();
-
-        // Utiliser fs::path::filename pour obtenir le nom du fichier sans le chemin
-        std::string fileName = filePath.filename().string();
-
-        // Utiliser fs::path::extension pour obtenir l'extension du fichier
-        std::string fileExtension = filePath.extension().string();
-
-        // Vérifier si le nom de fichier correspond au motif
-        if (fs::is_regular_file(entry) && fs::fnmatch(pattern, fileName)) {
-            std::cout << "Fichier trouvé : " << fileName << std::endl;
+    for(int i=0; i < dirs.size(); i++) {
+		std::string str = dirs[i];
+		if(std::regex_match(str, regexPattern)){
+            matchingFiles.push_back(str);
         }
     }
-
-	return filesFind;
+    return matchingFiles;
 }
+
