@@ -2,8 +2,7 @@ import os
 import re
 from pprint import pprint
 
-from python import constants
-from python.domain.errors import TankError
+from errors import TankError
 
 
 class Template(object):
@@ -21,10 +20,20 @@ class Template(object):
         self.name = name
         self.__keys = keys
         self.definition = definition
+        # print("self.definition")
+        # print(self.definition)
         self._clean_definition = self._clean_definition(self.definition)
         self._keys, self._ordered_keys = self._keys_from_definition(self.definition, self.name, self.__keys)
+        self._keys_dict = self._get_dict_keys()
 
     ##PROPERTIES
+
+    def _get_dict_keys(self):
+        dics = {}
+
+        for key in self._keys:
+            dics[key] = self.__keys[key]
+        return dics
 
     @property
     def keys(self):
@@ -55,6 +64,32 @@ class Template(object):
 
     ## MAIN FUNCTIONS
 
+    def missing_keys(self, fields, skip_defaults=False):
+        """
+        Determines keys required for use of template which do not exist
+        in a given fields.
+
+        Example::
+
+            >>> tk.templates["max_asset_work"].missing_keys({})
+            ['Step', 'sg_asset_type', 'Asset', 'version', 'name']
+
+            >>> tk.templates["max_asset_work"].missing_keys({"name": "foo"})
+            ['Step', 'sg_asset_type', 'Asset', 'version']
+
+
+        :param fields: fields to test
+        :type fields: mapping (dictionary or other)
+        :param skip_defaults: If true, do not treat keys with default values as missing.
+        :type skip_defaults: Bool
+
+        :returns: Fields needed by template which are not in inputs keys or which have
+                  values of None.
+        :rtype: list
+        """
+        # find shortest keys dictionary
+        return self._missing_keys(fields, self._keys, skip_defaults)
+
     def validate(self, path):
         path_fields = self.get_fields(path)
 
@@ -82,7 +117,7 @@ class Template(object):
 
         satic_token = self._get_static_tokens(self.definition)
 
-        regex = r"%\({}\)s".format(constants.REGEX_STR_INT)
+        regex = r"%\({}\)s".format(r"[a-zA-Z_ 0-9\.]+")
         for i in range(len_path):
             is_token = re.match(regex, definition_split[i])
 
@@ -103,11 +138,11 @@ class Template(object):
                     for token, value in zip(tokens_parse, values):
                         if not value or any([value in tokens_parse for i in tokens_parse]):
                             continue
-                        token_name = re.findall(r"({})\)".format(constants.REGEX_STR_INT), token)[0]
+                        token_name = re.findall(r"({})\)".format(r"[a-zA-Z_ 0-9\.]+"), token)[0]
                         fields[token_name] = self._get_key_value(token_name, value)
 
                 else:
-                    token_name = re.findall(constants.REGEX_STR_INT, tokens[0])[0]
+                    token_name = re.findall("[a-zA-Z_ 0-9\.]+", tokens[0])[0]
                     value = path_split[i]
                     # if special character
                     if re.findall(r"[-.]", value): #TODO sad way to filter
@@ -130,7 +165,7 @@ class Template(object):
         :return: [str] "C\%(dir)s\nuke\%(Shot)s-%(Task)s-base-v%(version)s.nk"
         """
         # Create definition with key names as strings with no format, enum or default values
-        regex = r"{(%s)}" % constants.REGEX_STR_INT
+        regex = r"{(%s)}" % r"[a-zA-Z_ 0-9\.]+"
         cleaned_definition = re.sub(regex, r"%(\g<1>)s", definition)
         return cleaned_definition
 
@@ -163,7 +198,7 @@ class Template(object):
         expanded_definition = (
             definition
         )
-        regex = r"{%s}" % constants.REGEX_STR_INT
+        regex = r"{%s}" % r"[a-zA-Z_ 0-9\.]+"
         tokens = re.split(regex, expanded_definition.lower())
         # Remove empty strings
         return [x for x in tokens if x]
@@ -182,7 +217,7 @@ class Template(object):
         ordered_keys = []
 
         # regular expression to find key names
-        regex = r"(?<={)%s(?=})" % constants.REGEX_STR_INT
+        regex = r"(?<={)%s(?=})" % r"[a-zA-Z_ 0-9\.]+"
         key_names = re.findall(regex, definition)
         for key_name in key_names:
             key = keys.get(key_name)
@@ -201,6 +236,19 @@ class Template(object):
                 ordered_keys.append(key)
         return names_keys, ordered_keys
 
+    def _missing_keys(self, fields, keys, skip_defaults):
+        """
+        Compares two dictionaries to determine keys in second missing in first.
+
+        :param fields: fields to test
+        :param keys: Dictionary of template keys to test
+        :param skip_defaults: If true, do not treat keys with default values as missing.
+        :returns: Fields needed by template which are not in inputs keys or which have
+                  values of None.
+        """
+        required_keys = keys
+        return [x for x in required_keys if (x not in fields) or (fields[x] is None)]
+
 
 if __name__ == "__main__":
     from app.domain.config import read_templates
@@ -210,6 +258,6 @@ if __name__ == "__main__":
     template = templates.templates["nuke"]
 
     path = "C\\Desk\\010\\cmp\\nuke\\010-cmp-base-v1.nk"
-    template_fields = template.get_fields(path)
+    # template_fields = template.get_fields(path)
     print()
-    print(template_fields)
+    # print(template_fields)

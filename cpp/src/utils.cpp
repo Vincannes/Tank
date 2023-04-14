@@ -141,10 +141,10 @@ std::map<std::string, std::map<std::string, std::map<std::string, std::string>>>
     return keysDict;
 }
 
-std::vector<std::string> listFilesFromPathPattern(const std::string& directory, std::string patternStr) {
+std::vector<std::string> listFilesFromPathPattern(std::string patternStr) {
     
 	std::vector<std::string> matchingFiles;
-	std::vector<std::string> dirs = pathListDir(directory);
+	std::vector<std::string> dirs = pathListDir(patternStr);
 
 	// Replace string pattern #FOR WINDOWS
     size_t pos = 0;

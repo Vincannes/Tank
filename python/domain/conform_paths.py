@@ -8,7 +8,6 @@ class ConformPath(object):
         self._templates = templates
 
     def _get_definitions(self, element):
-        print()
         ele_key = element.replace('@', '')
         ele_path = self._templates.get('paths')[ele_key]
 
@@ -18,16 +17,17 @@ class ConformPath(object):
 
             for _ele in ele_path_split:
                 if '@' in _ele:
-                    ele_path_ls.extend(self._get_definitions(_ele))
+                    _defin = self._get_definitions(_ele)
+                    if isinstance(_defin, str):
+                        ele_path_ls.append(_defin)
+                    else:
+                        ele_path_ls.extend(_defin)
                 else:
                     ele_path_ls.append(_ele)
 
         if ele_path_ls:
-            # ele_path = os.path.join(*ele_path_ls)
             ele_path = ele_path_ls
-        print("ele_path")
-        print(ele_path)
-        print()
+
         return ele_path
 
     def get_definition_keys(self, _path):
@@ -36,10 +36,12 @@ class ConformPath(object):
         for s in splited_path:
             if '@' in s:
                 ele_path = self._get_definitions(s)
-                _definition.extend(ele_path)
+                if isinstance(ele_path, str):
+                    _definition.append(ele_path)
+                else:
+                    _definition.extend(ele_path)
             else:
                 _definition.append(s)
-        print("_definition", _definition)
         return _definition
 
     def get_definitions_path(self, _path):

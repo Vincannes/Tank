@@ -17,4 +17,4 @@ std::string joinListWithSeparator(std::vector<std::string> list, char separator)
 std::pair<std::string, std::string> getKeyValueFromString(std::string stringToParse);
 std::map<std::string, std::map<std::string, std::string>> generatePathsDictionnaryFromString(std::string yamlStr);
 std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> generateKeysDictionnaryFromString(std::string yamlStr);
-std::vector<std::string>listFilesFromPathPattern(const std::string&, std::string);
+std::vector<std::string>listFilesFromPathPattern(std::string);

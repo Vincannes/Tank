@@ -1,18 +1,16 @@
 from pprint import pprint
 
-from python.domain.template import Template
-from python.domain.conform_paths import ConformPath
-from python.domain.template_keys import StringKey, IntegerKey, TimestampKey
+from template import Template
+from conform_paths import ConformPath
+from template_keys import StringKey, IntegerKey, TimestampKey
 
 
 class Templates(object):
 
     def __init__(self, templates):
-        pprint(templates)
         self.__template_dict = templates
         self._conform_path = ConformPath(self.__template_dict)
         self._templates = self.load_templates()
-        pprint(self._templates)
 
     @property
     def templates(self):

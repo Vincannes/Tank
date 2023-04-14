@@ -11,8 +11,8 @@ keys:
     type: int
 
 paths:
-  rootDir: "C"
-  desk: '@rootDir\{dir}'
-  test: '@desk\{Shot}\{Task}'
-  nuke: '@test\nuke\{Shot}-{Task}-base-v{version}.nk'
-  test_diff: '@desk\nuke\{Shot}-{Task}-base-v{version}.nk'
+  rootDir: "D:\\Desk\\python\\Tank\\tests\\project"
+  desk: '@rootDir\\{dir}'
+  test: '@desk\\{Shot}\\{Task}'
+  nuke: '@test\\nuke\\{Shot}-{Task}-base-v{version}.nk'
+  test_diff: '@desk\\nuke\\{Shot}-{Task}-base-v{version}.nk'

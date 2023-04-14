@@ -20,7 +20,7 @@ int main() {
 	std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> keydict;
 	std::map<std::string, std::map<std::string, std::string>> pathsdict;
 	std::map<std::string, std::string> fields;
-	fields["dir"] = "test";
+	// fields["dir"] = "test";
 	fields["Shot"] = "sh_010";
 	fields["Task"] = "cmp";
 	// fields["version"] = "1";
@@ -72,12 +72,10 @@ int main() {
 	// }
 
 	std::vector<std::string> abspaths = tank_test.getAbstractPathsFromTemplate(nuke_tpl, fields);
-
-	std::vector<std::string> xTest = listFilesFromPathPattern("D:\\Desk\\python\\Tank\\tests\\project\\test\\sh_010\\cmp\\nuke\\sh_010-cmp-base-v*.nk");
-
-	// for(int i=0; i<paths.size(); i++){
-	// 	std::cout << paths[i] << std::endl;
-	// }
+	// std::vector<std::string> abspaths = listFilesFromPathPattern("D:\\Desk\\python\\Tank\\tests\\project\\test\\sh_010\\cmp\\nuke\\sh_010-cmp-base-v.*.nk");
+	for(int i=0; i<abspaths.size(); i++){
+		std::cout << abspaths[i] << std::endl;
+	}
 
 	// TemplatePath aTesty = tank_test.templateFromPath(testpath);
 	// std::cout << aTesty.getName() << std::endl;
