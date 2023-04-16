@@ -1,3 +1,5 @@
+#include <regex>
+
 #include "utils.h"
 #include "tank_obj.h"
 #include "template_obj.h"
@@ -61,20 +63,9 @@ std::vector<std::string> Tank::getAbstractPathsFromTemplate(TemplatePath templat
 		std::string key = missing_keys[i];
 		local_fields[key] =  ".*";
 	}
-
-	for(auto a = local_fields.begin(); a !=local_fields.end(); ++a) {
-		std::cout << a->first << " : " << a->second << std::endl;
-	}
-
-	std::string outputPattern = templatePath.apply_fields(local_fields);
-
-	std::cout << "" << std::endl;
-	std::cout << outputPattern << std::endl;
-	std::cout << "" << std::endl;
-
-	std::vector<std::string> abstract_paths;// = listFilesFromPathPattern(outputPattern);
-
-
+	std::string outputPattern     = templatePath.apply_fields(local_fields);
+	std::string directoryToSearch = this->pathsdict["paths"].at("rootDir");
+	std::vector<std::string> abstract_paths = listFilesFromPathPattern(directoryToSearch, outputPattern);
 	return abstract_paths;
 }
 

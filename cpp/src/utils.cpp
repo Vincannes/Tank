@@ -12,6 +12,18 @@
 
 #include "utils.h"
 
+std::string matchSeparator(std::string patternStr)
+{
+	// BEGIN Replace string pattern #FOR WINDOWS
+	size_t pos = 0;
+	std::string search = "\\";
+    std::string replacement = "\\\\";
+    while ((pos = patternStr.find(search, pos)) != std::string::npos) {
+        patternStr.replace(pos, search.length(), replacement);
+        pos += replacement.length();
+    }
+	return patternStr;
+}
 
 std::vector<std::string> splitPath(const std::string& path) {
 	char delimiter = '\\';
@@ -36,12 +48,18 @@ std::string dirNameFromString(const std::string path)
 std::vector<std::string> pathListDir(std::string directory)
 {
 	std::vector<std::string> dirs;
-	std::filesystem::path dir(directory);
-    std::filesystem::directory_iterator end_iter;
+	std::filesystem::path dirPath(directory);
 
-	for (std::filesystem::directory_iterator iter(dir); iter != end_iter; ++iter) {
-		dirs.push_back(iter->path().string());
-	}
+	for (const auto& entry : std::filesystem::directory_iterator(dirPath)) {
+        const auto& path = entry.path();
+        if (std::filesystem::is_directory(path)) {
+            // Directory found, recursively traverse
+            std::cout << "Directory: " << path << std::endl;
+            listFilesFromPathPattern(path.string(), "");
+        } else if (std::filesystem::is_regular_file(path)) {
+            std::cout << "File: " << path << std::endl;
+        }
+    }
 	return dirs;
 }
 
@@ -141,9 +159,28 @@ std::map<std::string, std::map<std::string, std::map<std::string, std::string>>>
     return keysDict;
 }
 
-std::vector<std::string> listFilesFromPathPattern(std::string patternStr) {
+std::vector<std::string> listFilesFromPathPattern(const std::string directory, std::string origpatternStr) {
     
 	std::vector<std::string> matchingFiles;
+	std::filesystem::path dirPath(directory);
+
+	std::string patternStr = matchSeparator(origpatternStr); 
+	std::regex regexPattern(patternStr);
+
+	for (const auto& entry : std::filesystem::directory_iterator(dirPath)) {
+        const auto& path = entry.path();
+        if (std::filesystem::is_directory(path)) {
+			for (const auto& path : listFilesFromPathPattern(path.string(), origpatternStr)){
+            	matchingFiles.push_back(path);
+			}
+        } else if (std::filesystem::is_regular_file(path)) {
+			if(std::regex_match(path.string(), regexPattern)){
+            	matchingFiles.push_back(path.string());
+			}
+        }
+    }
+
+	/*
 	std::vector<std::string> dirs = pathListDir(patternStr);
 
 	// Replace string pattern #FOR WINDOWS
@@ -162,6 +199,7 @@ std::vector<std::string> listFilesFromPathPattern(std::string patternStr) {
             matchingFiles.push_back(str);
         }
     }
+	*/
     return matchingFiles;
 }
 
