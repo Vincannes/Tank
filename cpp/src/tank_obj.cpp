@@ -1,3 +1,5 @@
+#include <regex>
+
 #include "utils.h"
 #include "tank_obj.h"
 #include "template_obj.h"
@@ -50,8 +52,7 @@ std::vector<TemplatePath> Tank::templatesFromPath(std::string path)
 
 std::vector<std::string> Tank::getAbstractPathsFromTemplate(TemplatePath templatePath, std::map<std::string, std::string> fields)
 {
-	std::vector<std::string> abstract_paths;
-	std::map<std::string, std::string> local_fields;//[key] = "*"
+	std::map<std::string, std::string> local_fields;
 	std::vector<std::string> missing_keys = templatePath.missingKeys(fields);
 
 	for(auto a = fields.begin(); a !=fields.end(); ++a) {
@@ -60,20 +61,11 @@ std::vector<std::string> Tank::getAbstractPathsFromTemplate(TemplatePath templat
 
 	for(int i=0; i<missing_keys.size(); i++){
 		std::string key = missing_keys[i];
-		local_fields[key] =  "*";
+		local_fields[key] =  ".*";
 	}
-
-	for(auto a = local_fields.begin(); a !=local_fields.end(); ++a) {
-		std::cout << a->first << " : " << a->second << std::endl;
-	}
-
-	std::cout << "" << std::endl;
-	std::cout << templatePath.apply_fields(local_fields) << std::endl;
-	// for key in template.missing_keys(local_fields):
-	// 	if key not in skip_keys:
-	// 		skip_keys.append(key)
-	// 	local_fields[key] = "*"
-
+	std::string outputPattern     = templatePath.apply_fields(local_fields);
+	std::string directoryToSearch = this->pathsdict["paths"].at("rootDir");
+	std::vector<std::string> abstract_paths = listFilesFromPathPattern(directoryToSearch, outputPattern);
 	return abstract_paths;
 }
 

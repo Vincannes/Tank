@@ -1,4 +1,5 @@
 #include <map>
+#include <regex>
 #include <string>
 #include <vector>
 
@@ -21,9 +22,9 @@ int main() {
 	std::map<std::string, std::map<std::string, std::string>> pathsdict;
 	std::map<std::string, std::string> fields;
 	fields["dir"] = "test";
-	fields["Shot"] = "sh_010";
-	fields["Task"] = "cmp";
-	// fields["version"] = "1";
+	fields["Shot"] = "sh_020";
+	// fields["Task"] = "cmp";
+	fields["version"] = "1";
 	// fields["Root"] = "bleu";
 
 	keydict["keys"]["Root"]["type"] = "str";
@@ -63,21 +64,44 @@ int main() {
 	Tank tank_test(paths, keys);
 
 	TemplatePath nuke_tpl = tank_test.getTemplates()["nuke"];
-	std::string testpath = nuke_tpl.apply_fields(fields);
-	std::string testpathNot = "D:\\Desk\\python\\Tank\\tests\\project\\test\\sh_010\\cmp\\sh_010-cmp-base-v1.nk";
+	// std::string testpath = nuke_tpl.apply_fields(fields);
+	// std::string testpathNot = "D:\\Desk\\python\\Tank\\tests\\project\\test\\sh_010\\cmp\\sh_010-cmp-base-v1.nk";
 
 	// std::vector<std::string> test = nuke_tpl.missingKeys(fields);
 	// for(int i=0; i<test.size(); i++){
 	// 	std::cout << test[i] << std::endl;
 	// }
 
-	std::vector<std::string> abspaths = tank_test.getAbstractPathsFromTemplate(nuke_tpl, fields);
 
-	std::vector<std::string> xTest = listFilesFromPathPattern("D:\\Desk\\python\\Tank\\tests\\project\\test\\sh_010\\cmp\\nuke\\sh_010-cmp-base-v*.nk");
+	// std::string path = "D:\\Desk\\python\\Tank\\tests\\project\\test\\sh_010\\cmp\\nuke\\sh_010-cmp-base-v1.nk";
+	std::string pattern_test = "D:\\Desk\\python\\Tank\\tests\\project\\test\\sh_020\\.*\\nuke\\sh_020-.*-base-v1.nk";
 
-	// for(int i=0; i<paths.size(); i++){
-	// 	std::cout << paths[i] << std::endl;
-	// }
+	std::cout << "D:\\Desk\\python\\Tank\\tests\\project" << std::endl;
+	std::cout << pattern_test << std::endl;
+	// std::vector<std::string> abspathsTest2 = listFilesFromPathPattern("D:\\Desk\\python\\Tank\\tests\\project", pattern_test);
+
+	std::vector<std::string> abspathsTest = tank_test.getAbstractPathsFromTemplate(nuke_tpl, fields);
+	for(int i=0; i<abspathsTest.size(); i++){
+		std::cout << "match  " << abspathsTest[i] << std::endl;
+	}
+	std::cout << "" << std::endl;
+    
+	// std::string patternStr = "D:\\\\Desk\\\\python\\\\Tank\\\\tests\\\\project\\\\test\\\\.*\\\\cmp\\\\nuke\\\\.*-cmp-base-v1.nk";
+    // std::regex regexPattern(patternStr);
+
+    // std::cout << "path: " << path << std::endl;
+    // std::cout << "patternStr: " << patternStr << std::endl;
+    // std::cout << "" << std::endl;
+
+    // if (std::regex_match(path, regexPattern))
+    // {
+    //     std::cout << "Match: " << path << std::endl;
+    // }
+    // else
+    // {
+    //     std::cout << "No Match" << std::endl;
+    // }
+
 
 	// TemplatePath aTesty = tank_test.templateFromPath(testpath);
 	// std::cout << aTesty.getName() << std::endl;
