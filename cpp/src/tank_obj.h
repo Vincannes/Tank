@@ -28,7 +28,7 @@ private:
     std::map<std::string, std::map<std::string, std::string>> pathsdict;
     std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> keydict;
 
-    std::vector <TemplateKey> listOfALlKeys();
+    std::vector <TemplateKey> listOfAllKeys();
     std::map<std::string, TemplateKey> dictOfAllKeys();
     std::map<std::string, TemplatePath> _getTemplates();
 };

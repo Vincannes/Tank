@@ -70,14 +70,15 @@ int main() {
 	std::string format_spec = "03";
 	IntegerTemplateKey intKey(name, defaultV, format_spec);
 
-    std::cout << intKey.getValue() << std::endl;
-    intKey.setValue("2");
-    std::cout << intKey.getValue() << std::endl;
+    // std::cout << intKey.getValue() << std::endl;
+    // intKey.setValue("2");
+    // std::cout << intKey.getValue() << std::endl;
 	
-	// Tank tank_test(paths, keys);
+	Tank tank_test(paths, keys);
 
-	// TemplatePath nuke_tpl = tank_test.getTemplates()["nuke"];
-	// std::string testpath = nuke_tpl.apply_fields(fields);
+	TemplatePath nuke_tpl = tank_test.getTemplates()["nuke"];
+	std::string testpath = nuke_tpl.apply_fields(fields);
+	std::cout << testpath << std::endl;
 	// std::string testpathNot = "D:\\Desk\\python\\Tank\\tests\\project\\test\\sh_010\\cmp\\sh_010-cmp-base-v1.nk";
 
 	// std::vector<std::string> test = nuke_tpl.missingKeys(fields);

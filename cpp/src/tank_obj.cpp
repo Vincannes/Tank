@@ -70,7 +70,7 @@ std::vector<std::string> Tank::getAbstractPathsFromTemplate(TemplatePath templat
 }
 
 
-std::vector<TemplateKey> Tank::listOfALlKeys()
+std::vector<TemplateKey> Tank::listOfAllKeys()
 {
 	std::vector <TemplateKey> keysList{};
 

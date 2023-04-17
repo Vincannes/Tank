@@ -67,7 +67,8 @@ std::string TemplatePath::apply_fields(std::map<std::string, std::string> fields
 			std::string key = result.substr(pos + 2, end_pos - pos - 2);
 			auto it = fields.find(key);
 			if (it != fields.end()) {
-				result.replace(pos, end_pos - pos + 1, it->second);
+				std::string value = it->second;
+				result.replace(pos, end_pos - pos + 1, value);
 				pos += it->second.length();
 			}
 			else {
