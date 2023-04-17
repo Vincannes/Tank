@@ -36,7 +36,7 @@ StringTemplateKey::StringTemplateKey(std::string name, std::string default_value
 
 // ######## IntegerTemplateKey ######## 
 
-IntegerTemplateKey::IntegerTemplateKey(std::string name, std::string default_value, std::string format_spec) noexcept : TemplateKey(name, default_value) //std::string format_spec
+IntegerTemplateKey::IntegerTemplateKey(std::string name, std::string default_value, std::string format_spec="2") noexcept : TemplateKey(name, default_value) //std::string format_spec
 {
 	this->_value = default_value;
 	this->_format_spec = format_spec;
@@ -44,14 +44,19 @@ IntegerTemplateKey::IntegerTemplateKey(std::string name, std::string default_val
 
 void IntegerTemplateKey::setValue(std::string value)
 {
-	int num = std::stoi(value);
-    std::stringstream ss;
-    ss << std::setw(std::stoi(this->_format_spec)) << std::setfill('0') << num;
-    std::string formattedString = ss.str();
-	this->_value = formattedString;
+	this->_value = _formatValue(value);
 }
 
 std::string IntegerTemplateKey::getValue()
 {
-	return this->_value;
+	return _formatValue(this->_value);
+}
+
+std::string IntegerTemplateKey::_formatValue(std::string value)
+{
+	int num = std::stoi(value);
+    std::stringstream ss;
+    ss << std::setw(std::stoi(this->_format_spec)) << std::setfill('0') << num;
+    std::string formattedString = ss.str();
+	return formattedString;
 }

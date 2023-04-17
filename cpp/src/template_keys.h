@@ -51,6 +51,7 @@ public:
 private:
 	std::string _value;
 	std::string _format_spec;
+	std::string _formatValue(std::string);
 };
 
 
