@@ -12,7 +12,7 @@
 #include "conform_path.h"
 #include "template_keys.h"
 
-TemplatePath::TemplatePath(std::string name, std::map<std::string, TemplateKey> keys, std::string definition)
+TemplatePath::TemplatePath(std::string name, std::map<std::string, TemplateKey*> keys, std::string definition)
 {
 	this->_name            = name;
 	this->_all_keys        = keys;
@@ -56,6 +56,7 @@ std::vector<std::string> TemplatePath::getOrderedKeys() const
 
 // MAIN FUNCTIONS
 
+// TODO apply_fields, missing field in fields ?
 std::string TemplatePath::apply_fields(std::map<std::string, std::string> fields)
 {
 	std::string result = this->_definition;
@@ -64,10 +65,25 @@ std::string TemplatePath::apply_fields(std::map<std::string, std::string> fields
 	while ((pos = result.find("%(", pos)) != std::string::npos) {
 		std::string::size_type end_pos = result.find(')', pos);
 		if (end_pos != std::string::npos) {
+			std::string value;
 			std::string key = result.substr(pos + 2, end_pos - pos - 2);
 			auto it = fields.find(key);
 			if (it != fields.end()) {
-				std::string value = it->second;
+				auto test = this->_all_keys.find(it->first);
+
+				TemplateKey* ptr = test->second; // Recuperer le pointeur de la valeur
+				// Effectuer une conversion dynamique pour accéder aux membres specifiques
+				if (StringTemplateKey* d1 = dynamic_cast<StringTemplateKey*>(ptr)) {
+					d1->setValue(it->second);
+					value = d1->getValue();
+
+				} else if (IntegerTemplateKey* d2 = dynamic_cast<IntegerTemplateKey*>(ptr)) {
+					d2->setValue(it->second);
+					value = d2->getValue();
+					std::cout << "value IntegerTemplateKey " << value << std::endl;
+				} else {
+					value = "Unknow";
+				}
 				result.replace(pos, end_pos - pos + 1, value);
 				pos += it->second.length();
 			}
@@ -250,9 +266,9 @@ std::vector<std::string> TemplatePath::_get_ordered_keys() const
 }
 
 
-std::map<std::string, TemplateKey> TemplatePath::_keys_from_definition()
+std::map<std::string, TemplateKey*> TemplatePath::_keys_from_definition()
 {
-	std::map<std::string, TemplateKey> keys;
+	std::map<std::string, TemplateKey*> keys;
 
 	std::regex re("\\{(.*?)\\}");
 	std::sregex_iterator next(this->_orig_definition.begin(), this->_orig_definition.end(), re);

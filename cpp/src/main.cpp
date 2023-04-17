@@ -19,13 +19,14 @@
 // hello.exe "{'rootDir': 'C', 'desk': '@rootDir\\{dir}', 'test': '@desk\\{Shot}\\{Task}', 'nuke': '@test\\nuke\\{Shot}-{Task}-base-v{version}.nk', 'test_diff': '@desk\\nuke\\{Shot}-{Task}-base-v{version}.nk'}"
 
 
+
 int main() {
 	std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> keydict;
 	std::map<std::string, std::map<std::string, std::string>> pathsdict;
 	std::map<std::string, std::string> fields;
 	fields["dir"] = "test";
 	fields["Shot"] = "sh_020";
-	// fields["Task"] = "cmp";
+	fields["Task"] = "cmp";
 	fields["version"] = "1";
 	// fields["Root"] = "bleu";
 
@@ -64,11 +65,11 @@ int main() {
     //     }
 	// }
 
-	std::cout << "    " << std::endl;
-	std::string name = "version";
-	std::string defaultV = "1";
-	std::string format_spec = "03";
-	IntegerTemplateKey intKey(name, defaultV, format_spec);
+	// std::cout << "    " << std::endl;
+	// std::string name = "version";
+	// std::string defaultV = "1";
+	// std::string format_spec = "03";
+	// IntegerTemplateKey intKey(name, defaultV, format_spec);
 
     // std::cout << intKey.getValue() << std::endl;
     // intKey.setValue("2");

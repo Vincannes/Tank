@@ -108,9 +108,9 @@ std::vector<TemplateKey> Tank::listOfAllKeys()
 }
 
 
-std::map<std::string, TemplateKey> Tank::dictOfAllKeys()
+std::map<std::string, TemplateKey*> Tank::dictOfAllKeys()
 {
-	std::map<std::string, TemplateKey> keysList;
+	std::map<std::string, TemplateKey*> keysList;
 
 	for (auto outerIt = this->keydict["keys"].begin(); outerIt != this->keydict["keys"].end(); ++outerIt) {
 
@@ -118,6 +118,7 @@ std::map<std::string, TemplateKey> Tank::dictOfAllKeys()
 		bool isDefault;
 		std::string isTypeValue = "";
 		std::string isDefaultValue = "";
+		std::string hasFormatSpec = "2"; 
 		std::string name = removeSpaceInString(outerIt->first);
 
 		for (auto innerIt = outerIt->second.begin(); innerIt != outerIt->second.end(); ++innerIt) {
@@ -126,7 +127,6 @@ std::map<std::string, TemplateKey> Tank::dictOfAllKeys()
 			std::string value = innerIt->second;
 			key   = removeSpaceInString(key); // remove space if exist in key
 			value = removeSpaceInString(value); // remove space if exist in key
-
 			if (key == "type") {
 				isTypeValue = value;
 			}
@@ -134,15 +134,17 @@ std::map<std::string, TemplateKey> Tank::dictOfAllKeys()
 				isDefault = true;
 				isDefaultValue = value;
 			}
-
-			if (isTypeValue == "str") {
-				StringTemplateKey s1(name, isDefaultValue);
-				keysList.insert(std::make_pair(name, s1));
+			else if (key == "format_spec"){
+				hasFormatSpec = value;
 			}
-			if (isTypeValue == "int") {
-				IntegerTemplateKey t1(name, isDefaultValue, "");
-				keysList.insert(std::make_pair(name, t1));
-			}
+		}
+		if (isTypeValue == "str") {
+			StringTemplateKey* s1 = new StringTemplateKey(name, isDefaultValue);
+			keysList[name] = s1;
+		}
+		if (isTypeValue == "int") {
+			IntegerTemplateKey* t1 = new IntegerTemplateKey(name, isDefaultValue, hasFormatSpec);
+			keysList[name] = t1;
 		}
 	}
 

@@ -4,6 +4,8 @@
 #include <sstream>
 #include <iomanip> // Pour setw
 
+#include <type_traits>
+
 #include "template_keys.h"
 
 // ######## TemplateKey ######## 
@@ -33,7 +35,6 @@ void TemplateKey::setValue(std::string value)
 
 std::string TemplateKey::getValue()
 {
-	std::cout << "Template "<< std::endl;
 	return this->_value;
 }
 
@@ -53,7 +54,6 @@ void StringTemplateKey::setValue(std::string value)
 
 std::string StringTemplateKey::getValue() 
 {
-	std::cout << "StringTemplateKey "<< std::endl;
 	return this->_value;
 }
 
