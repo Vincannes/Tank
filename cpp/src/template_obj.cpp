@@ -80,7 +80,6 @@ std::string TemplatePath::apply_fields(std::map<std::string, std::string> fields
 				} else if (IntegerTemplateKey* d2 = dynamic_cast<IntegerTemplateKey*>(ptr)) {
 					d2->setValue(it->second);
 					value = d2->getValue();
-					std::cout << "value IntegerTemplateKey " << value << std::endl;
 				} else {
 					value = "Unknow";
 				}
