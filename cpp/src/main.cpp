@@ -2,6 +2,8 @@
 #include <regex>
 #include <string>
 #include <vector>
+#include <sstream>
+#include <iomanip> // Pour setw
 
 #include "template_obj.h"
 #include "tank_obj.h"
@@ -31,8 +33,9 @@ int main() {
 	keydict["keys"]["Shot"]["type"] = "str";
 	keydict["keys"]["Task"]["type"] = "str";
 	keydict["keys"]["dir"]["type"] = "str";
-	keydict["keys"]["version"]["type"] = "str";
+	keydict["keys"]["version"]["type"] = "int";
 	keydict["keys"]["version"]["default"] = "1";
+	keydict["keys"]["version"]["format_spec"] = "03";
 
 	pathsdict["paths"]["rootDir"]     = "C";
 	pathsdict["paths"]["desk"]        = "@rootDir\\{dir}";
@@ -40,13 +43,13 @@ int main() {
 	pathsdict["paths"]["test"]        = "@desk\\{Shot}\\{Task}";
 	pathsdict["paths"]["test_diff"]   = "@desk\\nuke\\{Shot}-{Task}-base-v{version}.nk";
 
-	std::string keys  = "{'Root' : {'type': 'str'}, 'dir' : {'type': 'str'}, 'Shot' : {'type': 'str'}, 'version' : {'type': 'int', 'default': '1'}, 'Task' : {'type': 'str', 'default': 'aa'}";
+	std::string keys  = "{'Root' : {'type': 'str'}, 'dir' : {'type': 'str'}, 'Shot' : {'type': 'str'}, 'version' : {'type': 'int', 'default': '1', 'format_spec: '03'}, 'Task' : {'type': 'str', 'default': 'aa'}";
 	std::string paths = "{'rootDir': 'D:\\Desk\\python\\Tank\\tests\\project', 'desk': '@rootDir\\{dir}', 'test': '@desk\\{Shot}\\{Task}', 'nuke': '@test\\nuke\\{Shot}-{Task}-base-v{version}.nk', 'test_diff': '@desk\\nuke\\{Shot}-{Task}-base-v{version}.nk'}";
 
 	std::map<std::string, std::map<std::string, std::string>> pathsDict;
 	std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> keysDict;
-	pathsDict = generatePathsDictionnaryFromString(paths);
-	keysDict  = generateKeysDictionnaryFromString(keys);
+	// pathsDict = generatePathsDictionnaryFromString(paths);
+	// keysDict  = generateKeysDictionnaryFromString(keys);
 
 	// for (const auto& key : pathsDict["paths"]) {
     //     std::cout << key.first << ":" << key.second << std::endl;
@@ -60,10 +63,20 @@ int main() {
     //         std::cout << "    " << subkey.first << ":" << subkey.second << std::endl;
     //     }
 	// }
-	
-	Tank tank_test(paths, keys);
 
-	TemplatePath nuke_tpl = tank_test.getTemplates()["nuke"];
+	std::cout << "    " << std::endl;
+	std::string name = "version";
+	std::string defaultV = "1";
+	std::string format_spec = "03";
+	IntegerTemplateKey intKey(name, defaultV, format_spec);
+
+    std::cout << intKey.getValue() << std::endl;
+    intKey.setValue("2");
+    std::cout << intKey.getValue() << std::endl;
+	
+	// Tank tank_test(paths, keys);
+
+	// TemplatePath nuke_tpl = tank_test.getTemplates()["nuke"];
 	// std::string testpath = nuke_tpl.apply_fields(fields);
 	// std::string testpathNot = "D:\\Desk\\python\\Tank\\tests\\project\\test\\sh_010\\cmp\\sh_010-cmp-base-v1.nk";
 
@@ -74,17 +87,17 @@ int main() {
 
 
 	// std::string path = "D:\\Desk\\python\\Tank\\tests\\project\\test\\sh_010\\cmp\\nuke\\sh_010-cmp-base-v1.nk";
-	std::string pattern_test = "D:\\Desk\\python\\Tank\\tests\\project\\test\\sh_020\\.*\\nuke\\sh_020-.*-base-v1.nk";
+	// std::string pattern_test = "D:\\Desk\\python\\Tank\\tests\\project\\test\\sh_020\\.*\\nuke\\sh_020-.*-base-v1.nk";
 
-	std::cout << "D:\\Desk\\python\\Tank\\tests\\project" << std::endl;
-	std::cout << pattern_test << std::endl;
+	// std::cout << "D:\\Desk\\python\\Tank\\tests\\project" << std::endl;
+	// std::cout << pattern_test << std::endl;
 	// std::vector<std::string> abspathsTest2 = listFilesFromPathPattern("D:\\Desk\\python\\Tank\\tests\\project", pattern_test);
 
-	std::vector<std::string> abspathsTest = tank_test.getAbstractPathsFromTemplate(nuke_tpl, fields);
-	for(int i=0; i<abspathsTest.size(); i++){
-		std::cout << "match  " << abspathsTest[i] << std::endl;
-	}
-	std::cout << "" << std::endl;
+	// std::vector<std::string> abspathsTest = tank_test.getAbstractPathsFromTemplate(nuke_tpl, fields);
+	// for(int i=0; i<abspathsTest.size(); i++){
+	// 	std::cout << "match  " << abspathsTest[i] << std::endl;
+	// }
+	// std::cout << "" << std::endl;
     
 	// std::string patternStr = "D:\\\\Desk\\\\python\\\\Tank\\\\tests\\\\project\\\\test\\\\.*\\\\cmp\\\\nuke\\\\.*-cmp-base-v1.nk";
     // std::regex regexPattern(patternStr);

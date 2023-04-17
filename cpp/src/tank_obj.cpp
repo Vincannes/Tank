@@ -99,7 +99,7 @@ std::vector<TemplateKey> Tank::listOfALlKeys()
 			keysList.push_back(s1);
 		}
 		if (isTypeValue == "int") {
-			IntegerTemplateKey t1(name, isDefaultValue);
+			IntegerTemplateKey t1(name, isDefaultValue, "");
 			keysList.push_back(t1);
 		}
 	}
@@ -140,7 +140,7 @@ std::map<std::string, TemplateKey> Tank::dictOfAllKeys()
 				keysList.insert(std::make_pair(name, s1));
 			}
 			if (isTypeValue == "int") {
-				IntegerTemplateKey t1(name, isDefaultValue);
+				IntegerTemplateKey t1(name, isDefaultValue, "");
 				keysList.insert(std::make_pair(name, t1));
 			}
 		}

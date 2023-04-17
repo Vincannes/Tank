@@ -180,26 +180,6 @@ std::vector<std::string> listFilesFromPathPattern(const std::string directory, s
         }
     }
 
-	/*
-	std::vector<std::string> dirs = pathListDir(patternStr);
-
-	// Replace string pattern #FOR WINDOWS
-    size_t pos = 0;
-	std::string search = "\\";
-    std::string replacement = "\\\\";
-    while ((pos = patternStr.find(search, pos)) != std::string::npos) {
-        patternStr.replace(pos, search.length(), replacement);
-        pos += replacement.length();
-    }
-	std::regex regexPattern(patternStr);
-
-    for(int i=0; i < dirs.size(); i++) {
-		std::string str = dirs[i];
-		if(std::regex_match(str, regexPattern)){
-            matchingFiles.push_back(str);
-        }
-    }
-	*/
     return matchingFiles;
 }
 

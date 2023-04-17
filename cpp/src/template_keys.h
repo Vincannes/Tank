@@ -44,10 +44,13 @@ class IntegerTemplateKey : public TemplateKey
 
 public:
 
-	IntegerTemplateKey(std::string name, std::string default_value) noexcept;
+	IntegerTemplateKey(std::string name, std::string default_value, std::string format_spec) noexcept;
+	void setValue(std::string);
+	std::string getValue();
 
 private:
-
+	std::string _value;
+	std::string _format_spec;
 };
 
 
