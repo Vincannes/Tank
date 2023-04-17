@@ -4,8 +4,6 @@
 #include <sstream>
 #include <iomanip> // Pour setw
 
-#include <type_traits>
-
 #include "template_keys.h"
 
 // ######## TemplateKey ######## 
@@ -74,7 +72,6 @@ void IntegerTemplateKey::setValue(std::string value)
 
 std::string IntegerTemplateKey::getValue()
 {
-	std::cout << "IntegerTemplateKey "<< std::endl;
 	return _formatValue(this->_value);
 }
 
