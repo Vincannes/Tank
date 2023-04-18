@@ -55,7 +55,7 @@ std::vector<std::string> TemplatePath::getOrderedKeys() const
 // MAIN FUNCTIONS
 
 // TODO apply_fields, missing field in fields ?
-std::string TemplatePath::apply_fields(std::map<std::string, std::string> fields)
+std::string TemplatePath::apply_fields(std::map<std::string, std::string> fields, std::vector<std::string> missing_keys={})
 {
 	std::string result = this->_definition;
 	std::string::size_type pos = 0;
@@ -66,20 +66,32 @@ std::string TemplatePath::apply_fields(std::map<std::string, std::string> fields
 			std::string value;
 			std::string key = result.substr(pos + 2, end_pos - pos - 2);
 			auto it = fields.find(key);
+			bool isNotMissingKey = true;
 			if (it != fields.end()) {
-				auto test = this->_all_keys.find(it->first);
 
-				TemplateKey* ptr = test->second; // Recuperer le pointeur de la valeur
+				for (const auto& str : missing_keys) {
+					if (str == key) {
+						isNotMissingKey = false;
+						break;
+					}
+				}
+	
+				auto _key_from_token = this->_all_keys.find(it->first);
+				TemplateKey* ptr = _key_from_token->second; // Recuperer le pointeur de la valeur
 				// Effectuer une conversion dynamique pour accéder aux membres specifiques
-				if (StringTemplateKey* d1 = dynamic_cast<StringTemplateKey*>(ptr)) {
-					d1->setValue(it->second);
-					value = d1->getValue();
+				if(isNotMissingKey){
+					if (StringTemplateKey* d1 = dynamic_cast<StringTemplateKey*>(ptr)) {
+						d1->setValue(it->second);
+						value = d1->getValue();
 
-				} else if (IntegerTemplateKey* d2 = dynamic_cast<IntegerTemplateKey*>(ptr)) {
-					d2->setValue(it->second);
-					value = d2->getValue();
-				} else {
-					value = "Unknow";
+					} else if (IntegerTemplateKey* d2 = dynamic_cast<IntegerTemplateKey*>(ptr)) {
+						d2->setValue(it->second);
+						value = d2->getValue();
+					} else {
+						value = "Unknow";
+					}
+				}else{
+					value = it->second;
 				}
 				result.replace(pos, end_pos - pos + 1, value);
 				pos += it->second.length();
@@ -104,7 +116,7 @@ std::map<std::string, std::string> TemplatePath::getFields(std::string path)
 	std::map<std::string, std::string> fields = {};
 
 	// verifier si la longueur du path est le meme que _definition 
-	std::vector<std::string> path_splited = splitPath(path);
+	std::vector<std::string> path_splited       = splitPath(path);
 	std::vector<std::string> definition_splited = splitPath(this->_definition);
 
 	// return dictionnaire vide si longueurs differents

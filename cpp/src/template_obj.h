@@ -28,7 +28,7 @@ public:
 	std::vector<std::string> missingKeys(std::map<std::string, std::string>);
 
 	// manipulateurs
-	std::string apply_fields(std::map<std::string, std::string>);
+	std::string apply_fields(std::map<std::string, std::string>, std::vector<std::string>);
 
 private:
 	std::string _name;

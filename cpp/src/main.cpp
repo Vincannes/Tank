@@ -27,7 +27,7 @@ int main() {
 	fields["dir"] = "test";
 	fields["Shot"] = "sh_020";
 	fields["Task"] = "cmp";
-	fields["version"] = "1";
+	// fields["version"] = "1";
 	// fields["Root"] = "bleu";
 
 	keydict["keys"]["Root"]["type"] = "str";
@@ -49,14 +49,14 @@ int main() {
 
 	std::map<std::string, std::map<std::string, std::string>> pathsDict;
 	std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> keysDict;
-	// pathsDict = generatePathsDictionnaryFromString(paths);
-	// keysDict  = generateKeysDictionnaryFromString(keys);
+	pathsDict = generatePathsDictionnaryFromString(paths);
+	keysDict  = generateKeysDictionnaryFromString(keys);
 
-	// for (const auto& key : pathsDict["paths"]) {
-    //     std::cout << key.first << ":" << key.second << std::endl;
-	// }
+	for (const auto& key : pathsDict["paths"]) {
+        std::cout << key.first << ":" << key.second << std::endl;
+	}
 	
-	// std::cout << " " << std::endl;
+	std::cout << " " << std::endl;
 
 	// for (const auto& key : keysDict["keys"]) {
     //     std::cout << key.first << ":" << std::endl;
@@ -64,8 +64,9 @@ int main() {
     //         std::cout << "    " << subkey.first << ":" << subkey.second << std::endl;
     //     }
 	// }
-
 	// std::cout << "    " << std::endl;
+
+
 	// std::string name = "version";
 	// std::string defaultV = "1";
 	// std::string format_spec = "03";
@@ -77,10 +78,16 @@ int main() {
 	
 	Tank tank_test(paths, keys);
 
-	TemplatePath nuke_tpl = tank_test.getTemplates()["nuke"];
-	std::string testpath = nuke_tpl.apply_fields(fields);
-	std::cout << testpath << std::endl;
-	// std::string testpathNot = "D:\\Desk\\python\\Tank\\tests\\project\\test\\sh_010\\cmp\\sh_010-cmp-base-v1.nk";
+	std::map<std::string, TemplatePath> templates =  tank_test.getTemplates();
+	for (const auto& paire : templates) {
+		const std::string& cle = paire.first;
+        const std::string& valeur = paire.second.getDefinition();
+		std::cout << cle << " : " << valeur << std::endl;
+	}
+
+	TemplatePath nuke_tpl = templates["nuke"];
+	// std::string testpath = nuke_tpl.apply_fields(fields);
+	// std::cout << testpath << std::endl;
 
 	// std::vector<std::string> test = nuke_tpl.missingKeys(fields);
 	// for(int i=0; i<test.size(); i++){
@@ -88,38 +95,39 @@ int main() {
 	// }
 
 
-	// std::string path = "D:\\Desk\\python\\Tank\\tests\\project\\test\\sh_010\\cmp\\nuke\\sh_010-cmp-base-v1.nk";
-	// std::string pattern_test = "D:\\Desk\\python\\Tank\\tests\\project\\test\\sh_020\\.*\\nuke\\sh_020-.*-base-v1.nk";
+	std::string path = "D:\\Desk\\python\\Tank\\tests\\project\\test\\sh_010\\cmp\\nuke\\sh_010-cmp-base-v1.nk";
+	std::string pattern_test = "D:\\Desk\\python\\Tank\\tests\\project\\test\\sh_020\\.*\\nuke\\sh_020-.*-base-v1.nk";
 
 	// std::cout << "D:\\Desk\\python\\Tank\\tests\\project" << std::endl;
 	// std::cout << pattern_test << std::endl;
 	// std::vector<std::string> abspathsTest2 = listFilesFromPathPattern("D:\\Desk\\python\\Tank\\tests\\project", pattern_test);
 
-	// std::vector<std::string> abspathsTest = tank_test.getAbstractPathsFromTemplate(nuke_tpl, fields);
-	// for(int i=0; i<abspathsTest.size(); i++){
-	// 	std::cout << "match  " << abspathsTest[i] << std::endl;
-	// }
-	// std::cout << "" << std::endl;
+	std::cout << "" << std::endl;
+	std::vector<std::string> abspathsTest = tank_test.getAbstractPathsFromTemplate(nuke_tpl, fields);
+	std::cout << "" << std::endl;
+	for(int i=0; i<abspathsTest.size(); i++){
+		std::cout << "match  " << abspathsTest[i] << std::endl;
+	}
+	std::cout << "" << std::endl;
     
-	// std::string patternStr = "D:\\\\Desk\\\\python\\\\Tank\\\\tests\\\\project\\\\test\\\\.*\\\\cmp\\\\nuke\\\\.*-cmp-base-v1.nk";
-    // std::regex regexPattern(patternStr);
-
-    // std::cout << "path: " << path << std::endl;
-    // std::cout << "patternStr: " << patternStr << std::endl;
-    // std::cout << "" << std::endl;
-
-    // if (std::regex_match(path, regexPattern))
-    // {
-    //     std::cout << "Match: " << path << std::endl;
-    // }
-    // else
-    // {
-    //     std::cout << "No Match" << std::endl;
-    // }
-
 
 	// TemplatePath aTesty = tank_test.templateFromPath(testpath);
+	// std::cout << testpath << std::endl;
 	// std::cout << aTesty.getName() << std::endl;
+	// std::cout << aTesty.getDefinition() << std::endl;
+	// // std::cout << aTesty.getOrderedKeys() << std::endl;
+	// std::cout << " " <<std::endl;
+
+	// std::vector<std::string> etfiel = aTesty.getStaticTokens();
+	// for (int i=0; i<etfiel.size(); i++) {
+    //     std::cout << etfiel[i] << std::endl ;
+    // }
+	// std::cout << " " <<std::endl;
+	// for (const auto& paire : aTesty.getFields(testpath)) {
+	// 	const std::string& cle = paire.first;
+    //     const std::string& valeur = paire.second;
+	// 	std::cout << cle << " : " << valeur << std::endl;
+	// }
 	// TemplatePath aTestya = tank_test.templateFromPath(testpathNot);
 	// std::cout << aTestya.getName() << std::endl;
 	// TemplatePath aTestyaa = tank_test.templateFromPath(testpathGood);
@@ -128,10 +136,8 @@ int main() {
 	// std::cout << nuke_tpl.validate(testpathNot) << std::endl;
 	
 	// std::cout << nuke_tpl.getName() << " " << nuke_tpl.getDefinition() << std::endl;
-	// tank_test.getAbstractPathsFromTemplate()
 
     // créer le dictionnaire "keys"
-
 	//std::string keys = argv[1];
     //Templates templatesTest(pathsdict, keydict);
 	//for (auto a = templatesTest.templates.begin(); a != templatesTest.templates.end(); ++a) {

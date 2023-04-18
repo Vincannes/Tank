@@ -12,12 +12,9 @@
 
 #include "utils.h"
 
-std::string matchSeparator(std::string patternStr)
+std::string removePatternInString(std::string patternStr, std::string search, std::string replacement)
 {
-	// BEGIN Replace string pattern #FOR WINDOWS
 	size_t pos = 0;
-	std::string search = "\\";
-    std::string replacement = "\\\\";
     while ((pos = patternStr.find(search, pos)) != std::string::npos) {
         patternStr.replace(pos, search.length(), replacement);
         pos += replacement.length();
@@ -25,8 +22,17 @@ std::string matchSeparator(std::string patternStr)
 	return patternStr;
 }
 
+std::string matchSeparator(std::string patternStr)
+{
+	std::string search = "\\";
+    // std::string replacement = "\\\\";
+	std::string replacement = "/";
+	return removePatternInString(patternStr, search, replacement);
+}
+
 std::vector<std::string> splitPath(const std::string& path) {
-	char delimiter = '\\';
+	char delimiter = '/';
+	// char delimiter = '\\';
 	// std::string delimiter = os::sep;
 
 	std::vector<std::string> result;
@@ -82,14 +88,15 @@ std::string joinListWithSeparator(std::vector<std::string> list, char separator)
 	return result;
 }
 
-std::pair<std::string, std::string> getKeyValueFromString(std::string stringToParse)
+std::pair<std::string, std::string> getKeyValueFromString(std::string pathToParse)
 {
+	std::string stringToParse = matchSeparator(pathToParse);
     std::string::size_type colonPos = stringToParse.find(":");
     std::string key = stringToParse.substr(0, colonPos);
     std::string value = stringToParse.substr(colonPos + 1);
     key.erase(0, 1);
     key.erase(key.size() - 1, 1);
-    if (key.find('\'') != std::string::npos) {
+    if (key.find("/") != std::string::npos) {
         key.erase(0, 1);
     }
     value.erase(0, 2);
@@ -110,14 +117,16 @@ std::map<std::string, std::map<std::string, std::string>> generatePathsDictionna
     while ((pos = yamlStr.find(",", pos + 1)) != std::string::npos) {
         std::string pair = yamlStr.substr(prev, pos - prev);
         auto result = getKeyValueFromString(pair);
-        pathsDict["paths"][result.first] = result.second;
+		std::string key = removePatternInString(result.first, "'", "");
+        pathsDict["paths"][key] = result.second;
         prev = pos + 1;
     }
 
     // Ajoute la dernière paire clé/valeur
     std::string pair = yamlStr.substr(prev);
     auto result = getKeyValueFromString(pair);
-    pathsDict["paths"][result.first] = result.second;
+	std::string last_key = removePatternInString(result.first, "'", "");
+    pathsDict["paths"][last_key] = result.second;
     return pathsDict;
 }
 
@@ -162,9 +171,10 @@ std::map<std::string, std::map<std::string, std::map<std::string, std::string>>>
 std::vector<std::string> listFilesFromPathPattern(const std::string directory, std::string origpatternStr) {
     
 	std::vector<std::string> matchingFiles;
-	std::filesystem::path dirPath(directory);
+	std::string patternStr = removePatternInString(origpatternStr, "/", "\\\\"); // Matching Windows
+	std::string directory_path = removePatternInString(directory, "/", "\\"); // Matching Windows
 
-	std::string patternStr = matchSeparator(origpatternStr); 
+	std::filesystem::path dirPath(directory_path);
 	std::regex regexPattern(patternStr);
 
 	for (const auto& entry : std::filesystem::directory_iterator(dirPath)) {

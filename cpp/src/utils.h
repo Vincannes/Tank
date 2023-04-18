@@ -9,6 +9,7 @@
 #include <filesystem>
 
 
+std::string removePatternInString(std::string, std::string, std::string);
 std::string removeSpaceInString(std::string str);
 std::string matchSeparator(std::string patternStr);
 std::string dirNameFromString(const std::string path);

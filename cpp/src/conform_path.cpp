@@ -23,7 +23,7 @@ std::string ConformPath::buildDefinitionPath(std::string path) {
 			_definitions.push_back(s);
 		}
 	}
-	return joinListWithSeparator(_definitions, '\\');
+	return joinListWithSeparator(_definitions, '/');
 
 }
 
@@ -48,5 +48,5 @@ std::string ConformPath::_getDefinitions(std::string element) {
 		}
 	}
 
-	return joinListWithSeparator(ele_path_list, '\\');;
+	return joinListWithSeparator(ele_path_list, '/');;
 }

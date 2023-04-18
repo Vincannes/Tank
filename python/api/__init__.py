@@ -26,31 +26,26 @@ class sgtk(tank_module.Tank):
     def __init__(self):
         super().__init__(str(paths), str(keys))
 
-test = "D:\\Desk\\python\\Tank\\tests\\project\\*\\sh_010\\cmp\\nuke\\sh_010-cmp-base-v*.nk "
-import glob
-
 
 if __name__ == "__main__":
     tk = sgtk()
 
-    a = glob.glob(test)
+    templates = tk.get_templates()
+    nuke_template = templates["nuke"]
 
-    pprint(a)
+    fields = {
+        "dir": "test",
+        "Shot": "sh_010",
+        "version": "1",
+        "Task": "cmp",
+    }
+    path = nuke_template.apply_fields(fields)
+    pathTest = "C\\\\\\\\\\\\test\\\\\\\\\\\\sh_010\\\\\\\\\\\\cmp\\\\\\\\\\\\nuke\\\\\\\\\\\\sh_010-cmp-base-v01.nk"
 
-    # templates = tk.get_templates()
-    # nuke_template = templates["nuke"]
-
-    # fields = {
-    #     "dir": "test",
-    #     "Shot": "sh_010",
-    #     "version": "1",
-    #     "Task": "cmp",
-    # }
-    # path = nuke_template.apply_fields(fields)
-    # pathTest = "C\\test\\sh_010\\cmp\\nuke\\sh_010-cmp-base-v1.nk"
-    # patthTest2 = os.path.join("C", "test", "sh_010", "cmp", "nuke", "sh_010-cmp-base-v1.nk")
-    # patthTest2 = patthTest2.replace('\\', '\\\\')
-    # print(nuke_template)
-    # print(tk.template_from_path(path))
-    # print(tk.template_from_path(patthTest2))
+    template = tk.template_from_path(path)
+    print(template)
+    # print(template.name())
+    # print(template.definition())
+    # print(template.static_token())
+    pprint(template.get_fields(pathTest))
 
