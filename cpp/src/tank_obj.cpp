@@ -65,8 +65,6 @@ std::vector<std::string> Tank::getAbstractPathsFromTemplate(TemplatePath templat
 	}
 	std::string outputPattern     = templatePath.apply_fields(local_fields, missing_keys);
 	std::string directoryToSearch = this->pathsdict["paths"].at("rootDir");
-	std::cout << outputPattern << std::endl;
-	std::cout << directoryToSearch << std::endl;
 	std::vector<std::string> abstract_paths = listFilesFromPathPattern(directoryToSearch, outputPattern);
 	return abstract_paths;
 }
@@ -177,7 +175,7 @@ std::map<std::string, TemplatePath> Tank::_getTemplates(){
 
 //     py::class_<Tank>(m, "Tank")
 //         .def(py::init<std::string, std::string>())
-//         .def("get_templates", &Tank::getTemplates, "Get all templates")
+//         .def("templates", &Tank::getTemplates, "Get all templates")
 //         .def("templates_from_path", &Tank::templatesFromPath)
 //         .def("template_from_path", &Tank::templateFromPath)
 //         .def("abstract_paths_from_template", &Tank::getAbstractPathsFromTemplate)
@@ -192,7 +190,8 @@ std::map<std::string, TemplatePath> Tank::_getTemplates(){
 //         .def("definition", &TemplatePath::getDefinition)
 //         .def("static_token", &TemplatePath::getStaticTokens)
 //         .def("ordered_keys", &TemplatePath::getOrderedKeys)
-//         .def("apply_fields", &TemplatePath::apply_fields)
+// 		.def("apply_fields", &TemplatePath::apply_fields, 
+// 				py::arg("fields"), py::arg("missing_keys") = std::vector<std::string>())
 //         .def("get_fields", &TemplatePath::getFields)
 //         .def("missing_keys", &TemplatePath::missingKeys)
 // 		;
@@ -207,5 +206,6 @@ std::map<std::string, TemplatePath> Tank::_getTemplates(){
 //         .def(py::init<std::string, std::string, std::string>());
 
 // 	py::register_exception<TankMatchingTemplatesError>(m, "TankMatchingTemplatesError");
+// 	py::register_exception<TankApplyFieldsTemplateError>(m, "TankApplyFieldsTemplateError");
 
 // }

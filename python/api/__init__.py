@@ -30,7 +30,7 @@ class sgtk(tank_module.Tank):
 if __name__ == "__main__":
     tk = sgtk()
 
-    templates = tk.get_templates()
+    templates = tk.templates()
     nuke_template = templates["nuke"]
 
     fields = {
@@ -40,12 +40,19 @@ if __name__ == "__main__":
         "Task": "cmp",
     }
     path = nuke_template.apply_fields(fields)
-    pathTest = "C\\\\\\\\\\\\test\\\\\\\\\\\\sh_010\\\\\\\\\\\\cmp\\\\\\\\\\\\nuke\\\\\\\\\\\\sh_010-cmp-base-v01.nk"
+    print()
+    print("path")
+    print(path)
+    pathTest = "D:/Desk/python/Tank/tests/project//test//sh_010//cmp//nuke//sh_010-cmp-base-v001.nk"
 
     template = tk.template_from_path(path)
-    print(template)
-    # print(template.name())
-    # print(template.definition())
-    # print(template.static_token())
+    print()
+    print("definition")
+    print(template.definition())
+    print()
+    print("Order Key")
+    print(template.ordered_keys())
+    print()
+    print("Fields")
     pprint(template.get_fields(pathTest))
 

@@ -39,6 +39,8 @@ set_target_properties(TankLib PROPERTIES POSITION_INDEPENDENT_CODE ON)
 set_target_properties(TankLib PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/build")
 set_target_properties(TankLib PROPERTIES ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/build")
 
+# set_source_files_properties(${SOURCE_DIR}/main.cpp PROPERTIES EXCLUDE_FROM_ALL true)
+
 MESSAGE( [Main] " pybind11_INCLUDE_DIRS = ${pybind11_INCLUDE_DIRS}")
 MESSAGE( [Main] " pybind11_LIBRARIES = ${pybind11_LIBRARIES}")
 

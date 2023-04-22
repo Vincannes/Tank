@@ -6,6 +6,7 @@
 #include <iostream>
 
 #include "utils.h"
+#include "exception.h"
 #include "template_obj.h"
 #include "conform_path.h"
 #include "template_keys.h"
@@ -55,13 +56,14 @@ std::vector<std::string> TemplatePath::getOrderedKeys() const
 // MAIN FUNCTIONS
 
 // TODO apply_fields, missing field in fields ?
-std::string TemplatePath::apply_fields(std::map<std::string, std::string> fields, std::vector<std::string> missing_keys={})
+std::string TemplatePath::apply_fields(std::map<std::string, std::string> fields, std::vector<std::string> missing_keys)
 {
 	std::string result = this->_definition;
 	std::string::size_type pos = 0;
+	std::vector<std::string> fieldsMissing;
 
 	while ((pos = result.find("%(", pos)) != std::string::npos) {
-		std::string::size_type end_pos = result.find(')', pos);
+		std::string::size_type end_pos = result.find(")", pos);
 		if (end_pos != std::string::npos) {
 			std::string value;
 			std::string key = result.substr(pos + 2, end_pos - pos - 2);
@@ -99,6 +101,7 @@ std::string TemplatePath::apply_fields(std::map<std::string, std::string> fields
 			else {
 				// La cle n'a pas ete trouvee dans le dictionnaire
 				pos = end_pos + 1;
+				fieldsMissing.push_back(key);
 			}
 		}
 		else {
@@ -107,6 +110,7 @@ std::string TemplatePath::apply_fields(std::map<std::string, std::string> fields
 		}
 	}
 
+	if(fieldsMissing.size() > 0) throw TankApplyFieldsTemplateError(getName(), getDefinition(), fieldsMissing);
 	return result;
 }
 
