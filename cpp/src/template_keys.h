@@ -35,12 +35,12 @@ class StringTemplateKey : public TemplateKey
 
 public:
 
-	StringTemplateKey(std::string name, std::string default_value) noexcept;
+	StringTemplateKey(std::string name, std::string default_value, std::vector<std::string>choices={}) noexcept;
 	std::string getValue();
 	void setValue(std::string);
 
 private:
-	// std::string _value;
+	std::vector<std::string>_choices;
 		
 };
 

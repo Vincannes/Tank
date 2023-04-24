@@ -55,7 +55,6 @@ std::vector<std::string> TemplatePath::getOrderedKeys() const
 
 // MAIN FUNCTIONS
 
-// TODO apply_fields, missing field in fields ?
 std::string TemplatePath::apply_fields(std::map<std::string, std::string> fields, std::vector<std::string> missing_keys)
 {
 	std::string result = this->_definition;
@@ -68,20 +67,19 @@ std::string TemplatePath::apply_fields(std::map<std::string, std::string> fields
 			std::string value;
 			std::string key = result.substr(pos + 2, end_pos - pos - 2);
 			auto it = fields.find(key);
-			bool isNotMissingKey = true;
+			bool isMissingKey = false;
 			if (it != fields.end()) {
 
 				for (const auto& str : missing_keys) {
 					if (str == key) {
-						isNotMissingKey = false;
+						isMissingKey = true;
 						break;
 					}
 				}
-	
 				auto _key_from_token = this->_all_keys.find(it->first);
 				TemplateKey* ptr = _key_from_token->second; // Recuperer le pointeur de la valeur
 				// Effectuer une conversion dynamique pour accéder aux membres specifiques
-				if(isNotMissingKey){
+				if(!isMissingKey){
 					if (StringTemplateKey* d1 = dynamic_cast<StringTemplateKey*>(ptr)) {
 						d1->setValue(it->second);
 						value = d1->getValue();
@@ -108,8 +106,8 @@ std::string TemplatePath::apply_fields(std::map<std::string, std::string> fields
 			// Parenthese fermante manquante
 			pos = pos + 2;
 		}
+		
 	}
-
 	if(fieldsMissing.size() > 0) throw TankApplyFieldsTemplateError(getName(), getDefinition(), fieldsMissing);
 	return result;
 }

@@ -115,11 +115,14 @@ std::map<std::string, TemplateKey*> Tank::dictOfAllKeys()
 	for (auto outerIt = this->keydict["keys"].begin(); outerIt != this->keydict["keys"].end(); ++outerIt) {
 
 		// bool isType;
+		bool hasAlias;
 		bool isDefault;
+		std::string aliasKey = "";
 		std::string isTypeValue = "";
 		std::string isDefaultValue = "";
 		std::string hasFormatSpec = "2"; 
 		std::string name = removeSpaceInString(outerIt->first);
+		std::vector<std::string> choices={};
 
 		for (auto innerIt = outerIt->second.begin(); innerIt != outerIt->second.end(); ++innerIt) {
 
@@ -137,9 +140,25 @@ std::map<std::string, TemplateKey*> Tank::dictOfAllKeys()
 			else if (key == "format_spec"){
 				hasFormatSpec = value;
 			}
+			else if (key == "choices"){
+				choices = listFromString(value);
+			}
+			else if (key == "filter_by"){}
+			else if (key == "shotgun_entity_type"){}
+			else if (key == "shotgun_field_name"){}
+
+			if (key == "alias"){
+				hasAlias = true;
+				aliasKey = value;
+			}
 		}
+
+		if(hasAlias){
+			name = aliasKey;
+		}
+
 		if (isTypeValue == "str") {
-			StringTemplateKey* s1 = new StringTemplateKey(name, isDefaultValue);
+			StringTemplateKey* s1 = new StringTemplateKey(name, isDefaultValue, choices);
 			keysList[name] = s1;
 		}
 		if (isTypeValue == "int") {
@@ -207,5 +226,6 @@ std::map<std::string, TemplatePath> Tank::_getTemplates(){
 
 // 	py::register_exception<TankMatchingTemplatesError>(m, "TankMatchingTemplatesError");
 // 	py::register_exception<TankApplyFieldsTemplateError>(m, "TankApplyFieldsTemplateError");
+// 	py::register_exception<TankTempalteValueWrongValue>(m, "TankTempalteValueWrongValue");
 
 // }

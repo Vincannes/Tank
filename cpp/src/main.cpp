@@ -18,6 +18,7 @@ int main() {
 	fields["Shot"] = "sh_020";
 	fields["Task"] = "cmp";
 	fields["version"] = "1";
+	fields["testd"] = "1";
 	// fields["Root"] = "bleu";
 
 	keydict["keys"]["Root"]["type"] = "str";
@@ -34,7 +35,7 @@ int main() {
 	pathsdict["paths"]["test"]        = "@desk\\{Shot}\\{Task}";
 	pathsdict["paths"]["test_diff"]   = "@desk\\nuke\\{Shot}-{Task}-base-v{version}.nk";
 
-	std::string keys  = "{'Root' : {'type': 'str'}, 'dir' : {'type': 'str'}, 'Shot' : {'type': 'str'}, 'version' : {'type': 'int', 'default': '1', 'format_spec: '03'}, 'Task' : {'type': 'str', 'default': 'aa'}";
+	std::string keys  = "{'Root' : {'type': 'str'}, 'dir' : {'type': 'str'}, 'Shot' : {'type': 'str', 'choices':['sh_030', 'sh_040']}, 'version' : {'alias':'version', 'type': 'int', 'default': '1', 'format_spec: '03'}, 'Task' : {'type': 'str', 'default': 'aa'}";
 	std::string paths = "{'rootDir': 'D:\\Desk\\python\\Tank\\tests\\project', 'desk': '@rootDir\\{dir}', 'test': '@desk\\{Shot}\\{Task}', 'nuke': '@test\\nuke\\{Shot}-{Task}-base-v{version}.nk', 'test_diff': '@desk\\nuke\\{Shot}-{Task}-base-v{version}.nk'}";
 
 	std::map<std::string, std::map<std::string, std::string>> pathsDict;
@@ -45,15 +46,15 @@ int main() {
 	// for (const auto& key : pathsDict["paths"]) {
     //     std::cout << key.first << ":" << key.second << std::endl;
 	// }
-	// std::cout << " " << std::endl;
+	std::cout << " " << std::endl;
 
-	// for (const auto& key : keysDict["keys"]) {
-    //     std::cout << key.first << ":" << std::endl;
-    //     for (const auto& subkey : key.second) {
-    //         std::cout << "    " << subkey.first << ":" << subkey.second << std::endl;
-    //     }
-	// }
-	// std::cout << "    " << std::endl;
+	for (const auto& key : keysDict["keys"]) {
+        std::cout << key.first << ":" << std::endl;
+        for (const auto& subkey : key.second) {
+            std::cout << "    " << subkey.first << ":" << subkey.second << std::endl;
+        }
+	}
+	std::cout << "    " << std::endl;
 
 
 	// std::string name = "version";
@@ -67,19 +68,22 @@ int main() {
 	
 	Tank tank_test(paths, keys);
 	std::map<std::string, TemplatePath> templates =  tank_test.getTemplates();
+	
+	// for(const auto& key : tank_test._allKeys) {
+	// 	const std::string& cle = key.first;
+	// 	const std::string& valeur = key.second->getDefault();
+	// 	std::cout << cle << " : " << valeur << std::endl;
+	// }
 
-	for (const auto& paire : templates) {
-		const std::string& cle = paire.first;
-        const std::string& valeur = paire.second.getDefinition();
-		// std::cout << cle << " : " << valeur << std::endl;
-	}
+	// for (const auto& paire : templates) {
+	// 	const std::string& cle = paire.first;
+    //     const std::string& valeur = paire.second.getDefinition();
+	// 	std::cout << cle << " : " << valeur << std::endl;
+	// }
 
-	std::cout << "" << std::endl;
-	std::cout << "applyfields" << std::endl;
 	std::cout << "" << std::endl;
 	TemplatePath nuke_tpl = templates["nuke"];
 	std::string testpath = nuke_tpl.apply_fields(fields);
-	std::cout << "" << std::endl;
 	std::cout << "testpath" << std::endl;
 	std::cout << testpath << std::endl;
 	// std::cout << "definition" << std::endl;

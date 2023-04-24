@@ -4,6 +4,7 @@
 #include <sstream>
 #include <iomanip> // Pour setw
 
+#include "exception.h"
 #include "template_keys.h"
 
 // ######## TemplateKey ######## 
@@ -40,14 +41,28 @@ std::string TemplateKey::getValue()
 
 // ######## StringTemplateKey ######## 
 
-StringTemplateKey::StringTemplateKey(std::string name, std::string default_value) noexcept : TemplateKey(name, default_value)
+StringTemplateKey::StringTemplateKey(std::string name, std::string default_value, std::vector<std::string>choices) noexcept : TemplateKey(name, default_value)
 {
-	// this->_value = default_value;
+	this->_choices = choices;
 }
 
 void StringTemplateKey::setValue(std::string value)
 {
-	this->_value = value;
+	if(this->_choices.size() > 0){
+		this->_value = "";
+		for(int i=0; i < this->_choices.size(); i++){
+			std::string choice_value =  this->_choices[i];
+			if(choice_value == value){
+				this->_value = value;
+			}
+		}
+		if(this->_value.empty()){
+			throw TankTempalteValueWrongValue(value, this->_choices);
+		}
+	}
+	else{
+		this->_value = value;
+	}
 }
 
 std::string StringTemplateKey::getValue() 

@@ -8,8 +8,6 @@
 #include <utility> // pour std::pair
 #include <filesystem>
 
-// #include <dirent.h>
-
 #include "utils.h"
 
 std::string removePatternInString(std::string patternStr, std::string search, std::string replacement)
@@ -42,6 +40,12 @@ std::vector<std::string> splitPath(const std::string& path) {
 		result.push_back(token);
 	}
 	return result;
+}
+
+std::string removeSpaceFromString(std::string str)
+{
+	std::size_t firstNonSpaceVal = str.find_first_not_of(" ");
+	return str.erase(0, firstNonSpaceVal);
 }
 
 std::string dirNameFromString(const std::string path)
@@ -104,18 +108,18 @@ std::pair<std::string, std::string> getKeyValueFromString(std::string pathToPars
     return std::make_pair(key, value);
 }
 
-std::map<std::string, std::map<std::string, std::string>> generatePathsDictionnaryFromString(std::string yamlStr){
+std::map<std::string, std::map<std::string, std::string>> generatePathsDictionnaryFromString(std::string templatesStr){
 
     std::map<std::string, std::map<std::string, std::string>> pathsDict;
 
     // Supprime les accolades de la chaîne de caractères
-    yamlStr.erase(0, 1);
-    yamlStr.erase(yamlStr.size() - 1, 1);
+    templatesStr.erase(0, 1);
+    templatesStr.erase(templatesStr.size() - 1, 1);
 
     // Parcourt la chaîne de caractères pour extraire les clés et les valeurs
     std::string::size_type pos = 0, prev = 0;
-    while ((pos = yamlStr.find(",", pos + 1)) != std::string::npos) {
-        std::string pair = yamlStr.substr(prev, pos - prev);
+    while ((pos = templatesStr.find(",", pos + 1)) != std::string::npos) {
+        std::string pair = templatesStr.substr(prev, pos - prev);
         auto result = getKeyValueFromString(pair);
 		std::string key = removePatternInString(result.first, "'", "");
         pathsDict["paths"][key] = result.second;
@@ -123,46 +127,68 @@ std::map<std::string, std::map<std::string, std::string>> generatePathsDictionna
     }
 
     // Ajoute la dernière paire clé/valeur
-    std::string pair = yamlStr.substr(prev);
+    std::string pair = templatesStr.substr(prev);
     auto result = getKeyValueFromString(pair);
 	std::string last_key = removePatternInString(result.first, "'", "");
     pathsDict["paths"][last_key] = result.second;
     return pathsDict;
 }
 
-std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> generateKeysDictionnaryFromString(std::string yamlStr){
-    std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> keysDict;
+std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> generateKeysDictionnaryFromString(std::string templatesStr){
+    
+	std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> keysDict;
 
 	// Supprime les accolades de la chaîne de caractères
-    yamlStr.erase(0, 1);
-    yamlStr.erase(yamlStr.size() - 1, 1);
+    templatesStr.erase(0, 1);
+    templatesStr.erase(templatesStr.size() - 1, 1);
     
 	std::regex regex_splited("\\}, '"); // splited at }, '
-	std::sregex_token_iterator iter(yamlStr.begin(), yamlStr.end(), regex_splited, -1);
+	std::sregex_token_iterator iter(templatesStr.begin(), templatesStr.end(), regex_splited, -1);
     std::sregex_token_iterator ende;
 
     for (; iter != ende; ++iter) {
 		std::string keystring = *iter ;
 		std::string::size_type colonPos = keystring.find(":");
 
-		std::string key = keystring.substr(0, colonPos);
-		std::string value = keystring.substr(colonPos + 1);
+		std::string key          = keystring.substr(0, colonPos);
+		std::string value        = keystring.substr(colonPos + 1);
 
 		key.erase(std::remove(key.begin(), key.end(), '\''), key.end()); // Remove ' from string
 		value.erase(std::remove(value.begin(), value.end(), '{'), value.end()); // Remove { from string
-		value.erase(std::remove(value.begin(), value.end(), '}'), value.end()); // Remove } from string
+		value.erase(std::remove(value.begin(), value.end(), '}'), value.end()); // Remove } from string		
 
-		std::vector<std::string> result;
-		std::stringstream ss(value);
+		// if list in value, ie: "choices" = ['..', '..'] 
+		std::smatch match;
+		std::string valueRefacto = value;
+		std::regex re("\\[([^\\]]*)\\]");
+  		std::vector<std::string> choices;
+		while (std::regex_search(valueRefacto, match, re)) {
+			std::string match_refacto = match[1].str();
+			match_refacto.erase(std::remove(match_refacto.begin(), match_refacto.end(), '\''), match_refacto.end());
+			choices.push_back(match_refacto);
+			valueRefacto = match.suffix().str();
+			value = std::regex_replace(value, std::regex("\\[[^\\]]*\\]"), ""); // remove ['..', '..']
+			value = std::regex_replace(value, std::regex(", 'choices':"), "");  // remove 'choices'
+		}
+
+		// Parse all other element for each ','
     	std::string item;
-
+		std::stringstream ss(value);
 		while (std::getline(ss, item, ',')) {
 			std::string::size_type colonPosValue = item.find(":");
 			std::string keyValue = item.substr(0, colonPosValue);
 			std::string valValue = item.substr(colonPosValue+1);
 			keyValue.erase(std::remove(keyValue.begin(), keyValue.end(), '\''), keyValue.end()); // Remove ' from string
 			valValue.erase(std::remove(valValue.begin(), valValue.end(), '\''), valValue.end()); // Remove ' from string
+			keyValue = removeSpaceFromString(keyValue);
+			valValue = removeSpaceFromString(valValue);
 			keysDict["keys"][key][keyValue] = valValue;
+		}
+
+		// add choices if exist as string
+		std::string choice = joinListWithSeparator(choices, ',');
+		if(!choice.empty()){
+			keysDict["keys"][key]["choices"] = choice;
 		}
 	}
     return keysDict;
@@ -193,3 +219,18 @@ std::vector<std::string> listFilesFromPathPattern(const std::string directory, s
     return matchingFiles;
 }
 
+std::vector<std::string> listFromString(std::string str)
+{
+	std::vector<std::string> list;
+    std::stringstream ss(str);
+
+    std::string item;
+    while (std::getline(ss, item, ',')) {
+        // Retirer les espaces vides au début et à la fin de l'élément
+        item.erase(0, item.find_first_not_of(" "));
+        item.erase(item.find_last_not_of(" ") + 1);
+        
+        list.push_back(item);
+    }
+	return list;
+}

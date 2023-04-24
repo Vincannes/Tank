@@ -37,3 +37,27 @@ const char* TankApplyFieldsTemplateError::what() const noexcept
     return full_message.c_str();
 }
 
+// Implémentation du constructeur
+TankTempalteValueWrongValue::TankTempalteValueWrongValue(
+    const std::string& value, 
+    std::vector<std::string> choices
+    )
+    {
+        m_value = value;
+        m_choices = choices;
+    }
+
+// Implémentation de la méthode what()
+const char* TankTempalteValueWrongValue::what() const noexcept
+{
+    static std::string full_message;
+    full_message = "Illegal value: '" + this->m_value + "' not in choices: [";
+    for(int i=0; i<this->m_choices.size(); i++){
+        full_message += this->m_choices[i];
+        full_message += ", ";
+    }
+    full_message.erase(full_message.end() - 2, full_message.end());
+    full_message += "]";
+    return full_message.c_str();
+}
+
