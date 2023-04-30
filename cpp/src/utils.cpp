@@ -64,10 +64,10 @@ std::vector<std::string> pathListDir(std::string directory)
         const auto& path = entry.path();
         if (std::filesystem::is_directory(path)) {
             // Directory found, recursively traverse
-            std::cout << "Directory: " << path << std::endl;
+            // std::cout << "Directory: " << path << std::endl;
             listFilesFromPathPattern(path.string(), "");
         } else if (std::filesystem::is_regular_file(path)) {
-            std::cout << "File: " << path << std::endl;
+            // std::cout << "File: " << path << std::endl;
         }
     }
 	return dirs;
@@ -103,8 +103,8 @@ std::pair<std::string, std::string> getKeyValueFromString(std::string pathToPars
     if (key.find("/") != std::string::npos) {
         key.erase(0, 1);
     }
-    value.erase(0, 2);
-    value.erase(value.size() - 1, 2);
+	value = removePatternInString(value, "'", "");
+	value = removeSpaceFromString(value);
     return std::make_pair(key, value);
 }
 
@@ -192,6 +192,34 @@ std::map<std::string, std::map<std::string, std::map<std::string, std::string>>>
 		}
 	}
     return keysDict;
+}
+
+std::map<std::string, std::map<std::string, std::string>> generateStringsDictionnaryFromString(std::string templatesStr)
+{
+	std::map<std::string, std::map<std::string, std::string>> stringsOutput;
+	// Supprime les accolades de la chaîne de caractères
+    templatesStr.erase(0, 1);
+    templatesStr.erase(templatesStr.size() - 1, 1);
+
+	// Parcourt la chaîne de caractères pour extraire les clés et les valeurs
+    std::string::size_type pos = 0, prev = 0;
+	while ((pos = templatesStr.find(",", pos + 1)) != std::string::npos) {
+        std::string pair = templatesStr.substr(prev, pos - prev);
+        auto result      = getKeyValueFromString(pair);
+		std::string key  = removePatternInString(result.first, "'", "");
+        stringsOutput["strings"][key] = result.second;
+        prev = pos + 1;
+    }
+
+	// Ajoute la dernière paire clé/valeur
+	try{
+		std::string pair     = templatesStr.substr(prev);
+		auto result          = getKeyValueFromString(pair);
+		std::string last_key = removePatternInString(result.first, "'", "");
+		stringsOutput["strings"][last_key] = result.second;
+	}
+	catch(const std::exception& e) {}
+	return stringsOutput;
 }
 
 std::vector<std::string> listFilesFromPathPattern(const std::string directory, std::string origpatternStr) {

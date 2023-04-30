@@ -16,7 +16,16 @@ std::string ConformPath::buildDefinitionPath(std::string path) {
 		std::string s = splitedPath[i];
 		std::size_t pos = s.find('@');
 		if (pos != std::string::npos) {
-			std::string ele_path = _getDefinitions(s);
+			std::string ele_path;
+			
+			// if "-" & "." in s 
+			if (s.find('-') != std::string::npos || s.find('.') != std::string::npos) {
+				// tokens.push_back(token);
+				ele_path = _getStringDefinitions(s);
+			}
+			else{
+				ele_path = _getDefinitions(s);
+			}
 			_definitions.push_back(ele_path);
 		}
 		else {
@@ -36,17 +45,41 @@ std::string ConformPath::_getDefinitions(std::string element) {
 	std::vector<std::string> ele_path_list;
 	std::vector<std::string> definitionSplited = splitPath(ele_path);
 
-	for (int i = 0; i < definitionSplited.size(); i++) {
-
-		std::size_t pos = definitionSplited[i].find('@');
-		if (pos != std::string::npos) {
-			std::string test = _getDefinitions(definitionSplited[i]);
-			ele_path_list.push_back(test);
+	if(definitionSplited.size() > 0){
+		for (int i = 0; i < definitionSplited.size(); i++) {
+			std::size_t pos = definitionSplited[i].find('@');	
+			if (pos != std::string::npos) {
+				std::string test = _getDefinitions(definitionSplited[i]);
+				ele_path_list.push_back(test);
+			}
+			else {
+				ele_path_list.push_back(definitionSplited[i]);
+			}
 		}
-		else {
-			ele_path_list.push_back(definitionSplited[i]);
+	}
+	else{
+		ele_path_list.push_back(ele_path);
+	}
+	
+	return joinListWithSeparator(ele_path_list, '/');;
+}
+
+
+std::string ConformPath::_getStringDefinitions(std::string stringParse)
+{
+	std::string stringDef = stringParse;
+	std::vector<std::string> tokens;
+
+    std::stringstream ss(stringParse);
+	std::string token;
+
+	while (std::getline(ss, token, '.') || std::getline(ss, token, '-')) {
+		std::size_t pos = token.find('@');
+		if (pos != std::string::npos) {
+			std::string key_def = _getDefinitions(token);
+			stringDef = removePatternInString(stringDef, token, key_def);
 		}
 	}
 
-	return joinListWithSeparator(ele_path_list, '/');;
+	return stringDef;
 }

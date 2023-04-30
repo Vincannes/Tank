@@ -108,6 +108,7 @@ std::string TemplatePath::apply_fields(std::map<std::string, std::string> fields
 		}
 		
 	}
+	// missings multiple fields ?
 	if(fieldsMissing.size() > 0) throw TankApplyFieldsTemplateError(getName(), getDefinition(), fieldsMissing);
 	return result;
 }

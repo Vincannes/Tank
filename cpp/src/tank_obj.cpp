@@ -11,12 +11,20 @@
 
 // namespace py = pybind11;
 
-Tank::Tank(std::string _templatePathsString, std::string _templateKeysString)
+Tank::Tank(std::string _templatePathsString, std::string _templateKeysString, std::string _templateStringsString)
 {
-    this->pathsdict            = generatePathsDictionnaryFromString(_templatePathsString);
     this->keydict              = generateKeysDictionnaryFromString(_templateKeysString);
+    this->pathsdict            = generatePathsDictionnaryFromString(_templatePathsString);
+    this->stringsdict          = generateStringsDictionnaryFromString(_templateStringsString);
+
+	// Merge StringsDict with PathsDict
+	for (const auto& kvp : this->stringsdict["strings"]) {
+        this->pathsdict["paths"].insert(kvp);
+    }
+	
     this->_allKeys             = dictOfAllKeys();
     this->_templates           = _getTemplates();
+
 }
 
 std::map<std::string, TemplatePath> Tank::getTemplates()
@@ -114,7 +122,6 @@ std::map<std::string, TemplateKey*> Tank::dictOfAllKeys()
 
 	for (auto outerIt = this->keydict["keys"].begin(); outerIt != this->keydict["keys"].end(); ++outerIt) {
 
-		// bool isType;
 		bool hasAlias;
 		bool isDefault;
 		std::string aliasKey = "";
