@@ -11,35 +11,26 @@
 
 
 int main() {
-	// std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> keydict;
-	// std::map<std::string, std::map<std::string, std::string>> pathsdict;
+
 	std::map<std::string, std::string> fields;
 	fields["dir"] = "test";
 	fields["Shot"] = "sh_030";
 	fields["Task"] = "cmp";
 	fields["version"] = "1";
-	fields["testd"] = "1";
-	// fields["Root"] = "bleu";
-
-	// keydict["keys"]["Root"]["type"] = "str";
-	// keydict["keys"]["Shot"]["type"] = "str";
-	// keydict["keys"]["Task"]["type"] = "str";
-	// keydict["keys"]["dir"]["type"] = "str";
-	// keydict["keys"]["version"]["type"] = "int";
-	// keydict["keys"]["version"]["default"] = "1";
-	// keydict["keys"]["version"]["format_spec"] = "03";
-
-	// pathsdict["paths"]["rootDir"]     = "C";
-	// pathsdict["paths"]["desk"]        = "@rootDir\\{dir}";
-	// pathsdict["paths"]["nuke"]        = "@test\\nuke\\{Shot}-{Task}-base-v{version}.nk";
-	// pathsdict["paths"]["test"]        = "@desk\\{Shot}\\{Task}";
-	// pathsdict["paths"]["test_diff"]   = "@desk\\nuke\\{Shot}-{Task}-base-v{version}.nk";
+	fields["Sequence"] = "sh";
+	fields["render_source"] = "nk";
+	// fields["SEQ"] = "####";
+	fields["write_node"] = "out";
+	fields["variant"] = "base";
+	fields["colorspace"] = "linear";
+	fields["name"] = "sh_030";
+	// fields["ext_render_nuke"] = "exr";
 
 	std::string keysOLD  = "{'Root' : {'type': 'str'}, 'dir' : {'type': 'str'}, 'Shot' : {'type': 'str', 'choices':['sh_030', 'sh_040']}, 'version' : {'alias':'version', 'type': 'int', 'default': '1', 'format_spec: '03'}, 'Task' : {'type': 'str', 'default': 'aa'}";
 	std::string pathsOLD = "{'rootDir': 'D:\\Desk\\python\\Tank\\tests\\project', 'desk': '@rootDir\\{dir}', 'test': '@desk\\{Shot}\\{Task}', 'nuke': '@test\\nuke\\{Shot}-{Task}-base-v{version}.nk', 'test_diff': '@desk\\nuke\\{Shot}-{Task}-base-v{version}.nk'}";
 	
-	std::string keys = "'ext_render_nuke':{'type':'str', 'choices':['jpg', 'exr']}, 'SEQ':{'type':'str', 'default':'####'},'colorspace':{'type': 'str'},'name':{'type': 'str'},  'Shot':{'type': 'str'},'version':{'type': 'int', 'default': '1'}" \
-	                   "'variant':{'type': 'str', 'default': 'base'},'render_source':{'type': 'str'},'write_node':{'type': 'str'},'Sequence':{'type': 'str'}, 'Task' : {'type': 'str', 'default': 'aa'}";
+	std::string keys = "{'ext_render_nuke':{'type':'str', 'default':'exr', 'choices':['jpg', 'exr']}, 'SEQ':{'type':'str', 'default':'####'}, 'colorspace':{'type': 'str', 'type': 'str'}, 'Shot':{'type': 'str'}, 'version':{'type': 'int', 'default': '1'}, 'variant':{'type': 'str', 'default': 'base'},"\
+					   " 'render_source':{'type': 'str', 'default':'base'}, 'write_node':{'type': 'str'}, 'Sequence':{'type': 'str'}, 'Task' : {'type': 'str', 'default': 'roto'}, 'name':{'type':'str'}}";
 	std::string paths = "{'rootDir': 'D:/Desk/python/Tank/tests/project','sequence_root':'@rootDir/{Sequence}', 'shot_root':'@sequence_root/{Shot}'," \
 	                    "'shot_task_root':'@shot_root/{Task}','Shot_Image_WorkArea':'@shot_task_root/image/wip'," \
 						"'generic_image_dirname_nuke':'{name}-{Task}-{variant}-{render_source}-{write_node}-v{version}-{colorspace}-{ext_render_nuke}',"\
@@ -54,18 +45,18 @@ int main() {
 	keysDict  = generateKeysDictionnaryFromString(keys);
 	strsDict  = generateStringsDictionnaryFromString(strs);
 
-	std::cout << "Strings" << std::endl;
-	for (const auto& key : strsDict) {
-        std::cout << key.first << ":" << key.second << std::endl;
-	}
-	std::cout << " " << std::endl;
+	// std::cout << "Strings" << std::endl;
+	// for (const auto& key : strsDict) {
+    //     std::cout << key.first << ":" << key.second << std::endl;
+	// }
+	// std::cout << " " << std::endl;
 
-	std::cout << "Paths" << std::endl;
-	for (const auto& key : pathsDict) {
-        std::cout << key.first << ":" << key.second << std::endl;
-	}
-	std::cout << " " << std::endl;
-
+	// std::cout << "Paths" << std::endl;
+	// for (const auto& key : pathsDict) {
+    //     std::cout << key.first << ":" << key.second << std::endl;
+	// }
+	// std::cout << " " << std::endl;
+	std::cout << "" << std::endl;
 	std::cout << "Keys" << std::endl;
 	for (const auto& key : keysDict) {
         std::cout << key.first << ":" << std::endl;
@@ -103,11 +94,17 @@ int main() {
 
 	std::cout << "" << std::endl;
 	TemplatePath nuke_tpl = templates["Shot_NukeRender_Work_Sequence"];
-	// std::string testpath = nuke_tpl.apply_fields(fields);
-	// std::cout << "testpath" << std::endl;
-	// std::cout << testpath << std::endl;
 	std::cout << "definition" << std::endl;
 	std::cout << nuke_tpl.getDefinition() << std::endl;
+	// std::cout << "" << std::endl;
+	// std::vector<std::string> test = nuke_tpl.getOrderedKeys();
+	// for(int i=0; i<test.size(); i++){	
+	// 	std::cout << test[i] << std::endl;
+	// }
+	std::cout << "" << std::endl;
+	std::cout << "testpath" << std::endl;
+	std::string testpath = nuke_tpl.apply_fields(fields);
+	std::cout << testpath << std::endl;
 
 	// std::cout << "" << std::endl;
 	// std::vector<std::string> test = nuke_tpl.missingKeys(fields);

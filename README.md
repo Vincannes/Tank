@@ -8,7 +8,7 @@ Convert mixing database from a software to another.
 
 ## Build cpp
 ```bash
-cd /d D:\Desk\python\Tank\cpp\src & cls & g++ *.cpp -o main & main.exe 
+cd /d D:\Desk\python\Tank\cpp\src 
 cls & g++ *.cpp -o main & main.exe 
 ```
 

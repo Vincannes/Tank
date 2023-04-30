@@ -63,50 +63,56 @@ std::string TemplatePath::apply_fields(std::map<std::string, std::string> fields
 
 	while ((pos = result.find("%(", pos)) != std::string::npos) {
 		std::string::size_type end_pos = result.find(")", pos);
+
 		if (end_pos != std::string::npos) {
 			std::string value;
 			std::string key = result.substr(pos + 2, end_pos - pos - 2);
+			std::string oldSubstring = "%(" + key +")";
 			auto it = fields.find(key);
 			bool isMissingKey = false;
-			if (it != fields.end()) {
 
+			// If find key from definition inside fields parameter
+			if (it != fields.end()) { 
+
+				// Check if key is part of missing_keys parameter
 				for (const auto& str : missing_keys) {
 					if (str == key) {
 						isMissingKey = true;
 						break;
 					}
 				}
-				auto _key_from_token = this->_all_keys.find(it->first);
-				TemplateKey* ptr = _key_from_token->second; // Recuperer le pointeur de la valeur
-				// Effectuer une conversion dynamique pour accéder aux membres specifiques
-				if(!isMissingKey){
-					if (StringTemplateKey* d1 = dynamic_cast<StringTemplateKey*>(ptr)) {
-						d1->setValue(it->second);
-						value = d1->getValue();
 
-					} else if (IntegerTemplateKey* d2 = dynamic_cast<IntegerTemplateKey*>(ptr)) {
-						d2->setValue(it->second);
-						value = d2->getValue();
-					} else {
-						value = "Unknow";
-					}
+				// If not key in missing_fields parameter 
+				if(!isMissingKey){
+					value = _getValueFromKeyObject(it->first, it->second);
 				}else{
 					value = it->second;
 				}
-				result.replace(pos, end_pos - pos + 1, value);
+				result = removePatternInString(result, oldSubstring, value);
 				pos += it->second.length();
 			}
+
+			// Key not find in fields
 			else {
-				// La cle n'a pas ete trouvee dans le dictionnaire
 				pos = end_pos + 1;
-				fieldsMissing.push_back(key);
+				value = _getValueFromKeyObject(key, "");
+				// If default value inside Key Template
+				if(!value.empty()){
+					size_t _pos = result.find(oldSubstring);
+					if (_pos != std::string::npos) { 
+						result = removePatternInString(result, oldSubstring, value);
+					}
+				}
+				// If anything find
+				else{
+					fieldsMissing.push_back(key);
+				}
 			}
 		}
 		else {
 			// Parenthese fermante manquante
 			pos = pos + 2;
 		}
-		
 	}
 	// missings multiple fields ?
 	if(fieldsMissing.size() > 0) throw TankApplyFieldsTemplateError(getName(), getDefinition(), fieldsMissing);
@@ -124,7 +130,7 @@ std::map<std::string, std::string> TemplatePath::getFields(std::string path)
 
 	// return dictionnaire vide si longueurs differents
 	if (path_splited.size() != definition_splited.size()) {
-		// std::cout << "No fields find for this template " << std::endl; // TODO Raise error gere
+		std::cout << "No fields find for this template " << std::endl; // TODO Raise error gere
 		return fields;
 	}
 
@@ -321,4 +327,34 @@ std::vector<std::string> TemplatePath::getTokensFromPath(std::string path) {
 	return words;
 }
 
+
+// PRIVATE FUNCTIONS
+std::string TemplatePath::_getValueFromKeyObject(std::string tokenKey, std::string fieldValue)
+{
+	// TODO si cle existe pas dans field Input mais default value
+
+	std::string value;
+
+	// Recuperer le pointeur de la valeur
+	auto _key_from_token = this->_all_keys.find(tokenKey);
+	TemplateKey* tkPtr = _key_from_token->second; 
+
+	// Is missing tkPtr ? 
+	if (tkPtr == nullptr) {
+	}
+	else{}
+
+	if (StringTemplateKey* d1 = dynamic_cast<StringTemplateKey*>(tkPtr)) {
+		d1->setValue(fieldValue);
+		value = d1->getValue();
+	} else if (IntegerTemplateKey* d2 = dynamic_cast<IntegerTemplateKey*>(tkPtr)) {
+		d2->setValue(fieldValue);
+		value = d2->getValue();
+
+	} else {
+		value = "Unknow";
+	}
+
+	return value;
+}
 

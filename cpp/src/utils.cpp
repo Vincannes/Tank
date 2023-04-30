@@ -42,12 +42,6 @@ std::vector<std::string> splitPath(const std::string& path) {
 	return result;
 }
 
-std::string removeSpaceFromString(std::string str)
-{
-	std::size_t firstNonSpaceVal = str.find_first_not_of(" ");
-	return str.erase(0, firstNonSpaceVal);
-}
-
 std::string dirNameFromString(const std::string path)
 {
 	std::filesystem::path filePath(path);
@@ -75,9 +69,7 @@ std::vector<std::string> pathListDir(std::string directory)
 
 std::string removeSpaceInString(std::string str)
 {
-	str.erase(std::remove_if(str.begin(), str.end(), [](char c) {
-		return std::isspace(static_cast<unsigned char>(c));
-	}), str.end());
+	str.erase(std::remove(str.begin(), str.end(), ' '), str.end());
 	return str;
 }
 
@@ -104,7 +96,7 @@ std::pair<std::string, std::string> getKeyValueFromString(std::string pathToPars
         key.erase(0, 1);
     }
 	value = removePatternInString(value, "'", "");
-	value = removeSpaceFromString(value);
+	value = removeSpaceInString(value);
     return std::make_pair(key, value);
 }
 
@@ -139,10 +131,11 @@ std::map<std::string, std::map<std::string, std::string>> generateKeysDictionnar
 	std::map<std::string, std::map<std::string, std::string>> keysDict;
 
 	// Supprime les accolades de la chaîne de caractères
+	templatesStr = removeSpaceInString(templatesStr);
     templatesStr.erase(0, 1);
     templatesStr.erase(templatesStr.size() - 1, 1);
     
-	std::regex regex_splited("\\}, '"); // splited at }, '
+	std::regex regex_splited("\\},'"); // splited at }, '
 	std::sregex_token_iterator iter(templatesStr.begin(), templatesStr.end(), regex_splited, -1);
     std::sregex_token_iterator ende;
 
@@ -180,8 +173,8 @@ std::map<std::string, std::map<std::string, std::string>> generateKeysDictionnar
 			std::string valValue = item.substr(colonPosValue+1);
 			keyValue.erase(std::remove(keyValue.begin(), keyValue.end(), '\''), keyValue.end()); // Remove ' from string
 			valValue.erase(std::remove(valValue.begin(), valValue.end(), '\''), valValue.end()); // Remove ' from string
-			keyValue = removeSpaceFromString(keyValue);
-			valValue = removeSpaceFromString(valValue);
+			keyValue = removeSpaceInString(keyValue);
+			valValue = removeSpaceInString(valValue);
 			keysDict[key][keyValue] = valValue;
 		}
 

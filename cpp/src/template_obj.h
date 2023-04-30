@@ -44,6 +44,7 @@ private:
 	std::vector<std::string> _get_ordered_keys() const;
 	std::vector<std::string> getTokensFromPath(std::string);
 	std::map<std::string, TemplateKey*> _keys_from_definition();
+	std::string _getValueFromKeyObject(std::string, std::string);
 
 	
 };

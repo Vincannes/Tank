@@ -48,7 +48,10 @@ StringTemplateKey::StringTemplateKey(std::string name, std::string default_value
 
 void StringTemplateKey::setValue(std::string value)
 {
-	if(this->_choices.size() > 0){
+	if(value.empty() && !getDefault().empty()){
+		this->_value = getDefault();
+	}
+	else if(this->_choices.size() > 0){
 		this->_value = "";
 		for(int i=0; i < this->_choices.size(); i++){
 			std::string choice_value =  this->_choices[i];
@@ -82,7 +85,14 @@ IntegerTemplateKey::IntegerTemplateKey(std::string name, std::string default_val
 
 void IntegerTemplateKey::setValue(std::string value)
 {
-	this->_value = _formatValue(value);
+	std::string _value;
+	if(!getDefault().empty()){
+		_value = getDefault();
+	}
+	else{
+		_value = value;
+	}
+	this->_value = _formatValue(_value);
 }
 
 std::string IntegerTemplateKey::getValue()

@@ -13,7 +13,6 @@ std::string removePatternInString(std::string, std::string, std::string);
 std::string removeSpaceInString(std::string);
 std::string matchSeparator(std::string);
 std::string dirNameFromString(const std::string);
-std::string removeSpaceFromString(std::string);
 std::vector<std::string> splitPath(const std::string&);
 std::vector<std::string> pathListDir(std::string);
 std::string joinListWithSeparator(std::vector<std::string>, char);
