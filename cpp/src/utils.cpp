@@ -108,9 +108,9 @@ std::pair<std::string, std::string> getKeyValueFromString(std::string pathToPars
     return std::make_pair(key, value);
 }
 
-std::map<std::string, std::map<std::string, std::string>> generatePathsDictionnaryFromString(std::string templatesStr){
+std::map<std::string, std::string> generatePathsDictionnaryFromString(std::string templatesStr){
 
-    std::map<std::string, std::map<std::string, std::string>> pathsDict;
+    std::map<std::string, std::string> pathsDict;
 
     // Supprime les accolades de la chaîne de caractères
     templatesStr.erase(0, 1);
@@ -122,7 +122,7 @@ std::map<std::string, std::map<std::string, std::string>> generatePathsDictionna
         std::string pair = templatesStr.substr(prev, pos - prev);
         auto result = getKeyValueFromString(pair);
 		std::string key = removePatternInString(result.first, "'", "");
-        pathsDict["paths"][key] = result.second;
+        pathsDict[key] = result.second;
         prev = pos + 1;
     }
 
@@ -130,13 +130,13 @@ std::map<std::string, std::map<std::string, std::string>> generatePathsDictionna
     std::string pair = templatesStr.substr(prev);
     auto result = getKeyValueFromString(pair);
 	std::string last_key = removePatternInString(result.first, "'", "");
-    pathsDict["paths"][last_key] = result.second;
+    pathsDict[last_key] = result.second;
     return pathsDict;
 }
 
-std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> generateKeysDictionnaryFromString(std::string templatesStr){
+std::map<std::string, std::map<std::string, std::string>> generateKeysDictionnaryFromString(std::string templatesStr){
     
-	std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> keysDict;
+	std::map<std::string, std::map<std::string, std::string>> keysDict;
 
 	// Supprime les accolades de la chaîne de caractères
     templatesStr.erase(0, 1);
@@ -182,21 +182,21 @@ std::map<std::string, std::map<std::string, std::map<std::string, std::string>>>
 			valValue.erase(std::remove(valValue.begin(), valValue.end(), '\''), valValue.end()); // Remove ' from string
 			keyValue = removeSpaceFromString(keyValue);
 			valValue = removeSpaceFromString(valValue);
-			keysDict["keys"][key][keyValue] = valValue;
+			keysDict[key][keyValue] = valValue;
 		}
 
 		// add choices if exist as string
 		std::string choice = joinListWithSeparator(choices, ',');
 		if(!choice.empty()){
-			keysDict["keys"][key]["choices"] = choice;
+			keysDict[key]["choices"] = choice;
 		}
 	}
     return keysDict;
 }
 
-std::map<std::string, std::map<std::string, std::string>> generateStringsDictionnaryFromString(std::string templatesStr)
+std::map<std::string, std::string> generateStringsDictionnaryFromString(std::string templatesStr)
 {
-	std::map<std::string, std::map<std::string, std::string>> stringsOutput;
+	std::map<std::string, std::string> stringsOutput;
 	// Supprime les accolades de la chaîne de caractères
     templatesStr.erase(0, 1);
     templatesStr.erase(templatesStr.size() - 1, 1);
@@ -207,7 +207,7 @@ std::map<std::string, std::map<std::string, std::string>> generateStringsDiction
         std::string pair = templatesStr.substr(prev, pos - prev);
         auto result      = getKeyValueFromString(pair);
 		std::string key  = removePatternInString(result.first, "'", "");
-        stringsOutput["strings"][key] = result.second;
+        stringsOutput[key] = result.second;
         prev = pos + 1;
     }
 
@@ -216,7 +216,7 @@ std::map<std::string, std::map<std::string, std::string>> generateStringsDiction
 		std::string pair     = templatesStr.substr(prev);
 		auto result          = getKeyValueFromString(pair);
 		std::string last_key = removePatternInString(result.first, "'", "");
-		stringsOutput["strings"][last_key] = result.second;
+		stringsOutput[last_key] = result.second;
 	}
 	catch(const std::exception& e) {}
 	return stringsOutput;

@@ -11,8 +11,8 @@
 
 
 int main() {
-	std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> keydict;
-	std::map<std::string, std::map<std::string, std::string>> pathsdict;
+	// std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> keydict;
+	// std::map<std::string, std::map<std::string, std::string>> pathsdict;
 	std::map<std::string, std::string> fields;
 	fields["dir"] = "test";
 	fields["Shot"] = "sh_030";
@@ -21,19 +21,19 @@ int main() {
 	fields["testd"] = "1";
 	// fields["Root"] = "bleu";
 
-	keydict["keys"]["Root"]["type"] = "str";
-	keydict["keys"]["Shot"]["type"] = "str";
-	keydict["keys"]["Task"]["type"] = "str";
-	keydict["keys"]["dir"]["type"] = "str";
-	keydict["keys"]["version"]["type"] = "int";
-	keydict["keys"]["version"]["default"] = "1";
-	keydict["keys"]["version"]["format_spec"] = "03";
+	// keydict["keys"]["Root"]["type"] = "str";
+	// keydict["keys"]["Shot"]["type"] = "str";
+	// keydict["keys"]["Task"]["type"] = "str";
+	// keydict["keys"]["dir"]["type"] = "str";
+	// keydict["keys"]["version"]["type"] = "int";
+	// keydict["keys"]["version"]["default"] = "1";
+	// keydict["keys"]["version"]["format_spec"] = "03";
 
-	pathsdict["paths"]["rootDir"]     = "C";
-	pathsdict["paths"]["desk"]        = "@rootDir\\{dir}";
-	pathsdict["paths"]["nuke"]        = "@test\\nuke\\{Shot}-{Task}-base-v{version}.nk";
-	pathsdict["paths"]["test"]        = "@desk\\{Shot}\\{Task}";
-	pathsdict["paths"]["test_diff"]   = "@desk\\nuke\\{Shot}-{Task}-base-v{version}.nk";
+	// pathsdict["paths"]["rootDir"]     = "C";
+	// pathsdict["paths"]["desk"]        = "@rootDir\\{dir}";
+	// pathsdict["paths"]["nuke"]        = "@test\\nuke\\{Shot}-{Task}-base-v{version}.nk";
+	// pathsdict["paths"]["test"]        = "@desk\\{Shot}\\{Task}";
+	// pathsdict["paths"]["test_diff"]   = "@desk\\nuke\\{Shot}-{Task}-base-v{version}.nk";
 
 	std::string keysOLD  = "{'Root' : {'type': 'str'}, 'dir' : {'type': 'str'}, 'Shot' : {'type': 'str', 'choices':['sh_030', 'sh_040']}, 'version' : {'alias':'version', 'type': 'int', 'default': '1', 'format_spec: '03'}, 'Task' : {'type': 'str', 'default': 'aa'}";
 	std::string pathsOLD = "{'rootDir': 'D:\\Desk\\python\\Tank\\tests\\project', 'desk': '@rootDir\\{dir}', 'test': '@desk\\{Shot}\\{Task}', 'nuke': '@test\\nuke\\{Shot}-{Task}-base-v{version}.nk', 'test_diff': '@desk\\nuke\\{Shot}-{Task}-base-v{version}.nk'}";
@@ -47,30 +47,33 @@ int main() {
 						"'Shot_NukeRender_Work_Sequence':'@Shot_NukeRender_Work_Generic_Name/@nuke_image_name.{SEQ}.{ext_render_nuke}'";
 	std::string strs = "{'nuke_image_name':'{name}-{Task}-{variant}-{render_source}-{write_node}-v{version}-{colorspace}', 'generic_version_name':'{name}-{Task}-{variant}-v{version}'}";
 
-	std::map<std::string, std::map<std::string, std::string>> strsDict;
-	std::map<std::string, std::map<std::string, std::string>> pathsDict;
-	std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> keysDict;
-	// pathsDict = generatePathsDictionnaryFromString(paths);
-	// keysDict  = generateKeysDictionnaryFromString(keys);
-	// strsDict  = generateStringsDictionnaryFromString(strs);
+	std::map<std::string, std::string> strsDict;
+	std::map<std::string, std::string> pathsDict;
+	std::map<std::string, std::map<std::string, std::string>> keysDict;
+	pathsDict = generatePathsDictionnaryFromString(paths);
+	keysDict  = generateKeysDictionnaryFromString(keys);
+	strsDict  = generateStringsDictionnaryFromString(strs);
 
-	// for (const auto& key : strsDict["strings"]) {
-    //     std::cout << key.first << ":" << key.second << std::endl;
-	// }
-	// std::cout << " " << std::endl;
+	std::cout << "Strings" << std::endl;
+	for (const auto& key : strsDict) {
+        std::cout << key.first << ":" << key.second << std::endl;
+	}
+	std::cout << " " << std::endl;
 
-	// for (const auto& key : pathsDict["paths"]) {
-    //     std::cout << key.first << ":" << key.second << std::endl;
-	// }
-	// std::cout << " " << std::endl;
+	std::cout << "Paths" << std::endl;
+	for (const auto& key : pathsDict) {
+        std::cout << key.first << ":" << key.second << std::endl;
+	}
+	std::cout << " " << std::endl;
 
-	// for (const auto& key : keysDict["keys"]) {
-    //     std::cout << key.first << ":" << std::endl;
-    //     for (const auto& subkey : key.second) {
-    //         std::cout << "    " << subkey.first << ":" << subkey.second << std::endl;
-    //     }
-	// }
-	// std::cout << "    " << std::endl;
+	std::cout << "Keys" << std::endl;
+	for (const auto& key : keysDict) {
+        std::cout << key.first << ":" << std::endl;
+        for (const auto& subkey : key.second) {
+            std::cout << "    " << subkey.first << ":" << subkey.second << std::endl;
+        }
+	}
+	std::cout << "    " << std::endl;
 
 
 	// std::string name = "version";

@@ -1,6 +1,6 @@
 #include "conform_path.h"
 
-ConformPath::ConformPath(std::map<std::string, std::map<std::string, std::string>> templatePaths)
+ConformPath::ConformPath(std::map<std::string, std::string> templatePaths)
 {
 	this->_templatePaths = templatePaths;
 }
@@ -40,7 +40,7 @@ std::string ConformPath::buildDefinitionPath(std::string path) {
 std::string ConformPath::_getDefinitions(std::string element) {
 
 	std::string element_key_name = element.erase(element.find("@"), 1);
-	std::string ele_path = this->_templatePaths["paths"][element_key_name];
+	std::string ele_path = this->_templatePaths[element_key_name];
 
 	std::vector<std::string> ele_path_list;
 	std::vector<std::string> definitionSplited = splitPath(ele_path);

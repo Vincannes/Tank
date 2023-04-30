@@ -18,8 +18,8 @@ Tank::Tank(std::string _templatePathsString, std::string _templateKeysString, st
     this->stringsdict          = generateStringsDictionnaryFromString(_templateStringsString);
 
 	// Merge StringsDict with PathsDict
-	for (const auto& kvp : this->stringsdict["strings"]) {
-        this->pathsdict["paths"].insert(kvp);
+	for (const auto& kvp : this->stringsdict) {
+        this->pathsdict.insert(kvp);
     }
 	
     this->_allKeys             = dictOfAllKeys();
@@ -72,7 +72,7 @@ std::vector<std::string> Tank::getAbstractPathsFromTemplate(TemplatePath templat
 		local_fields[key] =  ".*";
 	}
 	std::string outputPattern     = templatePath.apply_fields(local_fields, missing_keys);
-	std::string directoryToSearch = this->pathsdict["paths"].at("rootDir");
+	std::string directoryToSearch = this->pathsdict.at("rootDir");
 	std::vector<std::string> abstract_paths = listFilesFromPathPattern(directoryToSearch, outputPattern);
 	return abstract_paths;
 }
@@ -82,7 +82,7 @@ std::vector<TemplateKey> Tank::listOfAllKeys()
 {
 	std::vector <TemplateKey> keysList{};
 
-	for (auto outerIt = this->keydict["keys"].begin(); outerIt != this->keydict["keys"].end(); ++outerIt) {
+	for (auto outerIt = this->keydict.begin(); outerIt != this->keydict.end(); ++outerIt) {
 
 		bool isType;
 		bool isDefault;
@@ -120,7 +120,7 @@ std::map<std::string, TemplateKey*> Tank::dictOfAllKeys()
 {
 	std::map<std::string, TemplateKey*> keysList;
 
-	for (auto outerIt = this->keydict["keys"].begin(); outerIt != this->keydict["keys"].end(); ++outerIt) {
+	for (auto outerIt = this->keydict.begin(); outerIt != this->keydict.end(); ++outerIt) {
 
 		bool hasAlias;
 		bool isDefault;
@@ -183,9 +183,9 @@ std::map<std::string, TemplatePath> Tank::_getTemplates(){
 	ConformPath _conform_path(this->pathsdict);
 	std::map<std::string, TemplatePath> templates;
 
-	for (auto outerIt = this->pathsdict["paths"].begin(); outerIt != this->pathsdict["paths"].end(); ++outerIt) {
+	for (auto outerIt = this->pathsdict.begin(); outerIt != this->pathsdict.end(); ++outerIt) {
 		std::string template_name = outerIt->first;
-		std::string template_path = this->pathsdict["paths"][template_name];
+		std::string template_path = this->pathsdict[template_name];
 		std::string path_conformed = _conform_path.buildDefinitionPath(template_path);
 		TemplatePath templateObj(template_name, this->_allKeys, path_conformed);
 		templates.insert(std::make_pair(template_name, templateObj));
