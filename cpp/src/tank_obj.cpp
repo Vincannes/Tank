@@ -33,6 +33,12 @@ std::map<std::string, TemplatePath> Tank::getTemplates()
 }
 
 
+std::map<std::string, TemplateKey*> Tank::getAllKeys()
+{
+	return this->_allKeys;
+}
+
+
 TemplatePath Tank::templateFromPath(std::string path)
 {
 	std::vector<TemplatePath> matched_templates = templatesFromPath(path);
@@ -78,52 +84,14 @@ std::vector<std::string> Tank::getAbstractPathsFromTemplate(TemplatePath templat
 }
 
 
-std::vector<TemplateKey> Tank::listOfAllKeys()
-{
-	std::vector <TemplateKey> keysList{};
-
-	for (auto outerIt = this->keydict.begin(); outerIt != this->keydict.end(); ++outerIt) {
-
-		bool isType;
-		bool isDefault;
-		std::string isTypeValue = "";
-		std::string isDefaultValue = "";
-		std::string name = outerIt->first;
-
-		for (auto innerIt = outerIt->second.begin(); innerIt != outerIt->second.end(); ++innerIt) {
-			std::string key = innerIt->first;
-			std::string value = innerIt->second;
-			if (key == "type") {
-				isType = true;
-				isTypeValue = value;
-			}
-			else if (key == "default") {
-				isDefault = true;
-				isDefaultValue = value;
-			}
-		}
-		if (isTypeValue == "str") {
-			StringTemplateKey s1(name, isDefaultValue);
-			keysList.push_back(s1);
-		}
-		if (isTypeValue == "int") {
-			IntegerTemplateKey t1(name, isDefaultValue, "");
-			keysList.push_back(t1);
-		}
-	}
-
-	return keysList;
-}
-
-
 std::map<std::string, TemplateKey*> Tank::dictOfAllKeys()
 {
 	std::map<std::string, TemplateKey*> keysList;
 
 	for (auto outerIt = this->keydict.begin(); outerIt != this->keydict.end(); ++outerIt) {
 
-		bool hasAlias;
-		bool isDefault;
+		bool hasAlias = false;
+		bool isDefault = false;
 		std::string aliasKey = "";
 		std::string isTypeValue = "";
 		std::string isDefaultValue = "";
@@ -172,6 +140,10 @@ std::map<std::string, TemplateKey*> Tank::dictOfAllKeys()
 			IntegerTemplateKey* t1 = new IntegerTemplateKey(name, isDefaultValue, hasFormatSpec);
 			keysList[name] = t1;
 		}
+		if (isTypeValue == "sequence") {
+			SequenceTemplateKey* sq1 = new SequenceTemplateKey(name, hasFormatSpec);
+			keysList[name] = sq1;
+		}	
 	}
 
 	return keysList;
@@ -200,15 +172,16 @@ std::map<std::string, TemplatePath> Tank::_getTemplates(){
 //     m.doc() = "Tank module";
 
 //     py::class_<Tank>(m, "Tank")
-//         .def(py::init<std::string, std::string>())
+//         .def(py::init<std::string, std::string, std::string>())
 //         .def("templates", &Tank::getTemplates, "Get all templates")
 //         .def("templates_from_path", &Tank::templatesFromPath)
 //         .def("template_from_path", &Tank::templateFromPath)
 //         .def("abstract_paths_from_template", &Tank::getAbstractPathsFromTemplate)
+//         .def("keys", &Tank::getAllKeys)
 //         ;
 
 // 	py::class_<ConformPath>(m, "ConformPath")
-// 		.def(py::init<std::map<std::string, std::map<std::string, std::string>>>());
+// 		.def(py::init<std::map<std::string, std::string>>());
 
 // 	py::class_<TemplatePath>(m, "TemplatePath")
 //         .def(py::init<std::string, std::map<std::string, TemplateKey*>, std::string>())
@@ -233,6 +206,6 @@ std::map<std::string, TemplatePath> Tank::_getTemplates(){
 
 // 	py::register_exception<TankMatchingTemplatesError>(m, "TankMatchingTemplatesError");
 // 	py::register_exception<TankApplyFieldsTemplateError>(m, "TankApplyFieldsTemplateError");
-// 	py::register_exception<TankTempalteValueWrongValue>(m, "TankTempalteValueWrongValue");
+// 	py::register_exception<TankTemplateWrongValue>(m, "TankTemplateWrongValue");
 
 // }

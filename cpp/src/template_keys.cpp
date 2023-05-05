@@ -60,7 +60,7 @@ void StringTemplateKey::setValue(std::string value)
 			}
 		}
 		if(this->_value.empty()){
-			throw TankTempalteValueWrongValue(value, this->_choices);
+			throw TankTemplateWrongValue(getName(), value, this->_choices);
 		}
 	}
 	else{
@@ -79,7 +79,7 @@ std::string StringTemplateKey::getValue()
 
 IntegerTemplateKey::IntegerTemplateKey(std::string name, std::string default_value, std::string format_spec="2") noexcept : TemplateKey(name, default_value) //std::string format_spec
 {
-	// this->_value = default_value;
+
 	this->_format_spec = format_spec;
 }
 
@@ -108,3 +108,23 @@ std::string IntegerTemplateKey::_formatValue(std::string value)
     std::string formattedString = ss.str();
 	return formattedString;
 }
+
+
+// ######## SequenceTemplateKey ######## 
+
+SequenceTemplateKey::SequenceTemplateKey(std::string name, std::string format_spec="4") noexcept : TemplateKey(name, "#") //std::string format_spec
+{
+	// this->_value = default_value;
+	this->_format_spec = format_spec;
+}
+
+std::string SequenceTemplateKey::getValue()
+{
+	std::string result;
+	int num = std::stoi(this->_format_spec);
+	for (int i = 0; i < num; i++) {
+        result.append(this->_value);
+    }
+	return result;
+}
+

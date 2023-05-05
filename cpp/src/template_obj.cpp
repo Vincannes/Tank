@@ -350,7 +350,8 @@ std::string TemplatePath::_getValueFromKeyObject(std::string tokenKey, std::stri
 	} else if (IntegerTemplateKey* d2 = dynamic_cast<IntegerTemplateKey*>(tkPtr)) {
 		d2->setValue(fieldValue);
 		value = d2->getValue();
-
+	} else if (SequenceTemplateKey* d2 = dynamic_cast<SequenceTemplateKey*>(tkPtr)) {
+		value = d2->getValue();
 	} else {
 		value = "Unknow";
 	}

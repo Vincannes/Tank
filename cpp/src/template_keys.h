@@ -61,3 +61,18 @@ private:
 };
 
 
+class SequenceTemplateKey : public TemplateKey
+{
+
+public:
+
+	SequenceTemplateKey(std::string name, std::string format_spec) noexcept;
+	std::string getValue();
+	void setValue(std::string);
+
+private:
+	// std::string _value;
+	std::string _format_spec;
+	std::string _formatValue(std::string);
+};
+
