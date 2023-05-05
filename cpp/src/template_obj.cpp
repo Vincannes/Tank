@@ -4,15 +4,14 @@
 #include <vector>
 #include <sstream>
 #include <iostream>
-#include <filesystem>
-#include <unordered_map>
 
 #include "utils.h"
+#include "exception.h"
 #include "template_obj.h"
 #include "conform_path.h"
 #include "template_keys.h"
 
-TemplatePath::TemplatePath(std::string name, std::map<std::string, TemplateKey> keys, std::string definition)
+TemplatePath::TemplatePath(std::string name, std::map<std::string, TemplateKey*> keys, std::string definition)
 {
 	this->_name            = name;
 	this->_all_keys        = keys;
@@ -56,23 +55,58 @@ std::vector<std::string> TemplatePath::getOrderedKeys() const
 
 // MAIN FUNCTIONS
 
-std::string TemplatePath::apply_fields(std::map<std::string, std::string> fields)
+std::string TemplatePath::apply_fields(std::map<std::string, std::string> fields, std::vector<std::string> missing_keys)
 {
 	std::string result = this->_definition;
 	std::string::size_type pos = 0;
+	std::vector<std::string> fieldsMissing;
 
 	while ((pos = result.find("%(", pos)) != std::string::npos) {
-		std::string::size_type end_pos = result.find(')', pos);
+		std::string::size_type end_pos = result.find(")", pos);
+
 		if (end_pos != std::string::npos) {
+			std::string value;
 			std::string key = result.substr(pos + 2, end_pos - pos - 2);
+			std::string oldSubstring = "%(" + key +")";
 			auto it = fields.find(key);
-			if (it != fields.end()) {
-				result.replace(pos, end_pos - pos + 1, it->second);
+			bool isMissingKey = false;
+
+			// If find key from definition inside fields parameter
+			if (it != fields.end()) { 
+
+				// Check if key is part of missing_keys parameter
+				for (const auto& str : missing_keys) {
+					if (str == key) {
+						isMissingKey = true;
+						break;
+					}
+				}
+
+				// If not key in missing_fields parameter 
+				if(!isMissingKey){
+					value = _getValueFromKeyObject(it->first, it->second);
+				}else{
+					value = it->second;
+				}
+				result = removePatternInString(result, oldSubstring, value);
 				pos += it->second.length();
 			}
+
+			// Key not find in fields
 			else {
-				// La cle n'a pas ete trouvee dans le dictionnaire
 				pos = end_pos + 1;
+				value = _getValueFromKeyObject(key, "");
+				// If default value inside Key Template
+				if(!value.empty()){
+					size_t _pos = result.find(oldSubstring);
+					if (_pos != std::string::npos) { 
+						result = removePatternInString(result, oldSubstring, value);
+					}
+				}
+				// If anything find
+				else{
+					fieldsMissing.push_back(key);
+				}
 			}
 		}
 		else {
@@ -80,7 +114,8 @@ std::string TemplatePath::apply_fields(std::map<std::string, std::string> fields
 			pos = pos + 2;
 		}
 	}
-
+	// missings multiple fields ?
+	if(fieldsMissing.size() > 0) throw TankApplyFieldsTemplateError(getName(), getDefinition(), fieldsMissing);
 	return result;
 }
 
@@ -90,12 +125,12 @@ std::map<std::string, std::string> TemplatePath::getFields(std::string path)
 	std::map<std::string, std::string> fields = {};
 
 	// verifier si la longueur du path est le meme que _definition 
-	std::vector<std::string> path_splited = splitPath(path);
+	std::vector<std::string> path_splited       = splitPath(path);
 	std::vector<std::string> definition_splited = splitPath(this->_definition);
 
 	// return dictionnaire vide si longueurs differents
 	if (path_splited.size() != definition_splited.size()) {
-		// std::cout << "No fields find for this template " << std::endl; // TODO Raise error gere
+		std::cout << "No fields find for this template " << std::endl; // TODO Raise error gere
 		return fields;
 	}
 
@@ -249,9 +284,9 @@ std::vector<std::string> TemplatePath::_get_ordered_keys() const
 }
 
 
-std::map<std::string, TemplateKey> TemplatePath::_keys_from_definition()
+std::map<std::string, TemplateKey*> TemplatePath::_keys_from_definition()
 {
-	std::map<std::string, TemplateKey> keys;
+	std::map<std::string, TemplateKey*> keys;
 
 	std::regex re("\\{(.*?)\\}");
 	std::sregex_iterator next(this->_orig_definition.begin(), this->_orig_definition.end(), re);
@@ -292,4 +327,35 @@ std::vector<std::string> TemplatePath::getTokensFromPath(std::string path) {
 	return words;
 }
 
+
+// PRIVATE FUNCTIONS
+std::string TemplatePath::_getValueFromKeyObject(std::string tokenKey, std::string fieldValue)
+{
+	// TODO si cle existe pas dans field Input mais default value
+
+	std::string value;
+
+	// Recuperer le pointeur de la valeur
+	auto _key_from_token = this->_all_keys.find(tokenKey);
+	TemplateKey* tkPtr = _key_from_token->second; 
+
+	// Is missing tkPtr ? 
+	if (tkPtr == nullptr) {
+	}
+	else{}
+
+	if (StringTemplateKey* d1 = dynamic_cast<StringTemplateKey*>(tkPtr)) {
+		d1->setValue(fieldValue);
+		value = d1->getValue();
+	} else if (IntegerTemplateKey* d2 = dynamic_cast<IntegerTemplateKey*>(tkPtr)) {
+		d2->setValue(fieldValue);
+		value = d2->getValue();
+	} else if (SequenceTemplateKey* d2 = dynamic_cast<SequenceTemplateKey*>(tkPtr)) {
+		value = d2->getValue();
+	} else {
+		value = "Unknow";
+	}
+
+	return value;
+}
 

@@ -9,6 +9,7 @@ keys:
     type: str
   version:
     type: int
+    format_spec: "03"
 
 paths:
   rootDir: "D:\\Desk\\python\\Tank\\tests\\project"

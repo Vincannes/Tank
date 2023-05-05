@@ -11,17 +11,31 @@
 
 // namespace py = pybind11;
 
-Tank::Tank(std::string _templatePathsString, std::string _templateKeysString)
+Tank::Tank(std::string _templatePathsString, std::string _templateKeysString, std::string _templateStringsString)
 {
-    this->pathsdict            = generatePathsDictionnaryFromString(_templatePathsString);
     this->keydict              = generateKeysDictionnaryFromString(_templateKeysString);
+    this->pathsdict            = generatePathsDictionnaryFromString(_templatePathsString);
+    this->stringsdict          = generateStringsDictionnaryFromString(_templateStringsString);
+
+	// Merge StringsDict with PathsDict
+	for (const auto& kvp : this->stringsdict) {
+        this->pathsdict.insert(kvp);
+    }
+	
     this->_allKeys             = dictOfAllKeys();
     this->_templates           = _getTemplates();
+
 }
 
 std::map<std::string, TemplatePath> Tank::getTemplates()
 {
     return this->_templates;
+}
+
+
+std::map<std::string, TemplateKey*> Tank::getAllKeys()
+{
+	return this->_allKeys;
 }
 
 
@@ -63,62 +77,27 @@ std::vector<std::string> Tank::getAbstractPathsFromTemplate(TemplatePath templat
 		std::string key = missing_keys[i];
 		local_fields[key] =  ".*";
 	}
-	std::string outputPattern     = templatePath.apply_fields(local_fields);
-	std::string directoryToSearch = this->pathsdict["paths"].at("rootDir");
+	std::string outputPattern     = templatePath.apply_fields(local_fields, missing_keys);
+	std::string directoryToSearch = this->pathsdict.at("rootDir");
 	std::vector<std::string> abstract_paths = listFilesFromPathPattern(directoryToSearch, outputPattern);
 	return abstract_paths;
 }
 
 
-std::vector<TemplateKey> Tank::listOfALlKeys()
+std::map<std::string, TemplateKey*> Tank::dictOfAllKeys()
 {
-	std::vector <TemplateKey> keysList{};
+	std::map<std::string, TemplateKey*> keysList;
 
-	for (auto outerIt = this->keydict["keys"].begin(); outerIt != this->keydict["keys"].end(); ++outerIt) {
+	for (auto outerIt = this->keydict.begin(); outerIt != this->keydict.end(); ++outerIt) {
 
-		bool isType;
-		bool isDefault;
+		bool hasAlias = false;
+		bool isDefault = false;
+		std::string aliasKey = "";
 		std::string isTypeValue = "";
 		std::string isDefaultValue = "";
-		std::string name = outerIt->first;
-
-		for (auto innerIt = outerIt->second.begin(); innerIt != outerIt->second.end(); ++innerIt) {
-			std::string key = innerIt->first;
-			std::string value = innerIt->second;
-			if (key == "type") {
-				isType = true;
-				isTypeValue = value;
-			}
-			else if (key == "default") {
-				isDefault = true;
-				isDefaultValue = value;
-			}
-		}
-		if (isTypeValue == "str") {
-			StringTemplateKey s1(name, isDefaultValue);
-			keysList.push_back(s1);
-		}
-		if (isTypeValue == "int") {
-			IntegerTemplateKey t1(name, isDefaultValue);
-			keysList.push_back(t1);
-		}
-	}
-
-	return keysList;
-}
-
-
-std::map<std::string, TemplateKey> Tank::dictOfAllKeys()
-{
-	std::map<std::string, TemplateKey> keysList;
-
-	for (auto outerIt = this->keydict["keys"].begin(); outerIt != this->keydict["keys"].end(); ++outerIt) {
-
-		// bool isType;
-		bool isDefault;
-		std::string isTypeValue = "";
-		std::string isDefaultValue = "";
+		std::string hasFormatSpec = "2"; 
 		std::string name = removeSpaceInString(outerIt->first);
+		std::vector<std::string> choices={};
 
 		for (auto innerIt = outerIt->second.begin(); innerIt != outerIt->second.end(); ++innerIt) {
 
@@ -126,7 +105,6 @@ std::map<std::string, TemplateKey> Tank::dictOfAllKeys()
 			std::string value = innerIt->second;
 			key   = removeSpaceInString(key); // remove space if exist in key
 			value = removeSpaceInString(value); // remove space if exist in key
-
 			if (key == "type") {
 				isTypeValue = value;
 			}
@@ -134,16 +112,38 @@ std::map<std::string, TemplateKey> Tank::dictOfAllKeys()
 				isDefault = true;
 				isDefaultValue = value;
 			}
-
-			if (isTypeValue == "str") {
-				StringTemplateKey s1(name, isDefaultValue);
-				keysList.insert(std::make_pair(name, s1));
+			else if (key == "format_spec"){
+				hasFormatSpec = value;
 			}
-			if (isTypeValue == "int") {
-				IntegerTemplateKey t1(name, isDefaultValue);
-				keysList.insert(std::make_pair(name, t1));
+			else if (key == "choices"){
+				choices = listFromString(value);
+			}
+			else if (key == "filter_by"){}
+			else if (key == "shotgun_entity_type"){}
+			else if (key == "shotgun_field_name"){}
+
+			if (key == "alias"){
+				hasAlias = true;
+				aliasKey = value;
 			}
 		}
+
+		if(hasAlias){
+			name = aliasKey;
+		}
+
+		if (isTypeValue == "str") {
+			StringTemplateKey* s1 = new StringTemplateKey(name, isDefaultValue, choices);
+			keysList[name] = s1;
+		}
+		if (isTypeValue == "int") {
+			IntegerTemplateKey* t1 = new IntegerTemplateKey(name, isDefaultValue, hasFormatSpec);
+			keysList[name] = t1;
+		}
+		if (isTypeValue == "sequence") {
+			SequenceTemplateKey* sq1 = new SequenceTemplateKey(name, hasFormatSpec);
+			keysList[name] = sq1;
+		}	
 	}
 
 	return keysList;
@@ -155,9 +155,9 @@ std::map<std::string, TemplatePath> Tank::_getTemplates(){
 	ConformPath _conform_path(this->pathsdict);
 	std::map<std::string, TemplatePath> templates;
 
-	for (auto outerIt = this->pathsdict["paths"].begin(); outerIt != this->pathsdict["paths"].end(); ++outerIt) {
+	for (auto outerIt = this->pathsdict.begin(); outerIt != this->pathsdict.end(); ++outerIt) {
 		std::string template_name = outerIt->first;
-		std::string template_path = this->pathsdict["paths"][template_name];
+		std::string template_path = this->pathsdict[template_name];
 		std::string path_conformed = _conform_path.buildDefinitionPath(template_path);
 		TemplatePath templateObj(template_name, this->_allKeys, path_conformed);
 		templates.insert(std::make_pair(template_name, templateObj));
@@ -172,23 +172,25 @@ std::map<std::string, TemplatePath> Tank::_getTemplates(){
 //     m.doc() = "Tank module";
 
 //     py::class_<Tank>(m, "Tank")
-//         .def(py::init<std::string, std::string>())
-//         .def("get_templates", &Tank::getTemplates, "Get all templates")
+//         .def(py::init<std::string, std::string, std::string>())
+//         .def("templates", &Tank::getTemplates, "Get all templates")
 //         .def("templates_from_path", &Tank::templatesFromPath)
 //         .def("template_from_path", &Tank::templateFromPath)
 //         .def("abstract_paths_from_template", &Tank::getAbstractPathsFromTemplate)
+//         .def("keys", &Tank::getAllKeys)
 //         ;
 
 // 	py::class_<ConformPath>(m, "ConformPath")
-// 		.def(py::init<std::map<std::string, std::map<std::string, std::string>>>());
+// 		.def(py::init<std::map<std::string, std::string>>());
 
 // 	py::class_<TemplatePath>(m, "TemplatePath")
-//         .def(py::init<std::string, std::map<std::string, TemplateKey>, std::string>())
+//         .def(py::init<std::string, std::map<std::string, TemplateKey*>, std::string>())
 //         .def("name", &TemplatePath::getName)
 //         .def("definition", &TemplatePath::getDefinition)
 //         .def("static_token", &TemplatePath::getStaticTokens)
 //         .def("ordered_keys", &TemplatePath::getOrderedKeys)
-//         .def("apply_fields", &TemplatePath::apply_fields)
+// 		.def("apply_fields", &TemplatePath::apply_fields, 
+// 				py::arg("fields"), py::arg("missing_keys") = std::vector<std::string>())
 //         .def("get_fields", &TemplatePath::getFields)
 //         .def("missing_keys", &TemplatePath::missingKeys)
 // 		;
@@ -200,8 +202,10 @@ std::map<std::string, TemplatePath> Tank::_getTemplates(){
 //     py::class_<StringTemplateKey>(m, "StringTemplateKey")
 //         .def(py::init<std::string, std::string>());
 //     py::class_<IntegerTemplateKey>(m, "IntegerTemplateKey")
-//         .def(py::init<std::string, std::string>());
+//         .def(py::init<std::string, std::string, std::string>());
 
 // 	py::register_exception<TankMatchingTemplatesError>(m, "TankMatchingTemplatesError");
+// 	py::register_exception<TankApplyFieldsTemplateError>(m, "TankApplyFieldsTemplateError");
+// 	py::register_exception<TankTemplateWrongValue>(m, "TankTemplateWrongValue");
 
 // }
