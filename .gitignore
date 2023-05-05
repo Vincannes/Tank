@@ -3,4 +3,5 @@ cpp/src/.vs
 cpp/test
 tuto
 .vscode
+.vscode\settings.json
 .idea
