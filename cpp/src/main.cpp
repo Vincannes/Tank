@@ -66,25 +66,25 @@ int main() {
     //         std::cout << "    " << subkey.first << ":" << subkey.second << std::endl;
     //     }
 	// }
-	std::cout << " Get Keys " << std::endl;
-	std::cout << "" << std::endl;
+	// std::cout << " Get Keys " << std::endl;
+	// std::cout << "" << std::endl;
 	
 	Tank tank_test(paths, keys, strs);
 	std::map<std::string, TemplatePath> templates =  tank_test.getTemplates();
-	std::cout << tank_test.getAllKeys().size() << std::endl;
-	std::cout << "" << std::endl;
-	for(const auto& key : tank_test.getAllKeys()) {
-		const std::string& cle = key.first;
-		const std::string& valeur = key.second->getDefault();
-		std::cout << cle << " : " << valeur << std::endl;
-	}
+	// std::cout << tank_test.getAllKeys().size() << std::endl;
+	// std::cout << "" << std::endl;
+	// for(const auto& key : tank_test.getAllKeys()) {
+	// 	const std::string& cle = key.first;
+	// 	const std::string& valeur = key.second->getDefault();
+	// 	std::cout << cle << " : " << valeur << std::endl;
+	// }
 
-	std::cout << "" << std::endl;
-	for (const auto& paire : templates) {
-		const std::string& cle = paire.first;
-        const std::string& valeur = paire.second.getDefinition();
-		std::cout << cle << " : " << valeur << std::endl;
-	}
+	// std::cout << "" << std::endl;
+	// for (const auto& paire : templates) {
+	// 	const std::string& cle = paire.first;
+    //     const std::string& valeur = paire.second.getDefinition();
+	// 	std::cout << cle << " : " << valeur << std::endl;
+	// }
 
 	std::cout << "" << std::endl;
 	TemplatePath nuke_tpl = templates["Shot_NukeRender_Work_Sequence"];

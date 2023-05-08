@@ -13,6 +13,7 @@
 
 Tank::Tank(std::string _templatePathsString, std::string _templateKeysString, std::string _templateStringsString)
 {
+	this->_root_path           = "D:/Desk/";
     this->keydict              = generateKeysDictionnaryFromString(_templateKeysString);
     this->pathsdict            = generatePathsDictionnaryFromString(_templatePathsString);
     this->stringsdict          = generateStringsDictionnaryFromString(_templateStringsString);
@@ -159,7 +160,7 @@ std::map<std::string, TemplatePath> Tank::_getTemplates(){
 		std::string template_name = outerIt->first;
 		std::string template_path = this->pathsdict[template_name];
 		std::string path_conformed = _conform_path.buildDefinitionPath(template_path);
-		TemplatePath templateObj(template_name, this->_allKeys, path_conformed);
+		TemplatePath templateObj(template_name, this->_allKeys, path_conformed, this->_root_path);
 		templates.insert(std::make_pair(template_name, templateObj));
 	}
 

@@ -84,6 +84,21 @@ std::string joinListWithSeparator(std::vector<std::string> list, char separator)
 	return result;
 }
 
+std::string stringPathJoin(const std::string& path1, const std::string& path2, const std::string& path3="", const std::string& path4="")
+{
+	std::filesystem::path result_path = path1;
+    result_path /= path2;
+    if (!path3.empty())
+    {
+        result_path /= path3;
+    }
+    if (!path4.empty())
+    {
+        result_path /= path4;
+    }
+    return result_path.string();
+}
+
 std::pair<std::string, std::string> getKeyValueFromString(std::string pathToParse)
 {
 	std::string stringToParse = matchSeparator(pathToParse);

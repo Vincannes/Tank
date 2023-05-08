@@ -16,6 +16,7 @@ std::string dirNameFromString(const std::string);
 std::vector<std::string> splitPath(const std::string&);
 std::vector<std::string> pathListDir(std::string);
 std::string joinListWithSeparator(std::vector<std::string>, char);
+std::string stringPathJoin(const std::string&, const std::string&, const std::string&, const std::string&);
 std::pair<std::string, std::string> getKeyValueFromString(std::string);
 std::map<std::string, std::string> generateStringsDictionnaryFromString(std::string);
 std::map<std::string, std::string> generatePathsDictionnaryFromString(std::string);
