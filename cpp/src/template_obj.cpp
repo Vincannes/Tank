@@ -11,8 +11,9 @@
 #include "conform_path.h"
 #include "template_keys.h"
 
-TemplatePath::TemplatePath(std::string name, std::map<std::string, TemplateKey*> keys, std::string definition)
+TemplatePath::TemplatePath(std::string name, std::map<std::string, TemplateKey*> keys, std::string definition, std::string root_path)
 {
+	this->_root_path       = root_path;
 	this->_name            = name;
 	this->_all_keys        = keys;
 	this->_orig_definition = definition;
@@ -116,7 +117,7 @@ std::string TemplatePath::apply_fields(std::map<std::string, std::string> fields
 	}
 	// missings multiple fields ?
 	if(fieldsMissing.size() > 0) throw TankApplyFieldsTemplateError(getName(), getDefinition(), fieldsMissing);
-	return result;
+	return stringPathJoin(this->_root_path, result, "", "");
 }
 
 

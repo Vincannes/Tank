@@ -23,6 +23,7 @@ public:
 
 private:
 
+    std::string _root_path;
     std::map<std::string, TemplateKey*> _allKeys;
     std::map<std::string, TemplatePath> _templates;
     std::map<std::string, std::string> templatesDict;

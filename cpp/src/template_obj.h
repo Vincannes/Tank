@@ -16,7 +16,7 @@ public:
 
 	// prototypes
 	TemplatePath() = default;
-	TemplatePath(std::string, std::map<std::string, TemplateKey*>, std::string);
+	TemplatePath(std::string, std::map<std::string, TemplateKey*>, std::string, std::string);
 
 	// accesseurs
 	bool validate(std::string);
@@ -32,6 +32,7 @@ public:
 
 private:
 	std::string _name;
+	std::string _root_path;
 	std::string _definition;
 	std::string _orig_definition;
 	std::vector<std::string>_ordered_keys;
