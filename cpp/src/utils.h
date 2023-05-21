@@ -8,7 +8,7 @@
 #include <utility> // pour std::pair
 #include <filesystem>
 
-
+std::string getOSSeparator();
 std::string removePatternInString(std::string, std::string, std::string);
 std::string removeSpaceInString(std::string);
 std::string matchSeparator(std::string);

@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <iostream>
 #include <iomanip> // Pour setw
 
 #include "template_obj.h"
@@ -43,6 +44,15 @@ int main() {
 	std::map<std::string, std::string> strsDict;
 	std::map<std::string, std::string> pathsDict;
 	std::map<std::string, std::map<std::string, std::string>> keysDict;
+
+	#if defined(_WIN32)
+	std::cout << "Wubdiw" << std::endl;
+	#elif defined(__linux__)
+	std::cout << "Elsew" << std::endl;
+	#elif defined(__APPLE__)
+
+	std::cout << "Applw" << std::endl;
+	#endif
 	// pathsDict = generatePathsDictionnaryFromString(paths);
 	// keysDict  = generateKeysDictionnaryFromString(keys);
 	// strsDict  = generateStringsDictionnaryFromString(strs);

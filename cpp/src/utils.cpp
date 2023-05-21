@@ -10,6 +10,17 @@
 
 #include "utils.h"
 
+std::string getOSSeparator()
+{
+	std::string windowsSlash = "\\";
+	std::string linuxSlash   = "/";
+	#if defined(_WIN32)
+		return windowsSlash;
+	#else
+		return linuxSlash;
+	#endif
+}
+
 std::string removePatternInString(std::string patternStr, std::string search, std::string replacement)
 {
 	size_t pos = 0;
@@ -23,16 +34,12 @@ std::string removePatternInString(std::string patternStr, std::string search, st
 std::string matchSeparator(std::string patternStr)
 {
 	std::string search = "\\";
-    // std::string replacement = "\\\\";
 	std::string replacement = "/";
 	return removePatternInString(patternStr, search, replacement);
 }
 
 std::vector<std::string> splitPath(const std::string& path) {
 	char delimiter = '/';
-	// char delimiter = '\\';
-	// std::string delimiter = os::sep;
-
 	std::vector<std::string> result;
 	std::stringstream ss(path);
 	std::string token;
@@ -96,7 +103,7 @@ std::string stringPathJoin(const std::string& path1, const std::string& path2, c
     {
         result_path /= path4;
     }
-    return result_path.string();
+    return removePatternInString(result_path.string(), "/", getOSSeparator());
 }
 
 std::pair<std::string, std::string> getKeyValueFromString(std::string pathToParse)
@@ -233,8 +240,13 @@ std::map<std::string, std::string> generateStringsDictionnaryFromString(std::str
 std::vector<std::string> listFilesFromPathPattern(const std::string directory, std::string origpatternStr) {
     
 	std::vector<std::string> matchingFiles;
-	std::string patternStr = removePatternInString(origpatternStr, "/", "\\\\"); // Matching Windows
-	std::string directory_path = removePatternInString(directory, "/", "\\"); // Matching Windows
+
+	std::string patternStr = origpatternStr;
+	std::string directory_path = directory;
+	#if defined(_WIN32)
+		patternStr     = removePatternInString(origpatternStr, "/", "\\\\"); // Matching Windows
+		directory_path = removePatternInString(directory, "/", "\\");        // Matching Windows
+	#endif
 
 	std::filesystem::path dirPath(directory_path);
 	std::regex regexPattern(patternStr);
