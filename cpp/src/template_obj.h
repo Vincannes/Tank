@@ -29,6 +29,7 @@ public:
 
 	// manipulateurs
 	std::string apply_fields(std::map<std::string, std::string>, std::vector<std::string> = {});
+	void createFile(std::map<std::string, std::string>, std::vector<std::string> = {});
 
 private:
 	std::string _name;

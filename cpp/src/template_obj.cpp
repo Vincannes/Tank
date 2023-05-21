@@ -224,6 +224,12 @@ std::vector<std::string> TemplatePath::missingKeys(std::map<std::string, std::st
 }
 
 
+void TemplatePath::createFile(std::map<std::string, std::string> fields, std::vector<std::string> missing_keys)
+{
+	std::string pathToCreate = apply_fields(fields, missing_keys);
+	
+}
+
 // MAIN REGEX FUNCTIONS
 
 std::string TemplatePath::_get_clean_definition(const std::string definition) {
