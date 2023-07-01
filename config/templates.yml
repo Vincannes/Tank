@@ -290,7 +290,8 @@ paths:
     #
     # These don't require the standard formatting (with definition and root_name) because they
     # will be set within each template that uses the alias.
-    sequence_root:              'sequence/{Sequence}'
+    prod_root:                  'D:/Desk/python/Tank/tests/project'  
+    sequence_root:              '@prod_root/sequence/{Sequence}'
     shot_root:                  '@sequence_root/{Shot}'
     shot_task_root:             '@shot_root/{Task}'
     asset_root:                 'asset/{sg_asset_type}/{Asset}'
@@ -666,15 +667,15 @@ paths:
     # from Mikros Anim
     Shot_NukeScene_Work:                '@Shot_NukeScene_WorkArea/@generic_version_name.nk'
     # from Shotgun
-    nuke_shot_work_render:              '@Shot_NukeScene_WorkArea/renders/@generic_version_name_{render_iteration}.nk'
+    # nuke_shot_work_render:              '@Shot_NukeScene_WorkArea/renders/@generic_version_name_{render_iteration}.nk'
     # The location of backups of WIP files
     # from Mikros Anim
-    Shot_NukeScene_Snapshot:            '@Shot_NukeScene_WorkArea/snapshots/@generic_version_name.{timestamp}.nk'
+    # Shot_NukeScene_Snapshot:            '@Shot_NukeScene_WorkArea/snapshots/@generic_version_name.{timestamp}.nk'
     # The location of published nuke script files
     # from Mikros Anim
-    Shot_NukeScene_Publish:             '@Shot_NukeScene_PublishArea/@generic_version_name.nk'
+    # Shot_NukeScene_Publish:             '@Shot_NukeScene_PublishArea/@generic_version_name.nk'
     # from Mikros Anim
-    Shot_NukeScene_PublishSpecial:      '@Shot_NukeScene_PublishArea/{name}-{Task}-{variant}-{special_version}.nk'
+    # Shot_NukeScene_PublishSpecial:      '@Shot_NukeScene_PublishArea/{name}-{Task}-{variant}-{special_version}.nk'
     # write node outputs
     # from Shotgun
     nuke_shot_thumbnail:                '@Shot_Image_WorkArea/@generic_version_name.png'
