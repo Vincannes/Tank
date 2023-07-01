@@ -47,7 +47,11 @@ TemplatePath Tank::templateFromPath(std::string path)
 	if(matched_templates.size() == 0 ) {
         throw TankMatchingTemplatesError("Aucun modele trouve");
     } else if (matched_templates.size() > 1) {
-        throw TankMatchingTemplatesError("Plusieurs modeles trouves");
+		std::string msg = "Plusieurs modeles trouves : \n";
+		for (auto it = matched_templates.begin(); it != matched_templates.end(); ++it) {
+			msg +=it->getDefinition() + " & ";
+		}
+        throw TankMatchingTemplatesError(msg);
 	} else {
 		return matched_templates[0];
 	}

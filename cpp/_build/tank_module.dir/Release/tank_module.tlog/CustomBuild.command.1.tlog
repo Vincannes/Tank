@@ -1,0 +1,10 @@
+^D:\DESK\PYTHON\TANK\CPP\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/Desk/python/Tank/cpp -BD:/Desk/python/Tank/cpp/build --check-stamp-file D:/Desk/python/Tank/cpp/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

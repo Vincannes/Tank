@@ -11,7 +11,7 @@ sys.path.append(MODULE_PATH)
 
 import tank_module
 from tank_module import TankMatchingTemplatesError
-print("CACA"*50)
+
 def read_templates():
     templates = {}
     with open(CONFIG_PATH, "r") as config:
