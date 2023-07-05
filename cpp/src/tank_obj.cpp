@@ -45,11 +45,11 @@ TemplatePath Tank::templateFromPath(std::string path)
 	std::vector<TemplatePath> matched_templates = templatesFromPath(path);
 
 	if(matched_templates.size() == 0 ) {
-        throw TankMatchingTemplatesError("Aucun modele trouve");
+        throw TankMatchingTemplatesError("No Template find for this path : " + path);
     } else if (matched_templates.size() > 1) {
-		std::string msg = "Plusieurs modeles trouves : \n";
+		std::string msg = std::to_string(matched_templates.size()) + " templates are matching the path : "+ path + "\n";
 		for (auto it = matched_templates.begin(); it != matched_templates.end(); ++it) {
-			msg +=it->getDefinition() + " & ";
+			msg +=it->getDefinition() + "\n";
 		}
         throw TankMatchingTemplatesError(msg);
 	} else {

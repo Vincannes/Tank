@@ -22,6 +22,9 @@ def read_templates():
 keys = read_templates().get("keys")
 paths = read_templates().get("paths")
 strings = read_templates().get("strings")
+# print(paths)
+# print(keys)
+# print(strings)
 
 class tank(tank_module.Tank):
     
