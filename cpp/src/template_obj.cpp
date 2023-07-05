@@ -13,14 +13,15 @@
 
 TemplatePath::TemplatePath(std::string name, std::map<std::string, TemplateKey*> keys, std::string definition, std::string root_path)
 {
-	this->_root_path       = root_path;
-	this->_name            = name;
-	this->_all_keys        = keys;
-	this->_orig_definition = definition;
-	this->_definition      = _get_clean_definition(definition);
-	this->_keys            = _keys_from_definition();
-	this->_ordered_keys    = _get_ordered_keys();
-	this->_static_tokens   = _get_static_token();
+	this->_root_path          = root_path;
+	this->_name               = name;
+	this->_all_keys           = keys;
+	this->_orig_definition    = definition;
+	this->_definition         = _get_clean_definition(definition);
+	this->_pattern_definition = _get_pattern_definition(definition);
+	this->_keys               = _keys_from_definition();
+	this->_ordered_keys       = _get_ordered_keys();
+	this->_static_tokens      = _get_static_token();
 
 }
 
@@ -135,6 +136,10 @@ std::map<std::string, std::string> TemplatePath::getFields(std::string path)
 		return fields;
 	}
 
+	std::regex pattern(this->_pattern_definition);
+    if(!std::regex_match(path, pattern)){
+		return fields;
+	}
 	std::vector<std::string> satic_token = getStaticTokens();
 
 	// from satic_token list {"item", "-", "item"}, place "-" at the end of the list
@@ -243,6 +248,15 @@ std::string TemplatePath::_get_clean_definition(const std::string definition) {
 	std::regex_replace(std::back_inserter(tmp), definition.begin(), definition.end(), pattern, "%(");
 	std::regex_replace(std::back_inserter(result), tmp.begin(), tmp.end(), pattern2, ")");
 	
+	return result;
+}
+
+std::string TemplatePath::_get_pattern_definition(const std::string definition) {
+
+	std::regex pattern("\\{([^\\}]*)\\}");
+    std::string remplacement = "(\\w+)";
+    std::string result = std::regex_replace(definition, pattern, remplacement);
+
 	return result;
 }
 
