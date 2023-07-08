@@ -23,3 +23,4 @@ std::map<std::string, std::string> generatePathsDictionnaryFromString(std::strin
 std::map<std::string, std::map<std::string, std::string>> generateKeysDictionnaryFromString(std::string);
 std::vector<std::string>listFilesFromPathPattern(const std::string, std::string);
 std::vector<std::string> listFromString(std::string);
+std::string removeLeadingSlash(const std::string&);

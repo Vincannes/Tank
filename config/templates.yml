@@ -290,7 +290,7 @@ paths:
     #
     # These don't require the standard formatting (with definition and root_name) because they
     # will be set within each template that uses the alias.
-    prod_root:                  'D:/Desk/python/Tank/tests/project'  
+    # prod_root:                  'D:/Desk/python/Tank/tests/project'  
     sequence_root:              '@prod_root/sequence/{Sequence}'
     shot_root:                  '@sequence_root/{Shot}'
     shot_task_root:             '@shot_root/{Task}'

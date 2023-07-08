@@ -9,6 +9,8 @@ CONFIG_PATH = os.path.join(TANK_DIR, "config", "templates.yml")
 
 sys.path.append(MODULE_PATH)
 
+ROOT_PATH = "D:/Desk/python/Tank/tests/project"
+
 import tank_module
 from tank_module import TankMatchingTemplatesError
 
@@ -28,22 +30,24 @@ strings = read_templates().get("strings")
 
 class tank(tank_module.Tank):
     
-    def __init__(self):
-        super().__init__(str(paths), str(keys), str(strings))
+    def __init__(self, path=None):
+        path = path if path else ROOT_PATH
+        print(path)
+        super().__init__(str(paths), str(keys), str(strings), path)
 
 
 if __name__ == "__main__":
     # pprint(keys)
 
-    tk = tank()
+    tk = tank("D/ccqcqcq/cqcqcqcq")
 
     templates = tk.templates()
     nuke_template = templates["Shot_NukeRender_Work_Sequence"]
     # pprint(tk.keys())
-    # print(nuke_template)
-    # print(nuke_template.name())
-    # print(nuke_template.definition())
-    # print(nuke_template.static_token())
+    print(nuke_template)
+    print(nuke_template.name())
+    print(nuke_template.definition())
+    print(nuke_template.static_token())
     print(nuke_template.ordered_keys())
     fields = {
         "Sequence": "sh",
