@@ -80,6 +80,14 @@ std::string removeSpaceInString(std::string str)
 	return str;
 }
 
+std::string removeLeadingSlash(const std::string& input) {
+    if (!input.empty() && input[0] == '/') {
+        return input.substr(1); // Retourne la chaîne sans le premier caractère
+    } else {
+        return input; // Retourne la chaîne inchangée
+    }
+}
+
 std::string joinListWithSeparator(std::vector<std::string> list, char separator) {
 	std::string result = "";
 	for (int i = 0; i < list.size(); i++) {
@@ -93,17 +101,17 @@ std::string joinListWithSeparator(std::vector<std::string> list, char separator)
 
 std::string stringPathJoin(const std::string& path1, const std::string& path2, const std::string& path3="", const std::string& path4="")
 {
-	std::filesystem::path result_path = path1;
-    result_path /= path2;
+	std::string result_path = path1;
+	result_path = result_path + "/" + removeLeadingSlash(path2);
     if (!path3.empty())
     {
-        result_path /= path3;
+        result_path = result_path + "/" + removeLeadingSlash(path3);
     }
     if (!path4.empty())
     {
-        result_path /= path4;
+        result_path = result_path + "/" + removeLeadingSlash(path4);
     }
-    return removePatternInString(result_path.string(), "/", getOSSeparator());
+    return removePatternInString(result_path, "/", getOSSeparator());
 }
 
 std::pair<std::string, std::string> getKeyValueFromString(std::string pathToParse)

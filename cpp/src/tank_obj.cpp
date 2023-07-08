@@ -11,9 +11,9 @@
 
 namespace py = pybind11;
 
-Tank::Tank(std::string _templatePathsString, std::string _templateKeysString, std::string _templateStringsString)
+Tank::Tank(std::string _templatePathsString, std::string _templateKeysString, std::string _templateStringsString, std::string root_path)
 {
-	this->_root_path           = "D:/Desk/";
+	this->_root_path           = root_path;
     this->keydict              = generateKeysDictionnaryFromString(_templateKeysString);
     this->pathsdict            = generatePathsDictionnaryFromString(_templatePathsString);
     this->stringsdict          = generateStringsDictionnaryFromString(_templateStringsString);
@@ -177,7 +177,7 @@ PYBIND11_MODULE(tank_module, m)
     m.doc() = "Tank module";
 
     py::class_<Tank>(m, "Tank")
-        .def(py::init<std::string, std::string, std::string>())
+        .def(py::init<std::string, std::string, std::string, std::string>())
         .def("templates", &Tank::getTemplates, "Get all templates")
         .def("templates_from_path", &Tank::templatesFromPath)
         .def("template_from_path", &Tank::templateFromPath)
