@@ -64,7 +64,7 @@ if __name__ == "__main__":
     # print()
     # print("path")
     # print(path)
-    pathTest = "D:/Desk/python/Tank/tests/project/sequence/test_020/010/cmp/nuke/wip/010-cmp-base-v001.nk"
+    pathTest = "D:/Desk/python/Tank/tests/project/sequence/test_020/010/cmp/nuke/wip/010-cmp-base-v0001.nk"
 
     template = tk.template_from_path(pathTest)
     print()
@@ -75,5 +75,5 @@ if __name__ == "__main__":
     # print(template.ordered_keys())
     # print()
     # print("Fields")
-    # pprint(template.get_fields(pathTest))
+    pprint(template.get_fields(pathTest))
 

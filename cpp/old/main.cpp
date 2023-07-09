@@ -145,7 +145,6 @@ int main() {
     
 
 	TemplatePath aTesty = tank_test.templateFromPath(_path);
-	std::cout << "_path_path_path_path_path_path_path" << std::endl;
 	std::cout << _path << std::endl;
 	std::cout << aTesty.getName() << std::endl;
 	std::cout << aTesty.getDefinition() << std::endl;
@@ -161,12 +160,12 @@ int main() {
 	// for (int i=0; i<etfiel.size(); i++) {
     //     std::cout << etfiel[i] << std::endl ;
     // }
-	// std::cout << " " <<std::endl;
-	// for (const auto& paire : aTesty.getFields(testpath)) {
-	// 	const std::string& cle = paire.first;
-    //     const std::string& valeur = paire.second;
-	// 	std::cout << cle << " : " << valeur << std::endl;
-	// }
+	std::cout << " " <<std::endl;
+	for (const auto& paire : aTesty.getFields(_path)) {
+		const std::string& cle = paire.first;
+        const std::string& valeur = paire.second;
+		std::cout << cle << " : " << valeur << std::endl;
+	}
 	// TemplatePath aTestya = tank_test.templateFromPath(testpathNot);
 	// std::cout << aTestya.getName() << std::endl;
 	// TemplatePath aTestyaa = tank_test.templateFromPath(testpathGood);
