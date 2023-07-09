@@ -124,6 +124,10 @@ std::string TemplatePath::apply_fields(std::map<std::string, std::string> fields
 
 std::map<std::string, std::string> TemplatePath::getFields(std::string path) 
 {
+	if(path.find(this->_root_path) == 0){
+		path = removePatternInString(path, this->_root_path, "");
+		path = matchSeparator(path);
+	}
 	std::map<std::string, std::string> fields = {};
 
 	// verifier si la longueur du path est le meme que _definition 
