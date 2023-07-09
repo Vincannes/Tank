@@ -266,14 +266,14 @@ std::vector<std::string> listFilesFromPathPattern(const std::string directory, s
 		directory_path = removePatternInString(directory, "/", "\\");        // Matching Windows
 	#endif
 
-	patternStr = removePatternInString(patternStr, "\\", "");
+	patternStr = removePatternInString(patternStr, "\\", "\\\\");
 	std::filesystem::path dirPath(directory_path);
 	std::regex regexPattern(patternStr);
 
 	std::vector<std::string> dirs = walkDir(directory_path);
 	for(int i = 0; i < dirs.size(); i++) {
 		std::string path = dirs[i];
-				if(std::regex_match(removePatternInString(path, "\\", ""), regexPattern)){
+		if(std::regex_match(path, regexPattern)){
 			matchingFiles.push_back(path);
 		}
 	}
