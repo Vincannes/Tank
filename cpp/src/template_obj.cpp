@@ -132,7 +132,7 @@ std::map<std::string, std::string> TemplatePath::getFields(std::string path)
 
 	// return dictionnaire vide si longueurs differents
 	if (path_splited.size() != definition_splited.size()) {
-		std::cout << "No fields find for this template " << std::endl; // TODO Raise error gere
+		// std::cout << "No fields find for this template " << std::endl; // TODO Raise error gere
 		return fields;
 	}
 

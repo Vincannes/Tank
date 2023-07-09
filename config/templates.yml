@@ -354,17 +354,12 @@ paths:
     #
     # The location for all cache files
     Shot_Cache_Area:            '@shot_root/{Task}/cache'
-    Shot_Cache_Area_Secondary:
-        definition: '@shot_root/{Task}/cache'
-        root_name:  'cache'
+    Shot_Cache_Area_Secondary:  '@shot_root/{Task}/cache'
     Shot_Cache_Work_Area:       '@Shot_Cache_Area/wip'
-    Shot_Cache_Work_Area_Secondary:
-        definition: '@Shot_Cache_Area_Secondary/wip'
-        root_name:  'cache'
+    Shot_Cache_Work_Area_Secondary: '@Shot_Cache_Area_Secondary/wip'
     Shot_Cache_Publish_Area:    '@Shot_Cache_Area/publish'
-    Shot_Cache_Publish_Area_Secondary:
-        definition: '@Shot_Cache_Area_Secondary/publish'
-        root_name:  'cache'
+    Shot_Cache_Publish_Area_Secondary: '@Shot_Cache_Area_Secondary/publish'
+
     ######################################
     # Delivery
     #
@@ -385,22 +380,11 @@ paths:
     #
     # Define the emplacement of flame exports
     # from Mikros vfx
-    Shot_Flame_ExportArea:
-        definition: '@shot_task_root/flame'
-        root_name: 'primary'
+    Shot_Flame_ExportArea: '@shot_task_root/flame'
     # from Shotgun
-    flame_segment_clip:
-#        definition: '@Shot_Flame_ExportArea/clip/sources/{Shot}.clip'
-        definition: '@shot_root/finish/flame/clip/sources/{Shot}-{Task}-{variant}-v{version}.clip'
-        root_name: 'primary'
-    flame_shot_clip:
-#        definition: '@Shot_Flame_ExportArea/clip/{Shot}.clip'
-        definition: '@shot_root/finish/flame/clip/{Shot}-{variant}-out.clip'
-        root_name: 'primary'
-    flame_shot_batch:
-#        definition: '@Shot_Flame_ExportArea/batch/{Shot}.v{version}.batch'
-        definition: '@shot_root/finish/flame/batch/{Shot}-{variant}-v{version}.batch'
-        root_name: 'primary'
+    flame_segment_clip: '@shot_root/finish/flame/clip/sources/{Shot}-{Task}-{variant}-v{version}.clip'
+    flame_shot_clip: '@shot_root/finish/flame/clip/{Shot}-{variant}-out.clip'
+    flame_shot_batch: '@shot_root/finish/flame/batch/{Shot}-{variant}-v{version}.batch'
     # from Mikros Vfx
     Shot_FlameRender_Work_Generic_Name:  '@Shot_Image_WorkArea/@generic_image_dirname_flame'
     Shot_FlameRender_Work_Sequence:      '@Shot_FlameRender_Work_Generic_Name/@flame_image_name.{SEQ}.{ext_render_flame}'
@@ -474,15 +458,11 @@ paths:
     # Work Alembic Caches
     # from Mikros Vfx
     Shot_AlembicCache_Work_File:         '@Shot_Cache_Work_Area/abc/@generic_cache_version_name-{tool}/@generic_cache_version_name.abc'
-    Shot_AlembicCache_Work_File_Secondary:
-        definition: '@Shot_Cache_Work_Area_Secondary/abc/@generic_cache_version_name-{tool}/@generic_cache_version_name.abc'
-        root_name: 'cache'
+    Shot_AlembicCache_Work_File_Secondary: '@Shot_Cache_Work_Area_Secondary/abc/@generic_cache_version_name-{tool}/@generic_cache_version_name.abc'
     # Published Alembic Caches
     # from Mikros vfx
     Shot_AlembicCache_Publish_File:      '@Shot_Cache_Publish_Area/abc/@generic_cache_version_name-{tool}/@generic_cache_version_name.abc'
-    Shot_AlembicCache_Publish_File_Secondary:
-        definition: '@Shot_Cache_Publish_Area_Secondary/abc/@generic_cache_version_name-{tool}/@generic_cache_version_name.abc'
-        root_name: 'cache'
+    Shot_AlembicCache_Publish_File_Secondary: '@Shot_Cache_Publish_Area_Secondary/abc/@generic_cache_version_name-{tool}/@generic_cache_version_name.abc'
     ######################################
     # Yeti
     #
@@ -498,24 +478,14 @@ paths:
     ######################################
     # Golaem
     #
-    Shot_GolaemCache_Work_Area:
-        definition: '@Shot_Cache_Work_Area_Secondary/golaem'
-        root_name:  'cache'
-    Shot_GolaemCache_Work_Area_Simulation:
-        definition: '@Shot_GolaemCache_Work_Area/@generic_golaem_cache_version_name'
-        root_name:  'cache'
+    Shot_GolaemCache_Work_Area: '@Shot_Cache_Work_Area_Secondary/golaem'
+    Shot_GolaemCache_Work_Area_Simulation: '@Shot_GolaemCache_Work_Area/@generic_golaem_cache_version_name'
     # .gscf files
-    Shot_GolaemCache_Simulation_Frame_Work_File:
-        definition: '@Shot_GolaemCache_Work_Area_Simulation/@generic_golaem_cache_version_name.{golaem_node}.{SEQ}.gscf'
-        root_name:  'cache'
+    Shot_GolaemCache_Simulation_Frame_Work_File: '@Shot_GolaemCache_Work_Area_Simulation/@generic_golaem_cache_version_name.{golaem_node}.{SEQ}.gscf'
     # .gscs files
-    Shot_GolaemCache_Simulation_Work_File:
-        definition: '@Shot_GolaemCache_Work_Area_Simulation/@generic_golaem_cache_version_name.{golaem_node}.gscs'
-        root_name:  'cache'
+    Shot_GolaemCache_Simulation_Work_File: '@Shot_GolaemCache_Work_Area_Simulation/@generic_golaem_cache_version_name.{golaem_node}.gscs'
     # .gscb files
-    Shot_GolaemLibrary_Work_File:
-        definition: '@Shot_GolaemCache_Work_Area_Simulation/@generic_golaem_cache_version_name.gscb'
-        root_name:  'cache'
+    Shot_GolaemLibrary_Work_File: '@Shot_GolaemCache_Work_Area_Simulation/@generic_golaem_cache_version_name.gscb'
     ######################################
     # Houdini
     #
@@ -528,9 +498,7 @@ paths:
     # Location of project
     Shot_HoudiniScene_ProjectArea:                      '@shot_root/{Task}/houdini'
     # The location for private cache files
-    Shot_HoudiniCache_PrivateArea:
-        definition: '@Shot_HoudiniScene_WorkArea/@generic_version_name'
-        root_name: 'cache'
+    Shot_HoudiniCache_PrivateArea: '@Shot_HoudiniScene_WorkArea/@generic_version_name'
     # The location of WIP files
     # from Mikros Anim
     Shot_HoudiniScene_Work:                             '@Shot_HoudiniScene_WorkArea/@generic_version_name.hip'
@@ -556,52 +524,24 @@ paths:
     Shot_HoudiniRender_Publish_Distributed_Sequence:    '@Shot_HoudiniRender_Publish_Aov/{distribution_type}_{distribution_index}/@generic_houdini_version_name-{render_aov}.{distribution_type}_{distribution_index}.{HSEQ}.{image_ext}'
     # Work Rendered Caches
     # from Mikros Vfx
-    Shot_HoudiniCache_Work_Sequence:
-        definition: '@Shot_Cache_Work_Area_Secondary/{cache_type_houdini}/@generic_cache_version_name-houdini/@generic_cache_version_name.{HSEQ}.{ext_cache_houdini}'
-        root_name:  'cache'
-    Shot_HoudiniCache_Work_File:
-        definition: '@Shot_Cache_Work_Area_Secondary/{cache_type_houdini}/@generic_cache_version_name-houdini/@generic_cache_version_name.{ext_cache_houdini}'
-        root_name:  'cache'
-    Shot_HoudiniCache_Work_Distributed_Sequence:
-        definition: '@Shot_Cache_Work_Area_Secondary/{cache_type_houdini}/@generic_cache_version_name-houdini/{distribution_type}_{distribution_index}/@generic_cache_version_name.{distribution_type}_{distribution_index}.{HSEQ}.{ext_cache_houdini}'
-        root_name:  'cache'
-    Shot_HoudiniCache_Work_Distributed_File:
-        definition: '@Shot_Cache_Work_Area_Secondary/{cache_type_houdini}/@generic_cache_version_name-houdini/{distribution_type}_{distribution_index}/@generic_cache_version_name.{distribution_type}_{distribution_index}.{ext_cache_houdini}'
-        root_name: 'cache'
-    Shot_HoudiniCache_Work_Checkpoints_Sequence:
-        definition: '@Shot_Cache_Work_Area_Secondary/{cache_type_houdini}/@generic_cache_version_name-houdini/sim/@generic_version_name.@HSIMSEQ.sim'
-        root_name: 'cache'
+    Shot_HoudiniCache_Work_Sequence: '@Shot_Cache_Work_Area_Secondary/{cache_type_houdini}/@generic_cache_version_name-houdini/@generic_cache_version_name.{HSEQ}.{ext_cache_houdini}'
+    Shot_HoudiniCache_Work_File: '@Shot_Cache_Work_Area_Secondary/{cache_type_houdini}/@generic_cache_version_name-houdini/@generic_cache_version_name.{ext_cache_houdini}'
+    Shot_HoudiniCache_Work_Distributed_Sequence: '@Shot_Cache_Work_Area_Secondary/{cache_type_houdini}/@generic_cache_version_name-houdini/{distribution_type}_{distribution_index}/@generic_cache_version_name.{distribution_type}_{distribution_index}.{HSEQ}.{ext_cache_houdini}'
+    Shot_HoudiniCache_Work_Distributed_File: '@Shot_Cache_Work_Area_Secondary/{cache_type_houdini}/@generic_cache_version_name-houdini/{distribution_type}_{distribution_index}/@generic_cache_version_name.{distribution_type}_{distribution_index}.{ext_cache_houdini}'
+    Shot_HoudiniCache_Work_Checkpoints_Sequence: '@Shot_Cache_Work_Area_Secondary/{cache_type_houdini}/@generic_cache_version_name-houdini/sim/@generic_version_name.@HSIMSEQ.sim'
     # Private Rendered Caches
     # from Mikros Vfx
-    Shot_HoudiniCache_Private_Sequence:
-        definition: '@Shot_HoudiniCache_PrivateArea/{cache_type_houdini}/@generic_cache_version_name/@generic_cache_version_name.{HSEQ}.{ext_cache_houdini}'
-        root_name: 'cache'
-    Shot_HoudiniCache_Private_File:
-        definition: '@Shot_HoudiniCache_PrivateArea/{cache_type_houdini}/@generic_cache_version_name/@generic_cache_version_name.{ext_cache_houdini}'
-        root_name: 'cache'
-    Shot_HoudiniCache_Private_Distributed_Sequence:
-        definition: '@Shot_HoudiniCache_PrivateArea/{cache_type_houdini}/@generic_cache_version_name/{distribution_type}_{distribution_index}/@generic_cache_version_name.{distribution_type}_{distribution_index}.{HSEQ}.{ext_cache_houdini}'
-        root_name: 'cache'
-    Shot_HoudiniCache_Private_Distributed_File:
-        definition: '@Shot_HoudiniCache_PrivateArea/{cache_type_houdini}/@generic_cache_version_name/{distribution_type}_{distribution_index}/@generic_cache_version_name.{distribution_type}_{distribution_index}.{ext_cache_houdini}'
-        root_name: 'cache'
-    Shot_HoudiniCache_Private_Checkpoints_Sequence:
-        definition: '@Shot_HoudiniCache_PrivateArea/{cache_type_houdini}/@generic_cache_version_name/sim/@generic_cache_version_name.@HSIMSEQ.sim'
-        root_name: 'cache'
+    Shot_HoudiniCache_Private_Sequence: '@Shot_HoudiniCache_PrivateArea/{cache_type_houdini}/@generic_cache_version_name/@generic_cache_version_name.{HSEQ}.{ext_cache_houdini}'
+    Shot_HoudiniCache_Private_File: '@Shot_HoudiniCache_PrivateArea/{cache_type_houdini}/@generic_cache_version_name/@generic_cache_version_name.{ext_cache_houdini}'
+    Shot_HoudiniCache_Private_Distributed_Sequence: '@Shot_HoudiniCache_PrivateArea/{cache_type_houdini}/@generic_cache_version_name/{distribution_type}_{distribution_index}/@generic_cache_version_name.{distribution_type}_{distribution_index}.{HSEQ}.{ext_cache_houdini}'
+    Shot_HoudiniCache_Private_Distributed_File: '@Shot_HoudiniCache_PrivateArea/{cache_type_houdini}/@generic_cache_version_name/{distribution_type}_{distribution_index}/@generic_cache_version_name.{distribution_type}_{distribution_index}.{ext_cache_houdini}'
+    Shot_HoudiniCache_Private_Checkpoints_Sequence: '@Shot_HoudiniCache_PrivateArea/{cache_type_houdini}/@generic_cache_version_name/sim/@generic_cache_version_name.@HSIMSEQ.sim'
     # Published Rendered Caches
     # from Mikros Vfx
-    Shot_HoudiniCache_Publish_Sequence:
-        definition: '@Shot_Cache_Publish_Area_Secondary/{cache_type_houdini}/@generic_cache_version_name-houdini/@generic_cache_version_name.{HSEQ}.{ext_cache_houdini}'
-        root_name: 'cache'
-    Shot_HoudiniCache_Publish_File:
-        definition: '@Shot_Cache_Publish_Area_Secondary/{cache_type_houdini}/@generic_cache_version_name-houdini/@generic_cache_version_name.{ext_cache_houdini}'
-        root_name: 'cache'
-    Shot_HoudiniCache_Publish_Distributed_Sequence:
-        definition: '@Shot_Cache_Publish_Area_Secondary/{cache_type_houdini}/@generic_cache_version_name-houdini/{distribution_type}_{distribution_index}/@generic_cache_version_name.{distribution_type}_{distribution_index}.{HSEQ}.{ext_cache_houdini}'
-        root_name: 'cache'
-    Shot_HoudiniCache_Publish_Distributed_File:
-        definition: '@Shot_Cache_Publish_Area_Secondary/{cache_type_houdini}/@generic_cache_version_name-houdini/{distribution_type}_{distribution_index}/@generic_cache_version_name.{distribution_type}_{distribution_index}.{ext_cache_houdini}'
-        root_name: 'cache'
+    Shot_HoudiniCache_Publish_Sequence: '@Shot_Cache_Publish_Area_Secondary/{cache_type_houdini}/@generic_cache_version_name-houdini/@generic_cache_version_name.{HSEQ}.{ext_cache_houdini}'
+    Shot_HoudiniCache_Publish_File: '@Shot_Cache_Publish_Area_Secondary/{cache_type_houdini}/@generic_cache_version_name-houdini/@generic_cache_version_name.{ext_cache_houdini}'
+    Shot_HoudiniCache_Publish_Distributed_Sequence: '@Shot_Cache_Publish_Area_Secondary/{cache_type_houdini}/@generic_cache_version_name-houdini/{distribution_type}_{distribution_index}/@generic_cache_version_name.{distribution_type}_{distribution_index}.{HSEQ}.{ext_cache_houdini}'
+    Shot_HoudiniCache_Publish_Distributed_File: '@Shot_Cache_Publish_Area_Secondary/{cache_type_houdini}/@generic_cache_version_name-houdini/{distribution_type}_{distribution_index}/@generic_cache_version_name.{distribution_type}_{distribution_index}.{ext_cache_houdini}'
     # Flipbook
     # from Mikros Vfx
     Shot_HoudiniFlip_Work_Generic_Name:                 '@Shot_Image_WorkArea/@generic_version_name-flip'
@@ -758,17 +698,11 @@ paths:
     #
     # The location for all cache files
     Asset_Cache_Area:           '@asset_root/{Task}/cache'
-    Asset_Cache_Area_Secondary:
-        definition: '@asset_root/{Task}/cache'
-        root_name: 'cache'
+    Asset_Cache_Area_Secondary: '@asset_root/{Task}/cache'
     Asset_Cache_Work_Area:      '@Asset_Cache_Area/wip'
-    Asset_Cache_Work_Area_Secondary:
-        definition: '@Asset_Cache_Area_Secondary/wip'
-        root_name: 'cache'
+    Asset_Cache_Work_Area_Secondary: '@Asset_Cache_Area_Secondary/wip'
     Asset_Cache_Publish_Area:   '@Asset_Cache_Area/publish'
-    Asset_Cache_Publish_Area_Secondary:
-        definition: '@Asset_Cache_Area_Secondary/publish'
-        root_name: 'cache'
+    Asset_Cache_Publish_Area_Secondary: '@Asset_Cache_Area_Secondary/publish'
     ######################################
     # Maya
     #
@@ -821,15 +755,11 @@ paths:
     # Work Caches
     # from Mikros Vfx
     Asset_AlembicCache_Work_File:       '@Asset_Cache_Work_Area/abc/@generic_cache_version_name-{tool}/@generic_cache_version_name.abc'
-    Asset_AlembicCache_Work_File_Secondary:
-        definition: '@Asset_Cache_Work_Area_Secondary/abc/@generic_cache_version_name-{tool}/@generic_cache_version_name.abc'
-        root_name: 'cache'
+    Asset_AlembicCache_Work_File_Secondary: '@Asset_Cache_Work_Area_Secondary/abc/@generic_cache_version_name-{tool}/@generic_cache_version_name.abc'
     # Published Caches
     # from Mikros vfx
     Asset_AlembicCache_Publish_File:   '@Asset_Cache_Publish_Area/abc/@generic_cache_version_name-{tool}/@generic_cache_version_name.abc'
-    Asset_AlembicCache_Publish_File_Secondary:
-        definition: '@Asset_Cache_Publish_Area_Secondary/abc/@generic_cache_version_name-{tool}/@generic_cache_version_name.abc'
-        root_name: 'cache'
+    Asset_AlembicCache_Publish_File_Secondary: '@Asset_Cache_Publish_Area_Secondary/abc/@generic_cache_version_name-{tool}/@generic_cache_version_name.abc'
     ######################################
     # Yeti
     #
@@ -852,9 +782,7 @@ paths:
     # from Mikros Anim
     Asset_HoudiniScene_PublishArea:                     '@asset_root/{Task}/houdini/publish'
     # The location for all cache files
-    Asset_HoudiniCache_PrivateArea:
-        definition: '@Asset_HoudiniScene_WorkArea/@generic_version_name'
-        root_name: 'cache'
+    Asset_HoudiniCache_PrivateArea: '@Asset_HoudiniScene_WorkArea/@generic_version_name'
     # The location of WIP files
     # from Mikros Anim
     Asset_HoudiniScene_Work:                            '@Asset_HoudiniScene_WorkArea/@generic_version_name.hip'
@@ -880,52 +808,24 @@ paths:
     Asset_HoudiniRender_Publish_Distributed_Sequence:   '@Asset_HoudiniRender_Publish_Aov/{distribution_type}_{distribution_index}/@generic_houdini_version_name-{render_aov}.{distribution_type}_{distribution_index}.{HSEQ}.{image_ext}'
     # Work Rendered Caches
     # from Mikros Vfx
-    Asset_HoudiniCache_Work_Sequence:
-        definition: '@Asset_Cache_Work_Area_Secondary/{cache_type_houdini}/@generic_houdini_version_name-houdini/@generic_houdini_version_name.{HSEQ}.{ext_cache_houdini}'
-        root_name: 'cache'
-    Asset_HoudiniCache_Work_File:
-        definition: '@Asset_Cache_Work_Area_Secondary/{cache_type_houdini}/@generic_houdini_version_name-houdini/@generic_houdini_version_name.{ext_cache_houdini}'
-        root_name: 'cache'
-    Asset_HoudiniCache_Work_Distributed_Sequence:
-        definition: '@Asset_Cache_Work_Area_Secondary/{cache_type_houdini}/@generic_houdini_version_name-houdini/{distribution_type}_{distribution_index}/@generic_houdini_version_name.{distribution_type}_{distribution_index}.{HSEQ}.{ext_cache_houdini}'
-        root_name: 'cache'
-    Asset_HoudiniCache_Work_Distributed_File:
-        definition: '@Asset_Cache_Work_Area_Secondary/{cache_type_houdini}/@generic_houdini_version_name-houdini/{distribution_type}_{distribution_index}/@generic_houdini_version_name.{distribution_type}_{distribution_index}.{ext_cache_houdini}'
-        root_name: 'cache'
-    Asset_HoudiniCache_Work_Checkpoints_Sequence:
-        definition: '@Asset_Cache_Work_Area_Secondary/{cache_type_houdini}/@generic_houdini_version_name-houdini/sim/@generic_houdini_version_name.@HSIMSEQ.sim'
-        root_name: 'cache'
+    Asset_HoudiniCache_Work_Sequence: '@Asset_Cache_Work_Area_Secondary/{cache_type_houdini}/@generic_houdini_version_name-houdini/@generic_houdini_version_name.{HSEQ}.{ext_cache_houdini}'
+    Asset_HoudiniCache_Work_File: '@Asset_Cache_Work_Area_Secondary/{cache_type_houdini}/@generic_houdini_version_name-houdini/@generic_houdini_version_name.{ext_cache_houdini}'
+    Asset_HoudiniCache_Work_Distributed_Sequence: '@Asset_Cache_Work_Area_Secondary/{cache_type_houdini}/@generic_houdini_version_name-houdini/{distribution_type}_{distribution_index}/@generic_houdini_version_name.{distribution_type}_{distribution_index}.{HSEQ}.{ext_cache_houdini}'
+    Asset_HoudiniCache_Work_Distributed_File:  '@Asset_Cache_Work_Area_Secondary/{cache_type_houdini}/@generic_houdini_version_name-houdini/{distribution_type}_{distribution_index}/@generic_houdini_version_name.{distribution_type}_{distribution_index}.{ext_cache_houdini}'
+    Asset_HoudiniCache_Work_Checkpoints_Sequence:  '@Asset_Cache_Work_Area_Secondary/{cache_type_houdini}/@generic_houdini_version_name-houdini/sim/@generic_houdini_version_name.@HSIMSEQ.sim'
     # Private Rendered Caches
     # from Mikros Vfx
-    Asset_HoudiniCache_Private_Sequence:
-        definition: '@Asset_HoudiniCache_PrivateArea/{cache_type_houdini}/@generic_houdini_version_name/@generic_houdini_version_name.{HSEQ}.{ext_cache_houdini}'
-        root_name: 'cache'
-    Asset_HoudiniCache_Private_File:
-        definition: '@Asset_HoudiniCache_PrivateArea/{cache_type_houdini}/@generic_houdini_version_name/@generic_houdini_version_name.{ext_cache_houdini}'
-        root_name: 'cache'
-    Asset_HoudiniCache_Private_Distributed_Sequence:
-        definition: '@Asset_HoudiniCache_PrivateArea/{cache_type_houdini}/@generic_houdini_version_name/{distribution_type}_{distribution_index}/@generic_houdini_version_name.{distribution_type}_{distribution_index}.{HSEQ}.{ext_cache_houdini}'
-        root_name: 'cache'
-    Asset_HoudiniCache_Private_Distributed_File:
-        definition: '@Asset_HoudiniCache_PrivateArea/{cache_type_houdini}/@generic_houdini_version_name/{distribution_type}_{distribution_index}/@generic_houdini_version_name.{distribution_type}_{distribution_index}.{ext_cache_houdini}'
-        root_name: 'cache'
-    Asset_HoudiniCache_Private_Checkpoints_Sequence:
-        definition: '@Asset_HoudiniCache_PrivateArea/{cache_type_houdini}/@generic_houdini_version_name/sim/@generic_houdini_version_name.@HSIMSEQ.sim'
-        root_name: 'cache'
+    Asset_HoudiniCache_Private_Sequence: '@Asset_HoudiniCache_PrivateArea/{cache_type_houdini}/@generic_houdini_version_name/@generic_houdini_version_name.{HSEQ}.{ext_cache_houdini}'
+    Asset_HoudiniCache_Private_File: '@Asset_HoudiniCache_PrivateArea/{cache_type_houdini}/@generic_houdini_version_name/@generic_houdini_version_name.{ext_cache_houdini}'
+    Asset_HoudiniCache_Private_Distributed_Sequence: '@Asset_HoudiniCache_PrivateArea/{cache_type_houdini}/@generic_houdini_version_name/{distribution_type}_{distribution_index}/@generic_houdini_version_name.{distribution_type}_{distribution_index}.{HSEQ}.{ext_cache_houdini}'
+    Asset_HoudiniCache_Private_Distributed_File: '@Asset_HoudiniCache_PrivateArea/{cache_type_houdini}/@generic_houdini_version_name/{distribution_type}_{distribution_index}/@generic_houdini_version_name.{distribution_type}_{distribution_index}.{ext_cache_houdini}'
+    Asset_HoudiniCache_Private_Checkpoints_Sequence: '@Asset_HoudiniCache_PrivateArea/{cache_type_houdini}/@generic_houdini_version_name/sim/@generic_houdini_version_name.@HSIMSEQ.sim'
     # Published Rendered Caches
     # from Mikros vfx
-    Asset_HoudiniCache_Publish_Sequence:
-        definition: '@Asset_Cache_Publish_Area_Secondary/{cache_type_houdini}/@generic_houdini_version_name-houdini/@generic_houdini_version_name.{HSEQ}.{ext_cache_houdini}'
-        root_name: 'cache'
-    Asset_HoudiniCache_Publish_File:
-        definition: '@Asset_Cache_Publish_Area_Secondary/{cache_type_houdini}/@generic_houdini_version_name-houdini/@generic_houdini_version_name.{ext_cache_houdini}'
-        root_name: 'cache'
-    Asset_HoudiniCache_Publish_Distributed_Sequence:
-        definition: '@Asset_Cache_Publish_Area_Secondary/{cache_type_houdini}/@generic_houdini_version_name-houdini/{distribution_type}_{distribution_index}/@generic_houdini_version_name.{distribution_type}_{distribution_index}.{HSEQ}.{ext_cache_houdini}'
-        root_name: 'cache'
-    Asset_HoudiniCache_Publish_Distributed_File:
-        definition: '@Asset_Cache_Publish_Area_Secondary/{cache_type_houdini}/@generic_houdini_version_name-houdini/{distribution_type}_{distribution_index}/@generic_houdini_version_name.{distribution_type}_{distribution_index}.{ext_cache_houdini}'
-        root_name: 'cache'
+    Asset_HoudiniCache_Publish_Sequence: '@Asset_Cache_Publish_Area_Secondary/{cache_type_houdini}/@generic_houdini_version_name-houdini/@generic_houdini_version_name.{HSEQ}.{ext_cache_houdini}'
+    Asset_HoudiniCache_Publish_File: '@Asset_Cache_Publish_Area_Secondary/{cache_type_houdini}/@generic_houdini_version_name-houdini/@generic_houdini_version_name.{ext_cache_houdini}'
+    Asset_HoudiniCache_Publish_Distributed_Sequence: '@Asset_Cache_Publish_Area_Secondary/{cache_type_houdini}/@generic_houdini_version_name-houdini/{distribution_type}_{distribution_index}/@generic_houdini_version_name.{distribution_type}_{distribution_index}.{HSEQ}.{ext_cache_houdini}'
+    Asset_HoudiniCache_Publish_Distributed_File: '@Asset_Cache_Publish_Area_Secondary/{cache_type_houdini}/@generic_houdini_version_name-houdini/{distribution_type}_{distribution_index}/@generic_houdini_version_name.{distribution_type}_{distribution_index}.{ext_cache_houdini}'
     # Flipbook
     # from Mikros Vfx
     Asset_HoudiniFlip_Work_Generic_Name:                '@Asset_Image_WorkArea/@generic_version_name-flip'
