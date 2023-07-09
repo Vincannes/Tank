@@ -245,6 +245,16 @@ std::map<std::string, std::string> generateStringsDictionnaryFromString(std::str
 	return stringsOutput;
 }
 
+std::vector<std::string> walkDir(std::string directory)
+{
+	std::vector<std::string> results;
+
+    for (const auto& entry : std::filesystem::recursive_directory_iterator(directory)) {
+        results.push_back(entry.path().string());
+    }
+	return results;
+}
+
 std::vector<std::string> listFilesFromPathPattern(const std::string directory, std::string origpatternStr) {
     
 	std::vector<std::string> matchingFiles;
@@ -256,22 +266,17 @@ std::vector<std::string> listFilesFromPathPattern(const std::string directory, s
 		directory_path = removePatternInString(directory, "/", "\\");        // Matching Windows
 	#endif
 
+	patternStr = removePatternInString(patternStr, "\\", "\\\\");
 	std::filesystem::path dirPath(directory_path);
 	std::regex regexPattern(patternStr);
 
-	for (const auto& entry : std::filesystem::directory_iterator(dirPath)) {
-        const auto& path = entry.path();
-        if (std::filesystem::is_directory(path)) {
-			for (const auto& path : listFilesFromPathPattern(path.string(), origpatternStr)){
-            	matchingFiles.push_back(path);
-			}
-        } else if (std::filesystem::is_regular_file(path)) {
-			if(std::regex_match(path.string(), regexPattern)){
-            	matchingFiles.push_back(path.string());
-			}
-        }
-    }
-
+	std::vector<std::string> dirs = walkDir(directory_path);
+	for(int i = 0; i < dirs.size(); i++) {
+		std::string path = dirs[i];
+		if(std::regex_match(path, regexPattern)){
+			matchingFiles.push_back(path);
+		}
+	}
     return matchingFiles;
 }
 

@@ -82,10 +82,10 @@ std::vector<std::string> Tank::getAbstractPathsFromTemplate(TemplatePath templat
 
 	for(int i=0; i<missing_keys.size(); i++){
 		std::string key = missing_keys[i];
-		local_fields[key] =  ".*";
+		local_fields[key] = "[a-zA-Z_0-9]+";
 	}
 	std::string outputPattern     = templatePath.apply_fields(local_fields, missing_keys);
-	std::string directoryToSearch = this->pathsdict.at("rootDir");
+	std::string directoryToSearch = this->_root_path;
 	std::vector<std::string> abstract_paths = listFilesFromPathPattern(directoryToSearch, outputPattern);
 	return abstract_paths;
 }

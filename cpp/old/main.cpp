@@ -14,17 +14,16 @@
 int main() {
 
 	std::map<std::string, std::string> fields;
-	fields["dir"] = "test";
-	fields["Shot"] = "sh_030";
+	// fields["Shot"] = "seq_010";
 	fields["Task"] = "cmp";
 	fields["version"] = "1";
-	fields["Sequence"] = "sh";
+	fields["Sequence"] = "seq";
 	fields["render_source"] = "nk";
 	// fields["SEQ"] = "####";
 	fields["write_node"] = "out";
 	fields["variant"] = "base";
 	fields["colorspace"] = "linear";
-	fields["name"] = "sh_030";
+	fields["name"] = "seq_010";
 	fields["ext_render_nuke"] = "exr";
 
 	std::string keysOLD  = "{'Root' : {'type': 'str'}, 'dir' : {'type': 'str'}, 'Shot' : {'type': 'str', 'choices':['sh_030', 'sh_040']}, 'version' : {'alias':'version', 'type': 'int', 'default': '1', 'format_spec: '03'}, 'Task' : {'type': 'str', 'default': 'aa'}";
@@ -96,11 +95,13 @@ int main() {
 	// 	std::cout << cle << " : " << valeur << std::endl;
 	// }
 
-	// std::cout << "" << std::endl;
-	// TemplatePath nuke_tpl = templates["Shot_NukeRender_Work_Sequence"];
+	std::cout << "" << std::endl;
+	// TemplatePath nuke_tpl = templates["Shot_NukeScene_Work"];
+	// TemplatePath nuke_tpl = templates["shot_task_root"];
 	// std::cout << "definition" << std::endl;
+	// std::cout << nuke_tpl.getName() << std::endl;
 	// std::cout << nuke_tpl.getDefinition() << std::endl;
-	// // std::cout << "" << std::endl;
+	// // // std::cout << "" << std::endl;
 	// // std::vector<std::string> test = nuke_tpl.getOrderedKeys();
 	// // for(int i=0; i<test.size(); i++){	
 	// // 	std::cout << test[i] << std::endl;
@@ -118,16 +119,16 @@ int main() {
 	// }
 
 
-	// std::string path = "D:/Desk/python/Tank/tests/project/test/sh_010/cmp/nuke/sh_010-cmp-base-v1.nk";
-	
-	// std::cout << "" << std::endl;
-	// std::cout << "Get Fields" << std::endl;
-	// std::map<std::string, std::string> get_fields = nuke_tpl.getFields(path);
-	// for (const auto& paire : get_fields) {
-	// 	const std::string& cle = paire.first;
-    //     const std::string& valeur = paire.second;
-	// 	std::cout << cle << " : " << valeur << std::endl;
-	// }
+	std::string path = "D:\\Desk\\python\\Projects\\sequence\\sh\\sh_010";
+	TemplatePath nuke_tpl = tank_test.templateFromPath(path);
+	std::cout << "" << std::endl;
+	std::cout << "Get Fields" << std::endl;
+	std::map<std::string, std::string> get_fields = nuke_tpl.getFields(path);
+	for (const auto& paire : get_fields) {
+		const std::string& cle = paire.first;
+        const std::string& valeur = paire.second;
+		std::cout << cle << " : " << valeur << std::endl;
+	}
 	
 
 
@@ -138,16 +139,16 @@ int main() {
 	// std::cout << "" << std::endl;
 	// std::vector<std::string> abspathsTest = tank_test.getAbstractPathsFromTemplate(nuke_tpl, fields);
 	// std::cout << "" << std::endl;
+	// std::cout << abspathsTest.size() << std::endl;
 	// for(int i=0; i<abspathsTest.size(); i++){
 	// 	std::cout << "match  " << abspathsTest[i] << std::endl;
 	// }
 	// std::cout << "" << std::endl;
-    
 
-	TemplatePath aTesty = tank_test.templateFromPath(_path);
-	std::cout << _path << std::endl;
-	std::cout << aTesty.getName() << std::endl;
-	std::cout << aTesty.getDefinition() << std::endl;
+	// TemplatePath aTesty = tank_test.templateFromPath(_path);
+	// std::cout << _path << std::endl;
+	// std::cout << aTesty.getName() << std::endl;
+	// std::cout << aTesty.getDefinition() << std::endl;
 	// // std::cout << aTesty.getOrderedKeys() << std::endl;
 	// std::cout << " " <<std::endl;
 
@@ -160,12 +161,12 @@ int main() {
 	// for (int i=0; i<etfiel.size(); i++) {
     //     std::cout << etfiel[i] << std::endl ;
     // }
-	std::cout << " " <<std::endl;
-	for (const auto& paire : aTesty.getFields(_path)) {
-		const std::string& cle = paire.first;
-        const std::string& valeur = paire.second;
-		std::cout << cle << " : " << valeur << std::endl;
-	}
+	// std::cout << " " <<std::endl;
+	// for (const auto& paire : aTesty.getFields(_path)) {
+	// 	const std::string& cle = paire.first;
+    //     const std::string& valeur = paire.second;
+	// 	std::cout << cle << " : " << valeur << std::endl;
+	// }
 	// TemplatePath aTestya = tank_test.templateFromPath(testpathNot);
 	// std::cout << aTestya.getName() << std::endl;
 	// TemplatePath aTestyaa = tank_test.templateFromPath(testpathGood);
