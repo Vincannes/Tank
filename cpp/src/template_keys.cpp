@@ -4,6 +4,7 @@
 #include <sstream>
 #include <iomanip> // Pour setw
 
+#include "utils.h"
 #include "exception.h"
 #include "template_keys.h"
 
@@ -102,7 +103,8 @@ std::string IntegerTemplateKey::getValue()
 
 std::string IntegerTemplateKey::_formatValue(std::string value) 
 {
-	int num = std::stoi(value);
+	std::string value_reformat = removePatternInString(value, "v", "");
+	int num = std::stoi(value_reformat);
     std::stringstream ss;
     ss << std::setw(std::stoi(this->_format_spec)) << std::setfill('0') << num;
     std::string formattedString = ss.str();

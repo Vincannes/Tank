@@ -124,6 +124,14 @@ std::string TemplatePath::apply_fields(std::map<std::string, std::string> fields
 
 std::map<std::string, std::string> TemplatePath::getFields(std::string path) 
 {
+
+	// std::cout << "" << std::endl;
+	// for(const auto& key : this->_all_keys) {
+	// 	const std::string& cle = key.first;
+	// 	const std::string& valeur = key.second->getDefault();
+	// 	std::cout << cle << std::endl;
+	// }
+
 	if(path.find(this->_root_path) == 0){
 		path = removePatternInString(path, this->_root_path, "");
 		path = matchSeparator(path);
@@ -193,7 +201,12 @@ std::map<std::string, std::string> TemplatePath::getFields(std::string path)
 
 							std::vector<std::string> valueFromPath = getTokensFromPath(token);
 							for (const auto& _token_name : valueFromPath) { // Verifier si plusieurs token trouve
-								fields[_token_name] = value;
+								std::string value_reformat = _getValueFromKeyObject(_token_name, value);
+								if(_token_name == "version"){
+									int num1 = std::stoi(value_reformat);
+									value_reformat = std::to_string(num1);
+								}
+								fields[_token_name] = value_reformat;
 							}
 						}
 
