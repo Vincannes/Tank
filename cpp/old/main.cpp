@@ -41,7 +41,7 @@ int main() {
 
 	std::string root = "D:\\Desk\\python\\Projects";
 	std::string root_path = "D:/Desk/python/Tank/tests/project/sequence/test/test_010/cmp/nuke/wip/test_010-cmp-base-v001.nk";
-    std::string _path = "D:\\Desk\\python\\Projects\\sequence\\sh\\sh_010\\cmp\\nuke\\wip\\010-cmp-base-v001.nk";
+    std::string _path = "D:\\Desk\\python\\Projects\\sequence\\sh\\sh_010\\cmp\\nuke\\wip\\010-cmp-base-v0010.nk";
 
 
 	// #if defined(_WIN32)
@@ -120,10 +120,10 @@ int main() {
 
 
 	std::string path = "D:\\Desk\\python\\Projects\\sequence\\sh\\sh_010";
-	TemplatePath nuke_tpl = tank_test.templateFromPath(path);
+	TemplatePath nuke_tpl = tank_test.templateFromPath(_path);
 	std::cout << "" << std::endl;
 	std::cout << "Get Fields" << std::endl;
-	std::map<std::string, std::string> get_fields = nuke_tpl.getFields(path);
+	std::map<std::string, std::string> get_fields = nuke_tpl.getFields(_path);
 	for (const auto& paire : get_fields) {
 		const std::string& cle = paire.first;
         const std::string& valeur = paire.second;
