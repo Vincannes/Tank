@@ -40,9 +40,34 @@ int main() {
 	std::map<std::string, std::map<std::string, std::string>> keysDict;
 
 	std::string root = "D:\\Desk\\python\\Projects";
-	std::string root_path = "D:/Desk/python/Tank/tests/project/sequence/test/test_010/cmp/nuke/wip/test_010-cmp-base-v001.nk";
-    std::string _path = "D:\\Desk\\python\\Projects\\sequence\\sh\\sh_010\\cmp\\nuke\\wip\\010-cmp-base-v0010.nk";
+	std::string test_image = "D:\\Desk\\python\\Projects\\sequence\\sh\\sh_010\\cmp\\image\\wip\\sh_010-cmp-caca-nk-out-v0001-linear-exr\\sh_010-cmp-caca-nk-out-v0001-linear.####.exr";
 
+	std::string zz = "D:/Desk/python/Tank/tests/project/sequence/test/test_010/cmp/nuke/wip/test_010-cmp-base-v001.nk";
+    // std::string test_image = "D:\\Desk\\python\\Projects\\sequence\\sh\\sh_010\\cmp\\nuke\\wip\\010-cmp-base-v0010.nk";
+    // std::string test_image = "D:\\Desk\\python\\Projects\\sequence\\sh\\sh_010\\cmp\\nuke\\wip\\010-cmp-base-v010.nk";
+	
+	
+    // std::string static_parse = "/sequence/|/|/|/image/wip/|-|-|-|-v|-|-|/|-|-|-|-|-v|-|\\.|\\.|-";
+	// std::string definition_splited[] = {
+    //     "%(name)-%(Task)-%(variant)-%(render_source)-%(write_node)-v%(version)-%(colorspace).%(SEQ).%(ext_render_nuke)"
+    // };
+
+    // std::string path_splited[] = {
+    //     "sh_010-cmp-caca-nk-out-v0001-linear.####.exr"
+    // };
+
+    // std::regex rgx(static_parse);
+    // std::sregex_token_iterator iterDefin(definition_splited[0].begin(), definition_splited[0].end(), rgx, -1);
+    // std::sregex_token_iterator iterPath(path_splited[0].begin(), path_splited[0].end(), rgx, -1);
+    // std::vector<std::string> token_def(iterDefin, {});
+    // std::vector<std::string> tokens_val(iterPath, {});
+
+    // for (int i=0; i<token_def.size(); i++) {
+    //     std::cout << "token  " << token_def[i] << " value "<< tokens_val[i] << std::endl;
+    // }
+	// return 1;
+
+	
 
 	// #if defined(_WIN32)
 	// std::cout << "Wubdiw" << std::endl;
@@ -95,9 +120,9 @@ int main() {
 	// 	std::cout << cle << " : " << valeur << std::endl;
 	// }
 
-	std::cout << "" << std::endl;
-	// TemplatePath nuke_tpl = templates["Shot_NukeScene_Work"];
-	// TemplatePath nuke_tpl = templates["shot_task_root"];
+	// std::cout << "" << std::endl;
+	// TemplatePath nuke_tpl = templates["Shot_NukeRender_Work_Sequence"];
+	// // TemplatePath nuke_tpl = templates["shot_task_root"];
 	// std::cout << "definition" << std::endl;
 	// std::cout << nuke_tpl.getName() << std::endl;
 	// std::cout << nuke_tpl.getDefinition() << std::endl;
@@ -117,20 +142,31 @@ int main() {
 	// for(int i=0; i<test.size(); i++){
 	// 	std::cout << test[i] << std::endl;
 	// }
+	
+	std::cout << "" << std::endl;
+	TemplatePath nuke_tpaal = templates["Shot_NukeRender_Work_Sequence"];
+	// TemplatePath nuke_tpl = templates["shot_task_root"];
+	std::cout << "definition" << std::endl;
+	std::cout << nuke_tpaal.getName() << std::endl;
+	std::cout << nuke_tpaal.getDefinition() << std::endl;
+	std::cout << splitPath(nuke_tpaal.getDefinition()).size() << std::endl;
+	std::cout << "" << std::endl;
 
 
 	std::string path = "D:\\Desk\\python\\Projects\\sequence\\sh\\sh_010";
-	TemplatePath nuke_tpl = tank_test.templateFromPath(_path);
+	TemplatePath nuke_tpl = tank_test.templateFromPath(test_image);
+	std::cout << "" << std::endl;
+	std::map<std::string, std::string> get_fields = nuke_tpl.getFields(test_image);
 	std::cout << "" << std::endl;
 	std::cout << "Get Fields" << std::endl;
-	std::map<std::string, std::string> get_fields = nuke_tpl.getFields(_path);
+	if(get_fields.size() >0){
+		std::cout << "Path found !!!" << std::endl;
+	}
 	for (const auto& paire : get_fields) {
 		const std::string& cle = paire.first;
         const std::string& valeur = paire.second;
 		std::cout << cle << " : " << valeur << std::endl;
 	}
-	
-
 
 	// std::cout << "D:\\Desk\\python\\Tank\\tests\\project" << std::endl;
 	// std::cout << pattern_test << std::endl;
