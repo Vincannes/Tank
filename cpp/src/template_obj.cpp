@@ -124,14 +124,6 @@ std::string TemplatePath::apply_fields(std::map<std::string, std::string> fields
 
 std::map<std::string, std::string> TemplatePath::getFields(std::string path) 
 {
-
-	// std::cout << "" << std::endl;
-	// for(const auto& key : this->_all_keys) {
-	// 	const std::string& cle = key.first;
-	// 	const std::string& valeur = key.second->getDefault();
-	// 	std::cout << cle << std::endl;
-	// }
-
 	if(path.find(this->_root_path) == 0){
 		path = removePatternInString(path, this->_root_path, "");
 		path = matchSeparator(path);
@@ -148,21 +140,32 @@ std::map<std::string, std::string> TemplatePath::getFields(std::string path)
 		return fields;
 	}
 
-	std::regex pattern(this->_pattern_definition);
+	std::string clean_def = removePatternInString(this->_pattern_definition, "/", "\\/");
+	std::regex pattern(clean_def);
     if(!std::regex_match(path, pattern)){
 		return fields;
 	}
 	std::vector<std::string> satic_token = getStaticTokens();
+	std::vector<std::string> modified_tokens;
+
+	// if "." in static_token, add "\\." for regex 
+	for (const std::string& token : satic_token) {
+        if (token == ".") {
+            modified_tokens.push_back("\\.");
+        } else {
+            modified_tokens.push_back(token);
+        }
+    }
 
 	// from satic_token list {"item", "-", "item"}, place "-" at the end of the list
-	if (std::find(satic_token.begin(), satic_token.end(), "-") != satic_token.end()) {
-		auto itr = std::find(satic_token.begin(), satic_token.end(), "-");
-		satic_token.erase(itr);
-		satic_token.push_back("-");
+	if (std::find(modified_tokens.begin(), modified_tokens.end(), "-") != modified_tokens.end()) {
+		auto itr = std::find(modified_tokens.begin(), modified_tokens.end(), "-");
+		modified_tokens.erase(itr);
+		modified_tokens.push_back("-");
 	}
 
 	// Create REGEX pour separer les tokens a partir de chaque non Token dans le path
-	std::string static_parse = joinListWithSeparator(satic_token, '|'); // move - to the end
+	std::string static_parse = joinListWithSeparator(modified_tokens, '|'); // move - to the end
 
 	for (size_t i = 0; i < path_splited.size(); i++) {
 
@@ -201,12 +204,17 @@ std::map<std::string, std::string> TemplatePath::getFields(std::string path)
 
 							std::vector<std::string> valueFromPath = getTokensFromPath(token);
 							for (const auto& _token_name : valueFromPath) { // Verifier si plusieurs token trouve
-								std::string value_reformat = _getValueFromKeyObject(_token_name, value);
-								if(_token_name == "version"){
-									int num1 = std::stoi(value_reformat);
-									value_reformat = std::to_string(num1);
+								try{
+									std::string value_reformat = _getValueFromKeyObject(_token_name, value);
+									if(_token_name == "version"){
+										int num1 = std::stoi(value_reformat);
+										value_reformat = std::to_string(num1);
+									}
+									fields[_token_name] = value_reformat;
+									// std::cout << "_token_name  "<<_token_name << "   "<< value_reformat << std::endl;
+								}catch(const TankTemplateWrongValue& e){
+									continue;
 								}
-								fields[_token_name] = value_reformat;
 							}
 						}
 
@@ -270,9 +278,13 @@ std::string TemplatePath::_get_clean_definition(const std::string definition) {
 
 std::string TemplatePath::_get_pattern_definition(const std::string definition) {
 
+	std::regex patternPadd("\\{SEQ\\}");
 	std::regex pattern("\\{([^\\}]*)\\}");
     std::string remplacement = "(\\w+)";
-    std::string result = std::regex_replace(definition, pattern, remplacement);
+    std::string remplPadding = "(\\W+)";
+
+	std::string clean_def = std::regex_replace(definition, patternPadd, remplPadding);
+    std::string result = std::regex_replace(clean_def, pattern, remplacement);
 
 	return result;
 }
