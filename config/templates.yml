@@ -165,7 +165,6 @@ keys:
         default: base
     extension:
         type: str
-        filter_by: "^[a-zA-Z0-9]{1,5}$"
     render_layer:
         type: str
         # To prevent overlapping templates problem

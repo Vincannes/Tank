@@ -16,6 +16,7 @@ public:
 
 	// prototypes
 	TemplatePath() = default;
+	// TemplatePath(std::string);
 	TemplatePath(std::string, std::map<std::string, TemplateKey*>, std::string, std::string);
 
 	// accesseurs
