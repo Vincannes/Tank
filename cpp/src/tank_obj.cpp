@@ -30,7 +30,17 @@ Tank::Tank(std::string _templatePathsString, std::string _templateKeysString, st
 
 std::map<std::string, TemplatePath> Tank::getTemplates()
 {
-    return this->_templates;
+	
+	std::map<std::string, TemplatePath> map1 = this->_templates;
+	for (const auto& key : this->_allKeys) {
+		const std::string& key_name = key.first;
+		const std::string& value = key.second->getDefault();
+
+		// Ajouter l'élément à la première map
+		TemplatePath templateObj(value, this->_allKeys, value, this->_root_path);
+		map1[key_name] = templateObj;
+	}
+    return map1;
 }
 
 

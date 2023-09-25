@@ -40,7 +40,7 @@ int main() {
 	std::map<std::string, std::map<std::string, std::string>> keysDict;
 
 	std::string root = "D:\\Desk\\python\\Projects";
-	std::string test_image = "D:\\Desk\\python\\Projects\\sequence\\sh\\sh_010\\cmp\\image\\wip\\sh_010-cmp-caca-nk-out-v0001-linear-exr\\sh_010-cmp-caca-nk-out-v0001-linear.####.exr";
+	// std::string test_image = "D:\\Desk\\python\\Projects\\sequence\\sh\\sh_010\\cmp\\image\\wip\\sh_010-cmp-caca-nk-out-v0001-linear-exr\\sh_010-cmp-caca-nk-out-v0001-linear.####.exr";
 
 	std::string zz = "D:/Desk/python/Tank/tests/project/sequence/test/test_010/cmp/nuke/wip/test_010-cmp-base-v001.nk";
     // std::string test_image = "D:\\Desk\\python\\Projects\\sequence\\sh\\sh_010\\cmp\\nuke\\wip\\010-cmp-base-v0010.nk";
@@ -112,13 +112,14 @@ int main() {
 	// 	const std::string& valeur = key.second->getDefault();
 	// 	std::cout << cle << " : " << valeur << std::endl;
 	// }
-
-	// std::cout << "" << std::endl;
-	// for (const auto& paire : templates) {
-	// 	const std::string& cle = paire.first;
-    //     const std::string& valeur = paire.second.getDefinition();
-	// 	std::cout << cle << " : " << valeur << std::endl;
-	// }
+	std::cout << "" << std::endl;
+	std::cout << "" << std::endl;
+	for (const auto& paire : templates) {
+		const std::string& cle = paire.first;
+        const std::string& valeur = paire.second.getDefinition();
+		std::cout << cle << " : " << valeur << std::endl;
+	}
+	return 1;
 
 	// std::cout << "" << std::endl;
 	// TemplatePath nuke_tpl = templates["Shot_NukeRender_Work_Sequence"];
@@ -143,16 +144,18 @@ int main() {
 	// 	std::cout << test[i] << std::endl;
 	// }
 	
-	std::cout << "" << std::endl;
-	TemplatePath nuke_tpaal = templates["Shot_NukeRender_Work_Sequence"];
-	// TemplatePath nuke_tpl = templates["shot_task_root"];
-	std::cout << "definition" << std::endl;
-	std::cout << nuke_tpaal.getName() << std::endl;
-	std::cout << nuke_tpaal.getDefinition() << std::endl;
-	std::cout << splitPath(nuke_tpaal.getDefinition()).size() << std::endl;
-	std::cout << "" << std::endl;
+	// std::cout << "" << std::endl;
+	// TemplatePath nuke_tpaal = templates["Shot_NukeRender_Work_Sequence"];
+	// // TemplatePath nuke_tpl = templates["shot_task_root"];
+	// std::cout << "definition" << std::endl;
+	// std::cout << nuke_tpaal.getName() << std::endl;
+	// std::cout << nuke_tpaal.getDefinition() << std::endl;
+	// std::cout << splitPath(nuke_tpaal.getDefinition()).size() << std::endl;
+	// std::cout << "" << std::endl;
 
+	std::string test_image = "D:\\Desk\\python\\Projects\\sequence\\sh\\sh_010\\cmp\\image\\wip\\sh_010-cmp-caca-nk-out-v0001-linear-exr\\sh_010-cmp-caca-nk-out-v0001-linear.####.exr";
 
+	std::cout << "" << std::endl;
 	std::string path = "D:\\Desk\\python\\Projects\\sequence\\sh\\sh_010";
 	TemplatePath nuke_tpl = tank_test.templateFromPath(test_image);
 	std::cout << "" << std::endl;

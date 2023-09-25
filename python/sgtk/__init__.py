@@ -35,6 +35,44 @@ class tank(tank_module.Tank):
         super().__init__(str(paths), str(keys), str(strings), path)
 
 
+def test_all_fields():
+    fields = {"Shot": "sh_010", "Sequence": "sh", "Task":"src", "colorspace":"aces", 
+              "extension": "exr", "ext_render_nuke": "jpg", "variant":"master01", 
+              "version": "1", "SEQ": "%04d", "name": "sh_010", "Asset": "test", 
+              "render_aov":"path_test", "image_ext":"png", "ext_render_flame":"tiff", 
+              "ext_cache_houdini":"abc", "ext_proxy":"jpg", "ext_scene_photoshop":"psd", 
+              "cache_type_houdini":"adc", "ext_render_clarisse":"jpg", "ext_render_afterfx": "exr",
+              "ext_render_blender":"png", "ext_render_c4d":"tiff", "ext_cache_maya": "abc",
+              "flame_render_source":"fl", "photoshop_render_source":"ps", "afterfx_render_source": "ae",
+              "blender_render_source":"bl", "harmony_render_source":"ha", "houdini_render_source": "htoa",
+              "footage_source":"aucune_idee", "write_node_parent":"aucune_idee", "node": "aucune_idee",
+              "export_ass_set_suffix":"aucune_idee", "cache_variant":"aucune_idee", "image_variant": "aucune_idee",
+              "export_ass_top_namespace":"aucune_idee", "vendor":"bangalor", "extra_variant": "aucune_idee",
+              "segment_name":"aucune_idee", "export_fur_top_namespace":"aucune_idee", "camera": "test",
+              "project_resolution": "1920x1080", "render_source" : "nk", "render_layer": "beauty",
+              "write_node": "out", "slate_frame" : "1001", "delivery_image_type": "exr",
+              "client_step": "prep", "delivery_quicktime_suffix" : "test", "cut_name": "caca",
+              "cut_revision":"cut_revision", "tool":"nuke", "output":"output", "HSEQ":"HSEQ",
+        }
+    #print(tk.templates()["Hiero_Footage_Sequence"].apply_fields(s))
+
+    #template = tk.template_from_path(aa)
+
+    print("")
+    index = 0
+    for i in tk.templates():
+        try:
+            index += 1
+            template = tk.templates()[i]
+            path = template.apply_fields(fields)            
+            print(index, len(tk.templates()), i, path)
+            template_path = tk.template_from_path(path) 
+            if template_path:
+                print("       ", template_path.name())
+        except:
+            pass
+
+
 if __name__ == "__main__":
     # pprint(keys)
 
@@ -64,16 +102,20 @@ if __name__ == "__main__":
     # print()
     # print("path")
     # print(path)
+    pathTestWork = "D:/Desk/python/Projects/sequence/sh/sh_010/cmp/image/wip/sh_010-cmp-caca-nk-out-v0001-linear-exr/sh_010-cmp-caca-nk-out-v0001-linear.####.exr"
     pathTest = "D:/Desk/python/Tank/tests/project/sequence/test_020/010/cmp/nuke/wip/010-cmp-base-v0001.nk"
-
-    template = tk.template_from_path(pathTest)
-    print()
-    print("definition")
-    print(template.definition())
-    print()
-    # print("Order Key")
-    # print(template.ordered_keys())
+    aa = 'D:/Desk/python/Tank/tests/project/sequence/sh/sh_010/cmp/image/wip/sh_010-cmp-caca-nk-out-v001-linear-exr/sh_010-cmp-caca-nk-out-v001-linear.####.exr'
+    pprint(templates)
+    pprint(templates.get('Sequence', None))
+    # template = tk.template_from_path(aa)
     # print()
-    # print("Fields")
-    pprint(template.get_fields(pathTest))
+    # print("definition")
+    # print(template.definition())
+    # print()
+    # # print("Order Key")
+    # # print(template.ordered_keys())
+    # # print()
+    # # print("Fields")
+        # pprint(template.get_fields(aa))
 
+    
