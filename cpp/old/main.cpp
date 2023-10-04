@@ -13,18 +13,7 @@
 
 int main() {
 
-	std::map<std::string, std::string> fields;
-	// fields["Shot"] = "seq_010";
-	fields["Task"] = "cmp";
-	fields["version"] = "1";
-	fields["Sequence"] = "seq";
-	fields["render_source"] = "nk";
-	// fields["SEQ"] = "####";
-	fields["write_node"] = "out";
-	fields["variant"] = "base";
-	fields["colorspace"] = "linear";
-	fields["name"] = "seq_010";
-	fields["ext_render_nuke"] = "exr";
+	
 
 	std::string keysOLD  = "{'Root' : {'type': 'str'}, 'dir' : {'type': 'str'}, 'Shot' : {'type': 'str', 'choices':['sh_030', 'sh_040']}, 'version' : {'alias':'version', 'type': 'int', 'default': '1', 'format_spec: '03'}, 'Task' : {'type': 'str', 'default': 'aa'}";
 	std::string pathsOLD = "{'rootDir': 'D:\\Desk\\python\\Tank\\tests\\project', 'desk': '@rootDir\\{dir}', 'test': '@desk\\{Shot}\\{Task}', 'nuke': '@test\\nuke\\{Shot}-{Task}-base-v{version}.nk', 'test_diff': '@desk\\nuke\\{Shot}-{Task}-base-v{version}.nk'}";
@@ -45,8 +34,7 @@ int main() {
 	std::string zz = "D:/Desk/python/Tank/tests/project/sequence/test/test_010/cmp/nuke/wip/test_010-cmp-base-v001.nk";
     // std::string test_image = "D:\\Desk\\python\\Projects\\sequence\\sh\\sh_010\\cmp\\nuke\\wip\\010-cmp-base-v0010.nk";
     // std::string test_image = "D:\\Desk\\python\\Projects\\sequence\\sh\\sh_010\\cmp\\nuke\\wip\\010-cmp-base-v010.nk";
-	
-	
+
     // std::string static_parse = "/sequence/|/|/|/image/wip/|-|-|-|-v|-|-|/|-|-|-|-|-v|-|\\.|\\.|-";
 	// std::string definition_splited[] = {
     //     "%(name)-%(Task)-%(variant)-%(render_source)-%(write_node)-v%(version)-%(colorspace).%(SEQ).%(ext_render_nuke)"
@@ -112,14 +100,14 @@ int main() {
 	// 	const std::string& valeur = key.second->getDefault();
 	// 	std::cout << cle << " : " << valeur << std::endl;
 	// }
-	std::cout << "" << std::endl;
-	std::cout << "" << std::endl;
-	for (const auto& paire : templates) {
-		const std::string& cle = paire.first;
-        const std::string& valeur = paire.second.getDefinition();
-		std::cout << cle << " : " << valeur << std::endl;
-	}
-	return 1;
+
+	// std::cout << "" << std::endl;
+	// for (const auto& paire : templates) {
+	// 	const std::string& cle = paire.first;
+    //     const std::string& valeur = paire.second.getDefinition();
+	// 	std::cout << cle << " : " << valeur << std::endl;
+	// }
+	// return 1;
 
 	// std::cout << "" << std::endl;
 	// TemplatePath nuke_tpl = templates["Shot_NukeRender_Work_Sequence"];
@@ -145,44 +133,60 @@ int main() {
 	// }
 	
 	// std::cout << "" << std::endl;
-	// TemplatePath nuke_tpaal = templates["Shot_NukeRender_Work_Sequence"];
-	// // TemplatePath nuke_tpl = templates["shot_task_root"];
+	TemplatePath sequence_tpl = templates["Shot_NukeRender_Work_Sequence"];
+	TemplatePath nuke_tpl = templates["shot_task_root"];
 	// std::cout << "definition" << std::endl;
-	// std::cout << nuke_tpaal.getName() << std::endl;
-	// std::cout << nuke_tpaal.getDefinition() << std::endl;
-	// std::cout << splitPath(nuke_tpaal.getDefinition()).size() << std::endl;
+	// std::cout << sequence_tpl.getName() << std::endl;
+	// std::cout << sequence_tpl.getDefinition() << std::endl;
+	// std::cout << splitPath(sequence_tpl.getDefinition()).size() << std::endl;
 	// std::cout << "" << std::endl;
 
 	std::string test_image = "D:\\Desk\\python\\Projects\\sequence\\sh\\sh_010\\cmp\\image\\wip\\sh_010-cmp-caca-nk-out-v0001-linear-exr\\sh_010-cmp-caca-nk-out-v0001-linear.####.exr";
 
-	std::cout << "" << std::endl;
-	std::string path = "D:\\Desk\\python\\Projects\\sequence\\sh\\sh_010";
-	TemplatePath nuke_tpl = tank_test.templateFromPath(test_image);
-	std::cout << "" << std::endl;
-	std::map<std::string, std::string> get_fields = nuke_tpl.getFields(test_image);
-	std::cout << "" << std::endl;
-	std::cout << "Get Fields" << std::endl;
-	if(get_fields.size() >0){
-		std::cout << "Path found !!!" << std::endl;
-	}
-	for (const auto& paire : get_fields) {
-		const std::string& cle = paire.first;
-        const std::string& valeur = paire.second;
-		std::cout << cle << " : " << valeur << std::endl;
-	}
+	// std::cout << "" << std::endl;
+	// std::string path = "D:\\Desk\\python\\Projects\\sequence\\sh\\sh_010";
+	// TemplatePath nuke_tpl = tank_test.templateFromPath(test_image);
+	// std::cout << "" << std::endl;
+	// std::map<std::string, std::string> get_fields = nuke_tpl.getFields(test_image);
+	// std::cout << "" << std::endl;
+	// std::cout << "Get Fields" << std::endl;
+	// if(get_fields.size() >0){
+	// 	std::cout << "Path found !!!" << std::endl;
+	// }
+	// for (const auto& paire : get_fields) {
+	// 	const std::string& cle = paire.first;
+    //     const std::string& valeur = paire.second;
+	// 	std::cout << cle << " : " << valeur << std::endl;
+	// }
 
 	// std::cout << "D:\\Desk\\python\\Tank\\tests\\project" << std::endl;
 	// std::cout << pattern_test << std::endl;
 	// std::vector<std::string> abspathsTest2 = listFilesFromPathPattern("D:\\Desk\\python\\Tank\\tests\\project", pattern_test);
 
-	// std::cout << "" << std::endl;
-	// std::vector<std::string> abspathsTest = tank_test.getAbstractPathsFromTemplate(nuke_tpl, fields);
-	// std::cout << "" << std::endl;
-	// std::cout << abspathsTest.size() << std::endl;
-	// for(int i=0; i<abspathsTest.size(); i++){
-	// 	std::cout << "match  " << abspathsTest[i] << std::endl;
-	// }
-	// std::cout << "" << std::endl;
+	std::map<std::string, std::string> fields;
+	// {'Sequence': 'sh', 'Shot': 'sh_010', 'Task': 'cmp', 'colorspace': 'linear', 'ext_render_nuke': 'exr', 'name': 'sh_010', 'render_source': 'nk', 'variant': 'base', 'write_node': 'out'}
+	fields["Shot"] = "sh_010";
+	fields["Task"] = "cmp";
+	fields["version"] = "1";
+	fields["Sequence"] = "sh";
+	fields["render_source"] = "nk";
+	fields["SEQ"] = "####";
+	fields["write_node"] = "out";
+	fields["variant"] = "base";
+	fields["colorspace"] = "linear";
+	fields["name"] = "sh_010";
+	fields["ext_render_nuke"] = "exr";
+
+	std::cout << "" << std::endl;
+	std::vector<std::string> abspathsTest = tank_test.getAbstractPathsFromTemplate(sequence_tpl, fields);
+	std::cout << abspathsTest.size() << std::endl;
+	for(int i=0; i<abspathsTest.size(); i++){
+		std::cout << "match  " << abspathsTest[i] << std::endl;
+	}
+
+	std::cout << "" << std::endl;
+	std::string testpath = sequence_tpl.apply_fields(fields);
+	std::cout << testpath << std::endl;
 
 	// TemplatePath aTesty = tank_test.templateFromPath(_path);
 	// std::cout << _path << std::endl;

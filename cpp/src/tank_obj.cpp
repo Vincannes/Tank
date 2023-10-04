@@ -87,14 +87,21 @@ std::vector<std::string> Tank::getAbstractPathsFromTemplate(TemplatePath templat
 	std::vector<std::string> missing_keys = templatePath.missingKeys(fields);
 
 	for(auto a = fields.begin(); a !=fields.end(); ++a) {
-		local_fields[a->first] = a->second;
+		std::string value;
+		if(a->first == "SEQ"){
+			value = "[0-9]+";
+		}
+		else{
+			value = a->second;
+		}
+		local_fields[a->first] = value;
 	}
 
 	for(int i=0; i<missing_keys.size(); i++){
 		std::string key = missing_keys[i];
 		local_fields[key] = "[a-zA-Z_0-9]+";
 	}
-	std::string outputPattern     = templatePath.apply_fields(local_fields, missing_keys);
+	std::string outputPattern = templatePath.apply_fields(local_fields, missing_keys);
 	std::string directoryToSearch = this->_root_path;
 	std::vector<std::string> abstract_paths = listFilesFromPathPattern(directoryToSearch, outputPattern);
 	return abstract_paths;
