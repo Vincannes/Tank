@@ -133,9 +133,6 @@ std::map<std::string, std::string> TemplatePath::getFields(std::string path)
 	std::vector<std::string> path_splited = splitPath(path);
 	std::vector<std::string> definition_splited = splitPath(this->_definition);
 
-	if(this->getName() == "Shot_NukeRender_Work_Sequence"){
-		std::cout << path_splited.size() << "  " << definition_splited.size() << std::endl;
-	}
 	// return dictionnaire vide si longueurs differents
 	if (path_splited.size() != definition_splited.size()) {
 		// std::cout << "No fields find for this template " << std::endl; // TODO Raise error gere
