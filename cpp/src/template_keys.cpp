@@ -106,7 +106,7 @@ std::string IntegerTemplateKey::_formatValue(std::string value)
 	std::string value_reformat = removePatternInString(value, "v", "");
 	int num = std::stoi(value_reformat);
     std::stringstream ss;
-    ss << std::setw(std::stoi(this->_format_spec)) << std::setfill('0') << num;
+    ss << std::setw(std::stoi(this->_format_spec)-1) << std::setfill('0') << num;
     std::string formattedString = ss.str();
 	return formattedString;
 }
@@ -120,13 +120,23 @@ SequenceTemplateKey::SequenceTemplateKey(std::string name, std::string format_sp
 	this->_format_spec = format_spec;
 }
 
-std::string SequenceTemplateKey::getValue()
+void SequenceTemplateKey::setValue(std::string value)
 {
 	std::string result;
-	int num = std::stoi(this->_format_spec);
-	for (int i = 0; i < num; i++) {
-        result.append(this->_value);
-    }
-	return result;
+	if(value.size() == 0 || value == this->_format_spec ){
+		int num = std::stoi(this->_format_spec);
+		for (int i = 0; i < num; i++) {
+			result.append(this->_value);
+		}
+	}
+	else{
+		result = value;
+	}
+	this->_value = result;
+}
+
+std::string SequenceTemplateKey::getValue()
+{
+	return this->_value;
 }
 

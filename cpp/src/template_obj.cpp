@@ -83,7 +83,6 @@ std::string TemplatePath::apply_fields(std::map<std::string, std::string> fields
 						break;
 					}
 				}
-
 				// If not key in missing_fields parameter 
 				if(!isMissingKey){
 					value = _getValueFromKeyObject(it->first, it->second);
@@ -131,9 +130,12 @@ std::map<std::string, std::string> TemplatePath::getFields(std::string path)
 	std::map<std::string, std::string> fields = {};
 
 	// verifier si la longueur du path est le meme que _definition 
-	std::vector<std::string> path_splited       = splitPath(path);
+	std::vector<std::string> path_splited = splitPath(path);
 	std::vector<std::string> definition_splited = splitPath(this->_definition);
 
+	if(this->getName() == "Shot_NukeRender_Work_Sequence"){
+		std::cout << path_splited.size() << "  " << definition_splited.size() << std::endl;
+	}
 	// return dictionnaire vide si longueurs differents
 	if (path_splited.size() != definition_splited.size()) {
 		// std::cout << "No fields find for this template " << std::endl; // TODO Raise error gere
@@ -390,8 +392,7 @@ std::string TemplatePath::_getValueFromKeyObject(std::string tokenKey, std::stri
 	TemplateKey* tkPtr = _key_from_token->second; 
 
 	// Is missing tkPtr ? 
-	if (tkPtr == nullptr) {
-	}
+	if (tkPtr == nullptr) {}
 	else{}
 
 	if (StringTemplateKey* d1 = dynamic_cast<StringTemplateKey*>(tkPtr)) {
@@ -401,6 +402,7 @@ std::string TemplatePath::_getValueFromKeyObject(std::string tokenKey, std::stri
 		d2->setValue(fieldValue);
 		value = d2->getValue();
 	} else if (SequenceTemplateKey* d2 = dynamic_cast<SequenceTemplateKey*>(tkPtr)) {
+		d2->setValue(fieldValue);
 		value = d2->getValue();
 	} else {
 		value = "Unknow";
