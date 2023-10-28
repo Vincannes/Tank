@@ -8,6 +8,8 @@
 #include <utility> // pour std::pair
 #include <filesystem>
 
+// template <typename TypeList>
+
 std::string getOSSeparator();
 std::string removePatternInString(std::string, std::string, std::string);
 std::string removeSpaceInString(std::string);
@@ -25,3 +27,5 @@ std::vector<std::string>listFilesFromPathPattern(const std::string, std::string)
 std::vector<std::string> listFromString(std::string);
 std::string removeLeadingSlash(const std::string&);
 std::vector<std::string> walkDir(std::string directory);
+void addElementToList(std::vector<std::string>& myList, const std::string& elementToAdd);
+// void addElementToList(std::vector<TypeList>& myList, const TypeList& elementToAdd);

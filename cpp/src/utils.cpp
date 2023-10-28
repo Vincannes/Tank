@@ -10,6 +10,8 @@
 
 #include "utils.h"
 
+// template <typename TypeList>
+
 std::string getOSSeparator()
 {
 	std::string windowsSlash = "\\";
@@ -294,4 +296,18 @@ std::vector<std::string> listFromString(std::string str)
         list.push_back(item);
     }
 	return list;
+}
+
+void addElementToList(std::vector<std::string>& myList, const std::string& elementToAdd) {
+    bool elementExists = false;
+    for (const std::string& item : myList) {
+        if (item == elementToAdd) {
+            elementExists = true;
+            break;
+        }
+    }
+
+    if (!elementExists) {
+        myList.push_back(elementToAdd);
+    }
 }

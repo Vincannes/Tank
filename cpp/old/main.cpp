@@ -165,6 +165,9 @@ int main() {
 
 	std::map<std::string, std::string> fields;
 	// {'Sequence': 'sh', 'Shot': 'sh_010', 'Task': 'cmp', 'colorspace': 'linear', 'ext_render_nuke': 'exr', 'name': 'sh_010', 'render_source': 'nk', 'variant': 'base', 'write_node': 'out'}
+	std::string path_image = "D:\\Desk\\python\\Projects\\sequence\\sh\\sh_010\\cmp\\image\\wip\\sh_010-cmp-base-nk-out-v001-linear-exr\\sh_010-cmp-base-nk-out-v001-linear.1010.exr";
+	// std::string path_image = "D:\\Desk\\python\\Projects\\sequence\\sh\\sh_010\\cmp\\image\\wip\\sh_010-cmp-base-nk-out-v001-linear-exr\\sh_010-cmp-base-nk-out-v001-linear.####.exr";
+
 	fields["Shot"] = "sh_010";
 	fields["Task"] = "cmp";
 	fields["version"] = "1";
@@ -173,20 +176,20 @@ int main() {
 	fields["SEQ"] = "####";
 	fields["write_node"] = "out";
 	fields["variant"] = "base";
-	fields["colorspace"] = "linear";
+	fields["colorspace"] = "aces";
 	fields["name"] = "sh_010";
 	fields["ext_render_nuke"] = "exr";
 
-	std::cout << "" << std::endl;
+	// std::cout << "" << std::endl;
 	std::vector<std::string> abspathsTest = tank_test.getAbstractPathsFromTemplate(sequence_tpl, fields);
-	std::cout << abspathsTest.size() << std::endl;
+	std::cout << "size" 	<< abspathsTest.size() << std::endl;
 	for(int i=0; i<abspathsTest.size(); i++){
 		std::cout << "match  " << abspathsTest[i] << std::endl;
 	}
 
-	std::cout << "" << std::endl;
-	std::string testpath = sequence_tpl.apply_fields(fields);
-	std::cout << testpath << std::endl;
+	// std::cout << "" << std::endl;
+	// std::string testpath = sequence_tpl.apply_fields(fields);
+	// std::cout << testpath << std::endl;
 
 	// TemplatePath aTesty = tank_test.templateFromPath(_path);
 	// std::cout << _path << std::endl;
@@ -210,7 +213,7 @@ int main() {
     //     const std::string& valeur = paire.second;
 	// 	std::cout << cle << " : " << valeur << std::endl;
 	// }
-	// TemplatePath aTestya = tank_test.templateFromPath(testpathNot);
+	// TemplatePath aTestya = tank_test.templateFromPath(path_image);
 	// std::cout << aTestya.getName() << std::endl;
 	// TemplatePath aTestyaa = tank_test.templateFromPath(testpathGood);
 	// std::cout << aTestyaa.getName() << std::endl;

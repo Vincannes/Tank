@@ -104,7 +104,16 @@ std::vector<std::string> Tank::getAbstractPathsFromTemplate(TemplatePath templat
 	std::string outputPattern = templatePath.apply_fields(local_fields, missing_keys);
 	std::string directoryToSearch = this->_root_path;
 	std::vector<std::string> abstract_paths = listFilesFromPathPattern(directoryToSearch, outputPattern);
-	return abstract_paths;
+	std::vector<std::string> results;
+
+	for(int i=0; i<abstract_paths.size(); i++){
+		std::string file = abstract_paths[i];
+		std::regex integerRegex("\\.([0-9]+)\\.");
+		std::string result = std::regex_replace(file, integerRegex, ".%04d.");
+		addElementToList(results, result);
+	}
+
+	return results;
 }
 
 
