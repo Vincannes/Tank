@@ -11,7 +11,7 @@
 // template <typename TypeList>
 
 std::string getOSSeparator();
-std::string removePatternInString(std::string, std::string, std::string);
+std::string removePatternInString(std::string patternStr, std::string search, std::string replacement);
 std::string removeSpaceInString(std::string);
 std::string matchSeparator(std::string);
 std::string dirNameFromString(const std::string);

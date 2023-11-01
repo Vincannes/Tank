@@ -22,6 +22,7 @@ TemplatePath::TemplatePath(std::string name, std::map<std::string, TemplateKey*>
 	this->_keys               = _keys_from_definition();
 	this->_ordered_keys       = _get_ordered_keys();
 	this->_static_tokens      = _get_static_token();
+	this->_definition_variations = _get_definition_variations(definition);
 
 }
 
@@ -54,6 +55,10 @@ std::vector<std::string> TemplatePath::getOrderedKeys() const
 	return this->_ordered_keys;
 }
 
+std::vector<std::string> TemplatePath::getDefinitionVariants() const
+{
+	return this->_definition_variations;
+}
 
 // MAIN FUNCTIONS
 
@@ -275,6 +280,19 @@ std::string TemplatePath::_get_clean_definition(const std::string definition) {
 	return result;
 }
 
+std::vector<std::string> TemplatePath::_get_definition_variations(const std::string definition) {
+	
+	std::vector<std::string> variants;
+
+	for (const std::string& variant : _generateVariants(definition)) {
+		std::string new_var = removePatternInString(variant, "[", "");
+		new_var = removePatternInString(new_var, "]", "");
+		variants.push_back(new_var);
+	}
+
+	return variants;
+}
+
 std::string TemplatePath::_get_pattern_definition(const std::string definition) {
 
 	std::regex patternPadd("\\{SEQ\\}");
@@ -377,7 +395,31 @@ std::vector<std::string> TemplatePath::getTokensFromPath(std::string path) {
 }
 
 
+std::vector<std::string> TemplatePath::_generateVariants(const std::string& definition) {
+    std::vector<std::string> variants;
+    std::regex pattern("\\[([^\\[\\]]+)\\]");
+
+    std::smatch match;
+    if (std::regex_search(definition, match, pattern)) {
+        std::string before = match.prefix();
+        std::string inside = match[1].str();
+        std::string after = match.suffix();
+
+        std::vector<std::string> recursiveVariants = _generateVariants(after);
+        for (const std::string& recursiveVariant : recursiveVariants) {
+            variants.push_back(before + inside + recursiveVariant);
+            variants.push_back(before + recursiveVariant);
+        }
+    } else {
+        variants.push_back(_get_clean_definition(definition));
+    }
+
+    return variants;
+}
+
+
 // PRIVATE FUNCTIONS
+
 std::string TemplatePath::_getValueFromKeyObject(std::string tokenKey, std::string fieldValue)
 {
 	// TODO si cle existe pas dans field Input mais default value

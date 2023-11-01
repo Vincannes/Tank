@@ -1,23 +1,3 @@
-# Copyright (c) 2015 Shotgun Software Inc.
-#
-# CONFIDENTIAL AND PROPRIETARY
-#
-# This work is provided "AS IS" and subject to the Shotgun Pipeline Toolkit
-# Source Code License included in this distribution package. See LICENSE.
-# By accessing, using, copying or modifying this work you indicate your
-# agreement to the Shotgun Pipeline Toolkit Source Code License. All rights
-# not expressly granted therein are reserved by Shotgun Software Inc.
-#
-# This file is one of the central points in the Shotgun Pipeline Toolkit configuration and
-# a counterpart to the folder configuration structure.
-#
-# The folder structure underneath the project folder is used to create folders on disk -
-# templates.yml (this file) refers to those folders. Therefore, the two files need to be
-# in sync. This file contains an overview of all locations that are used by Sgtk.
-#
-# Whenever an app or an engine refers to a location on disk, it is using an entry defined in
-# this file. For more information, see the Shotgun Pipeline Toolkit Documentation.
-#
 ###########################################################################################
 # The keys section contains the definitions for all the different keys that are being
 # used by Sgtk. A key is a magic token that is replaced by a value at runtime, for example
@@ -318,7 +298,7 @@ paths:
     # Cut
     #
     # Cut movie
-    # from Mikros vfx
+    # from  vfx
     Sequence_Cut_Media:                     'sequence/common/cuts/{cut_name}/{cut_name}-{cut_revision}.mov'
     ##########################################################################################
     # Shot level paths
@@ -327,25 +307,25 @@ paths:
     # Sound
     #
     # Sound file
-    # from Mikros vfx
+    # from  vfx
     Shot_Sound_Dir:                     '@shot_root/common/sound'
     ######################################
     # Camera
     #
     # Camera files
-    # from Mikros vfx
+    # from  vfx
     Shot_Camera_Dir:                     '@shot_root/common/camera'
     Shot_Camera_File:                    '@Shot_Camera_Dir/{Shot}-{variant}-v{version}.{extension}'
     ######################################
     # Image
     #
     # define the location of a work area
-    # from Mikros Canada (da)
+    # from  Canada (da)
     Shot_Image_WorkArea:                '@shot_task_root/image/wip'
-    # from Mikros Vfx To be consistent with Work
+    # from  Vfx To be consistent with Work
     Shot_Image_PublishArea:             '@shot_task_root/image/publish'
     # define the location of a media Shotgun outside pipeline
-    # from Mikros vfx
+    # from  vfx
     Shot_Media_Default:                 '@Shot_Image_WorkArea/{name}.{SEQ}.mov'
     Shot_Image_Publish:                  '@Shot_Image_PublishArea/{Shot}-{Task}-base-v{version}-{tool}/{Shot}-{Task}-base-v{version}-{colorspace}.{SEQ}.{extension}'
     ######################################
@@ -378,101 +358,101 @@ paths:
     # Flame
     #
     # Define the emplacement of flame exports
-    # from Mikros vfx
+    # from  vfx
     Shot_Flame_ExportArea: '@shot_task_root/flame'
     # from Shotgun
     flame_segment_clip: '@shot_root/finish/flame/clip/sources/{Shot}-{Task}-{variant}-v{version}.clip'
     flame_shot_clip: '@shot_root/finish/flame/clip/{Shot}-{variant}-out.clip'
     flame_shot_batch: '@shot_root/finish/flame/batch/{Shot}-{variant}-v{version}.batch'
-    # from Mikros Vfx
+    # from  Vfx
     Shot_FlameRender_Work_Generic_Name:  '@Shot_Image_WorkArea/@generic_image_dirname_flame'
     Shot_FlameRender_Work_Sequence:      '@Shot_FlameRender_Work_Generic_Name/@flame_image_name.{SEQ}.{ext_render_flame}'
     ######################################
     # Maya
     #
     # Define the emplacement of maya workspace.mel
-    # from Mikros vfx
+    # from  vfx
     Shot_MayaScene_ProjectArea:         '@shot_root/{Task}/maya'
     # define the location of a work area
-    # from Mikros Anim
+    # from  Anim
     Shot_MayaScene_WorkArea:            '@Shot_MayaScene_ProjectArea/wip'
     # define the location of a publish area
-    # from Mikros Anim
+    # from  Anim
     Shot_MayaScene_PublishArea:         '@Shot_MayaScene_ProjectArea/publish'
     # The location of WIP files
-    # from Mikros Anim
+    # from  Anim
     Shot_MayaScene_Work:                '@Shot_MayaScene_WorkArea/@generic_version_name.ma'
     # from Shotgun
     maya_shot_work_render:              '@Shot_MayaScene_WorkArea/renders/@generic_version_name{render_iteration}.mb'
     # The location of backups of WIP files
-    # from Mikros Anim
+    # from  Anim
     Shot_MayaScene_Snapshot:            '@Shot_MayaScene_WorkArea/snapshots/@generic_version_name.{timestamp}.ma'
     # The location of published maya files
-    # from Mikros Anim
+    # from  Anim
     Shot_MayaScene_Publish:             '@Shot_MayaScene_PublishArea/@generic_version_name.ma'
-    # from Mikros Anim
+    # from  Anim
     Shot_MayaScene_PublishSpecial:      '@Shot_MayaScene_PublishArea/{name}-{Task}-{variant}-{special_version}.ma'
     # Work Rendered Images
-    # from Mikros Vfx
+    # from  Vfx
     Shot_MayaRender_Work_Generic_Name:  '@Shot_Image_WorkArea/@generic_image_dirname'
-    # from Mikros Vfx
+    # from  Vfx
     Shot_MayaRender_Work_Layer:         '@Shot_MayaRender_Work_Generic_Name/{render_layer}'
-    # from Mikros Vfx
+    # from  Vfx
     Shot_MayaRender_Work_Aov:           '@Shot_MayaRender_Work_Layer/{render_aov}'
-    # from Mikros Vfx
+    # from  Vfx
     Shot_MayaRender_Work_Sequence:      '@Shot_MayaRender_Work_Aov/@generic_version_name-{render_layer}-{render_aov}-{colorspace}.{SEQ}.{image_ext}'
     # Publish Rendered Images
-    # from Mikros Vfx
+    # from  Vfx
     Shot_MayaRender_Publish_Generic_Name: '@Shot_Image_PublishArea/@generic_image_dirname'
-    # from Mikros Vfx
+    # from  Vfx
     Shot_MayaRender_Publish_Layer:      '@Shot_MayaRender_Publish_Generic_Name/{render_layer}'
-    # from Mikros Vfx
+    # from  Vfx
     Shot_MayaRender_Publish_Aov:        '@Shot_MayaRender_Publish_Layer/{render_aov}'
-    # from Mikros Vfx
+    # from  Vfx
     Shot_MayaRender_Publish_Sequence:   '@Shot_MayaRender_Publish_Aov/@generic_version_name-{render_layer}-{render_aov}-{colorspace}.{SEQ}.{image_ext}'
     # Playblast
-    # from Mikros Vfx
+    # from  Vfx
     Shot_MayaBlast_Work_Generic_Name:   '@Shot_Image_WorkArea/@generic_version_name-blast-{colorspace}'
-    # from Mikros Vfx
+    # from  Vfx
     Shot_MayaBlast_Work_Camera:         '@Shot_MayaBlast_Work_Generic_Name/{camera}'
-    # from Mikros Vfx
+    # from  Vfx
     Shot_MayaBlast_Work_Sequence:       '@Shot_MayaBlast_Work_Camera/@generic_version_name_colorspace-{camera}.{SEQ}.{image_ext}'
-    # from Mikros Vfx
+    # from  Vfx
     Shot_MayaBlast_Publish_Generic_Name: '@Shot_Image_PublishArea/@generic_version_name-blast'
-    # from Mikros Vfx
+    # from  Vfx
     Shot_MayaBlast_Publish_Camera:      '@Shot_MayaBlast_Publish_Generic_Name/{camera}'
-    # from Mikros Vfx
+    # from  Vfx
     Shot_MayaBlast_Publish_Sequence:    '@Shot_MayaBlast_Publish_Camera/@generic_version_name_colorspace-{camera}.{SEQ}.{image_ext}'
     ######################################
     # Rancher
     #
     Rancher_Job_Root:                   '@shot_root/common/rancher/{Task}'
     Rancher_Asset_Job_Root:             '@asset_root/common/rancher/{Task}'
-    # from Mikros Vfx
+    # from  Vfx
     # Ass cache
     Arnold_MayaRenderCache:             '@Shot_Cache_Work_Area/ass/@generic_cache_version_name-maya/@generic_cache_version_name.ass.gz'
     ######################################
     # Alembic
     #
     # Work Alembic Caches
-    # from Mikros Vfx
+    # from  Vfx
     Shot_AlembicCache_Work_File:         '@Shot_Cache_Work_Area/abc/@generic_cache_version_name-{tool}/@generic_cache_version_name.abc'
     Shot_AlembicCache_Work_File_Secondary: '@Shot_Cache_Work_Area_Secondary/abc/@generic_cache_version_name-{tool}/@generic_cache_version_name.abc'
     # Published Alembic Caches
-    # from Mikros vfx
+    # from  vfx
     Shot_AlembicCache_Publish_File:      '@Shot_Cache_Publish_Area/abc/@generic_cache_version_name-{tool}/@generic_cache_version_name.abc'
     Shot_AlembicCache_Publish_File_Secondary: '@Shot_Cache_Publish_Area_Secondary/abc/@generic_cache_version_name-{tool}/@generic_cache_version_name.abc'
     ######################################
     # Yeti
     #
     # Work Caches
-    # from Mikros Vfx
+    # from  Vfx
     Shot_YetiCache_Work_File:         '@Shot_Cache_Work_Area/fur/@generic_cache_version_name-maya/@generic_cache_version_name.{SEQ}.fur'
     # Published Caches
-    # from Mikros vfx
+    # from  vfx
     Shot_YetiCache_Publish_File:      '@Shot_Cache_Publish_Area/fur/@generic_cache_version_name-maya/@generic_cache_version_name.{SEQ}.fur'
     # Hair Shot Description File
-    # from Mikros vfx
+    # from  vfx
     Shot_YetiDescription_File:        '@shot_root/common/hair_shot_description.json'
     ######################################
     # Golaem
@@ -489,60 +469,60 @@ paths:
     # Houdini
     #
     # define the location of a work area
-    # from Mikros Anim
+    # from  Anim
     Shot_HoudiniScene_WorkArea:                         '@shot_root/{Task}/houdini/wip'
     # define the location of a publish area
-    # from Mikros Anim
+    # from  Anim
     Shot_HoudiniScene_PublishArea:                      '@shot_root/{Task}/houdini/publish'
     # Location of project
     Shot_HoudiniScene_ProjectArea:                      '@shot_root/{Task}/houdini'
     # The location for private cache files
     Shot_HoudiniCache_PrivateArea: '@Shot_HoudiniScene_WorkArea/@generic_version_name'
     # The location of WIP files
-    # from Mikros Anim
+    # from  Anim
     Shot_HoudiniScene_Work:                             '@Shot_HoudiniScene_WorkArea/@generic_version_name.hip'
     # The location of backups of WIP files
-    # from Mikros Anim
+    # from  Anim
     Shot_HoudiniScene_Snapshot:                         '@Shot_HoudiniScene_WorkArea/snapshots/@generic_version_name.{timestamp}.hip'
     # The location of published houdini files
-    # from Mikros Anim
+    # from  Anim
     Shot_HoudiniScene_Publish:                          '@Shot_HoudiniScene_PublishArea/@generic_version_name.hip'
-    # from Mikros Anim
+    # from  Anim
     Shot_HoudiniScene_PublishSpecial:                   '@Shot_HoudiniScene_PublishArea/{name}-{Task}-{variant}-{special_version}.hip'
     # Work Rendered Images
-    # from Mikros Vfx
+    # from  Vfx
     Shot_HoudiniRender_Work_Generic_Name:               '@Shot_Image_WorkArea/@generic_image_dirname_houdini'
     Shot_HoudiniRender_Work_Aov:                        '@Shot_HoudiniRender_Work_Generic_Name/{render_aov}'
     Shot_HoudiniRender_Work_Sequence:                   '@Shot_HoudiniRender_Work_Aov/@generic_houdini_version_name-{render_aov}.{HSEQ}.{image_ext}'
     Shot_HoudiniRender_Work_Distributed_Sequence:       '@Shot_HoudiniRender_Work_Aov/{distribution_type}_{distribution_index}/@generic_houdini_version_name-{render_aov}.{distribution_type}_{distribution_index}.{HSEQ}.{image_ext}'
     # Publish Rendered Images
-    # from Mikros Vfx
+    # from  Vfx
     Shot_HoudiniRender_Publish_Generic_Name:            '@Shot_Image_PublishArea/@generic_image_dirname_houdini'
     Shot_HoudiniRender_Publish_Aov:                     '@Shot_HoudiniRender_Publish_Generic_Name/{render_aov}'
     Shot_HoudiniRender_Publish_Sequence:                '@Shot_HoudiniRender_Publish_Aov/@generic_houdini_version_name-{render_aov}.{HSEQ}.{image_ext}'
     Shot_HoudiniRender_Publish_Distributed_Sequence:    '@Shot_HoudiniRender_Publish_Aov/{distribution_type}_{distribution_index}/@generic_houdini_version_name-{render_aov}.{distribution_type}_{distribution_index}.{HSEQ}.{image_ext}'
     # Work Rendered Caches
-    # from Mikros Vfx
+    # from  Vfx
     Shot_HoudiniCache_Work_Sequence: '@Shot_Cache_Work_Area_Secondary/{cache_type_houdini}/@generic_cache_version_name-houdini/@generic_cache_version_name.{HSEQ}.{ext_cache_houdini}'
     Shot_HoudiniCache_Work_File: '@Shot_Cache_Work_Area_Secondary/{cache_type_houdini}/@generic_cache_version_name-houdini/@generic_cache_version_name.{ext_cache_houdini}'
     Shot_HoudiniCache_Work_Distributed_Sequence: '@Shot_Cache_Work_Area_Secondary/{cache_type_houdini}/@generic_cache_version_name-houdini/{distribution_type}_{distribution_index}/@generic_cache_version_name.{distribution_type}_{distribution_index}.{HSEQ}.{ext_cache_houdini}'
     Shot_HoudiniCache_Work_Distributed_File: '@Shot_Cache_Work_Area_Secondary/{cache_type_houdini}/@generic_cache_version_name-houdini/{distribution_type}_{distribution_index}/@generic_cache_version_name.{distribution_type}_{distribution_index}.{ext_cache_houdini}'
     Shot_HoudiniCache_Work_Checkpoints_Sequence: '@Shot_Cache_Work_Area_Secondary/{cache_type_houdini}/@generic_cache_version_name-houdini/sim/@generic_version_name.@HSIMSEQ.sim'
     # Private Rendered Caches
-    # from Mikros Vfx
+    # from  Vfx
     Shot_HoudiniCache_Private_Sequence: '@Shot_HoudiniCache_PrivateArea/{cache_type_houdini}/@generic_cache_version_name/@generic_cache_version_name.{HSEQ}.{ext_cache_houdini}'
     Shot_HoudiniCache_Private_File: '@Shot_HoudiniCache_PrivateArea/{cache_type_houdini}/@generic_cache_version_name/@generic_cache_version_name.{ext_cache_houdini}'
     Shot_HoudiniCache_Private_Distributed_Sequence: '@Shot_HoudiniCache_PrivateArea/{cache_type_houdini}/@generic_cache_version_name/{distribution_type}_{distribution_index}/@generic_cache_version_name.{distribution_type}_{distribution_index}.{HSEQ}.{ext_cache_houdini}'
     Shot_HoudiniCache_Private_Distributed_File: '@Shot_HoudiniCache_PrivateArea/{cache_type_houdini}/@generic_cache_version_name/{distribution_type}_{distribution_index}/@generic_cache_version_name.{distribution_type}_{distribution_index}.{ext_cache_houdini}'
     Shot_HoudiniCache_Private_Checkpoints_Sequence: '@Shot_HoudiniCache_PrivateArea/{cache_type_houdini}/@generic_cache_version_name/sim/@generic_cache_version_name.@HSIMSEQ.sim'
     # Published Rendered Caches
-    # from Mikros Vfx
+    # from  Vfx
     Shot_HoudiniCache_Publish_Sequence: '@Shot_Cache_Publish_Area_Secondary/{cache_type_houdini}/@generic_cache_version_name-houdini/@generic_cache_version_name.{HSEQ}.{ext_cache_houdini}'
     Shot_HoudiniCache_Publish_File: '@Shot_Cache_Publish_Area_Secondary/{cache_type_houdini}/@generic_cache_version_name-houdini/@generic_cache_version_name.{ext_cache_houdini}'
     Shot_HoudiniCache_Publish_Distributed_Sequence: '@Shot_Cache_Publish_Area_Secondary/{cache_type_houdini}/@generic_cache_version_name-houdini/{distribution_type}_{distribution_index}/@generic_cache_version_name.{distribution_type}_{distribution_index}.{HSEQ}.{ext_cache_houdini}'
     Shot_HoudiniCache_Publish_Distributed_File: '@Shot_Cache_Publish_Area_Secondary/{cache_type_houdini}/@generic_cache_version_name-houdini/{distribution_type}_{distribution_index}/@generic_cache_version_name.{distribution_type}_{distribution_index}.{ext_cache_houdini}'
     # Flipbook
-    # from Mikros Vfx
+    # from  Vfx
     Shot_HoudiniFlip_Work_Generic_Name:                 '@Shot_Image_WorkArea/@generic_version_name-flip'
     Shot_HoudiniFlip_Work_Camera:                       '@Shot_HoudiniFlip_Work_Generic_Name/{camera}'
     Shot_HoudiniFlip_Work_Sequence:                     '@Shot_HoudiniFlip_Work_Camera/@generic_version_name-{camera}.{HSEQ}.{image_ext}'
@@ -597,30 +577,30 @@ paths:
     # Nuke
     #
     # define the location of a work area
-    # from Mikros Anim
+    # from  Anim
     Shot_NukeScene_WorkArea:            '@shot_root/{Task}/nuke/wip'
     # define the location of a publish area
-    # from Mikros Anim
+    # from  Anim
     Shot_NukeScene_PublishArea:         '@shot_root/{Task}/nuke/publish'
     # The location of WIP script files
-    # from Mikros Anim
+    # from  Anim
     Shot_NukeScene_Work:                '@Shot_NukeScene_WorkArea/@generic_version_name.nk'
     # from Shotgun
     # nuke_shot_work_render:              '@Shot_NukeScene_WorkArea/renders/@generic_version_name_{render_iteration}.nk'
     # The location of backups of WIP files
-    # from Mikros Anim
+    # from  Anim
     # Shot_NukeScene_Snapshot:            '@Shot_NukeScene_WorkArea/snapshots/@generic_version_name.{timestamp}.nk'
     # The location of published nuke script files
-    # from Mikros Anim
+    # from  Anim
     # Shot_NukeScene_Publish:             '@Shot_NukeScene_PublishArea/@generic_version_name.nk'
-    # from Mikros Anim
+    # from  Anim
     # Shot_NukeScene_PublishSpecial:      '@Shot_NukeScene_PublishArea/{name}-{Task}-{variant}-{special_version}.nk'
     # write node outputs
     # from Shotgun
     nuke_shot_thumbnail:                '@Shot_Image_WorkArea/@generic_version_name.png'
     # from Shotgun
     nuke_shot_thumbnail_pub:            '@Shot_Image_PublishArea/@generic_version_name.png'
-    # from Mikros Vfx
+    # from  Vfx
     Sequence_NukeScene_Degrain:         '@sequence_root/common/dgn/{Sequence}-v{version}.nk'
     Shot_NukeRender_Work_Generic_Name:  '@Shot_Image_WorkArea/@generic_image_dirname_nuke'
     Shot_NukeRender_Work_Sequence:      '@Shot_NukeRender_Work_Generic_Name/@nuke_image_name.{SEQ}.{ext_render_nuke}'
@@ -641,7 +621,7 @@ paths:
     hiero_plate_path:                  '@shot_root/common/sources_vfx/{YYYY}_{MM}_{DD}/plates/{project}_{Sequence}_{name}.mov'
     # from Shotgun
     hiero_render_path:                 '@shot_root/common/sources_vfx/{YYYY}_{MM}_{DD}/renders/{project}_{Sequence}_{name}.{SEQ}.dpx'
-    # from Mikros Vfx
+    # from  Vfx
     Hiero_Footage_Root:                '@shot_root/common/footage/{Shot}-{Task}-{variant}-v{version}-{colorspace}-{extension}'
     Hiero_Footage_Sequence:            '@Hiero_Footage_Root/{Shot}-{Task}-{variant}-v{version}-{colorspace}.{SEQ}.{extension}'
     ######################################
@@ -684,12 +664,12 @@ paths:
     ######################################
     # Images
     #
-    # from Mikros Vfx
+    # from  Vfx
     Asset_Image_PublishArea:            '@asset_root/{Task}/image/publish'
-    # from Mikros Vfx
+    # from  Vfx
     Asset_Image_WorkArea:               '@asset_root/{Task}/image/wip'
     # define the location of a media Shotgun outside pipeline
-    # from Mikros vfx
+    # from  vfx
     Asset_Media_Default:                 '@Asset_Image_WorkArea/{name}.{SEQ}.mov'
     Asset_Image_Publish:                 '@Asset_Image_PublishArea/{Asset}-{Task}-base-v{version}-{tool}/{Asset}-{Task}-base-v{version}-{colorspace}.{SEQ}.{extension}'
     ######################################
@@ -706,127 +686,127 @@ paths:
     # Maya
     #
     # Define the emplacement of maya workspace.mel
-    # from Mikros vfx
+    # from  vfx
     Asset_MayaScene_ProjectArea:        '@asset_root/{Task}/maya'
     # define the location of a work area
-    # from Mikros Anim
+    # from  Anim
     Asset_MayaScene_WorkArea:           '@Asset_MayaScene_ProjectArea/wip'
     # define the location of a publish area
-    # from Mikros Anim
+    # from  Anim
     Asset_MayaScene_PublishArea:        '@Asset_MayaScene_ProjectArea/publish'
     # The location of WIP files
-    # from Mikros Anim
+    # from  Anim
     Asset_MayaScene_Work:               '@Asset_MayaScene_WorkArea/@generic_version_name.ma'
     # The location of backups of WIP files
-    # from Mikros Anim
+    # from  Anim
     Asset_MayaScene_Snapshot:           '@Asset_MayaScene_WorkArea/snapshots/@generic_version_name.{timestamp}.ma'
     # The location of published maya files
-    # from Mikros Anim
+    # from  Anim
     Asset_MayaScene_Publish:            '@Asset_MayaScene_PublishArea/@generic_version_name.ma'
-    # from Mikros Anim
+    # from  Anim
     Asset_MayaScene_PublishSpecial:     '@Asset_MayaScene_PublishArea/{name}-{Task}-{variant}-{special_version}.ma'
     # Work Rendered Images
-    # from Mikros Vfx
+    # from  Vfx
     Asset_MayaRender_Work_Generic_Name: '@Asset_Image_WorkArea/@generic_image_dirname'
-    # from Mikros Vfx
+    # from  Vfx
     Asset_MayaRender_Work_Layer:        '@Asset_MayaRender_Work_Generic_Name/{render_layer}'
-    # from Mikros Vfx
+    # from  Vfx
     Asset_MayaRender_Work_Aov:          '@Asset_MayaRender_Work_Layer/{render_aov}'
-    # from Mikros Vfx
+    # from  Vfx
     Asset_MayaRender_Work_Sequence:     '@Asset_MayaRender_Work_Aov/@generic_version_name-{render_layer}-{render_aov}-{colorspace}.{SEQ}.{image_ext}'
     # Publish Rendered Images
-    # from Mikros Vfx
+    # from  Vfx
     Asset_MayaRender_Publish_Generic_Name: '@Asset_Image_PublishArea/@generic_image_dirname'
-    # from Mikros Vfx
+    # from  Vfx
     Asset_MayaRender_Publish_Layer:        '@Asset_MayaRender_Publish_Generic_Name/{render_layer}'
-    # from Mikros Vfx
+    # from  Vfx
     Asset_MayaRender_Publish_Aov:          '@Asset_MayaRender_Publish_Layer/{render_aov}'
-    # from Mikros Vfx
+    # from  Vfx
     Asset_MayaRender_Publish_Sequence:     '@Asset_MayaRender_Publish_Aov/@generic_version_name-{render_layer}-{render_aov}-{colorspace}.{SEQ}.{image_ext}'
     # Playblast
-    # from Mikros Vfx
+    # from  Vfx
     Asset_MayaBlast_Work_Sequence:         '@Asset_Image_WorkArea/@generic_version_name-blast-{colorspace}/{camera}/@generic_version_name_colorspace-{camera}.{SEQ}.{image_ext}'
-    # from Mikros Vfx
+    # from  Vfx
     Asset_MayaBlast_Publish_Sequence:      '@Asset_Image_PublishArea/generic_version_name-blast-{colorspace}/{camera}/@generic_version_name_colorspace-{camera}.{SEQ}.{image_ext}'
     ######################################
     # Alembic
     #
     # Work Caches
-    # from Mikros Vfx
+    # from  Vfx
     Asset_AlembicCache_Work_File:       '@Asset_Cache_Work_Area/abc/@generic_cache_version_name-{tool}/@generic_cache_version_name.abc'
     Asset_AlembicCache_Work_File_Secondary: '@Asset_Cache_Work_Area_Secondary/abc/@generic_cache_version_name-{tool}/@generic_cache_version_name.abc'
     # Published Caches
-    # from Mikros vfx
+    # from  vfx
     Asset_AlembicCache_Publish_File:   '@Asset_Cache_Publish_Area/abc/@generic_cache_version_name-{tool}/@generic_cache_version_name.abc'
     Asset_AlembicCache_Publish_File_Secondary: '@Asset_Cache_Publish_Area_Secondary/abc/@generic_cache_version_name-{tool}/@generic_cache_version_name.abc'
     ######################################
     # Yeti
     #
     # Work Caches
-    # from Mikros Vfx
+    # from  Vfx
     Asset_YetiCache_Work_File:         '@Asset_Cache_Work_Area/fur/@generic_cache_version_name-maya/@generic_cache_version_name.{SEQ}.fur'
     # Published Caches
-    # from Mikros vfx
+    # from  vfx
     Asset_YetiCache_Publish_File:      '@Asset_Cache_Publish_Area/fur/@generic_cache_version_name-maya/@generic_cache_version_name.{SEQ}.fur'
     # Hair Asset Description File
-    # from Mikros vfx
+    # from  vfx
     Asset_YetiDescription_File:   '@asset_root/common/hair_asset_description.json'
     ######################################
     # Houdini
     #
     # define the location of a work area
-    # from Mikros Anim
+    # from  Anim
     Asset_HoudiniScene_WorkArea:                        '@asset_root/{Task}/houdini/wip'
     # define the location of a publish area
-    # from Mikros Anim
+    # from  Anim
     Asset_HoudiniScene_PublishArea:                     '@asset_root/{Task}/houdini/publish'
     # The location for all cache files
     Asset_HoudiniCache_PrivateArea: '@Asset_HoudiniScene_WorkArea/@generic_version_name'
     # The location of WIP files
-    # from Mikros Anim
+    # from  Anim
     Asset_HoudiniScene_Work:                            '@Asset_HoudiniScene_WorkArea/@generic_version_name.hip'
     # The location of backups of WIP files
-    # from Mikros Anim
+    # from  Anim
     Asset_HoudiniScene_Snapshot:                        '@Asset_HoudiniScene_WorkArea/snapshots/@generic_version_name.{timestamp}.hip'
     # The location of published houdini files
-    # from Mikros Anim
+    # from  Anim
     Asset_HoudiniScene_Publish:                         '@Asset_HoudiniScene_PublishArea/@generic_version_name.hip'
-    # from Mikros Anim
+    # from  Anim
     Asset_HoudiniScene_PublishSpecial:                  '@Asset_HoudiniScene_PublishArea/{name}-{Task}-{variant}-{special_version}.hip'
     # Work Rendered Images
-    # from Mikros Vfx
+    # from  Vfx
     Asset_HoudiniRender_Work_Generic_Name:              '@Asset_Image_WorkArea/@generic_image_dirname_houdini'
     Asset_HoudiniRender_Work_Aov:                       '@Asset_HoudiniRender_Work_Generic_Name/{render_aov}'
     Asset_HoudiniRender_Work_Sequence:                  '@Asset_HoudiniRender_Work_Aov/@generic_houdini_version_name-{render_aov}.{HSEQ}.{image_ext}'
     Asset_HoudiniRender_Work_Distributed_Sequence:      '@Asset_HoudiniRender_Work_Aov/{distribution_type}_{distribution_index}/@generic_houdini_version_name-{render_aov}.{distribution_type}_{distribution_index}.{HSEQ}.{image_ext}'
     # Publish Rendered Images
-    # from Mikros Vfx
+    # from  Vfx
     Asset_HoudiniRender_Publish_Generic_Name:           '@Asset_Image_PublishArea/@generic_image_dirname_houdini'
     Asset_HoudiniRender_Publish_Aov:                    '@Asset_HoudiniRender_Publish_Generic_Name/{render_aov}'
     Asset_HoudiniRender_Publish_Sequence:               '@Asset_HoudiniRender_Publish_Aov/@generic_houdini_version_name-{render_aov}.{HSEQ}.{image_ext}'
     Asset_HoudiniRender_Publish_Distributed_Sequence:   '@Asset_HoudiniRender_Publish_Aov/{distribution_type}_{distribution_index}/@generic_houdini_version_name-{render_aov}.{distribution_type}_{distribution_index}.{HSEQ}.{image_ext}'
     # Work Rendered Caches
-    # from Mikros Vfx
+    # from  Vfx
     Asset_HoudiniCache_Work_Sequence: '@Asset_Cache_Work_Area_Secondary/{cache_type_houdini}/@generic_houdini_version_name-houdini/@generic_houdini_version_name.{HSEQ}.{ext_cache_houdini}'
     Asset_HoudiniCache_Work_File: '@Asset_Cache_Work_Area_Secondary/{cache_type_houdini}/@generic_houdini_version_name-houdini/@generic_houdini_version_name.{ext_cache_houdini}'
     Asset_HoudiniCache_Work_Distributed_Sequence: '@Asset_Cache_Work_Area_Secondary/{cache_type_houdini}/@generic_houdini_version_name-houdini/{distribution_type}_{distribution_index}/@generic_houdini_version_name.{distribution_type}_{distribution_index}.{HSEQ}.{ext_cache_houdini}'
     Asset_HoudiniCache_Work_Distributed_File:  '@Asset_Cache_Work_Area_Secondary/{cache_type_houdini}/@generic_houdini_version_name-houdini/{distribution_type}_{distribution_index}/@generic_houdini_version_name.{distribution_type}_{distribution_index}.{ext_cache_houdini}'
     Asset_HoudiniCache_Work_Checkpoints_Sequence:  '@Asset_Cache_Work_Area_Secondary/{cache_type_houdini}/@generic_houdini_version_name-houdini/sim/@generic_houdini_version_name.@HSIMSEQ.sim'
     # Private Rendered Caches
-    # from Mikros Vfx
+    # from  Vfx
     Asset_HoudiniCache_Private_Sequence: '@Asset_HoudiniCache_PrivateArea/{cache_type_houdini}/@generic_houdini_version_name/@generic_houdini_version_name.{HSEQ}.{ext_cache_houdini}'
     Asset_HoudiniCache_Private_File: '@Asset_HoudiniCache_PrivateArea/{cache_type_houdini}/@generic_houdini_version_name/@generic_houdini_version_name.{ext_cache_houdini}'
     Asset_HoudiniCache_Private_Distributed_Sequence: '@Asset_HoudiniCache_PrivateArea/{cache_type_houdini}/@generic_houdini_version_name/{distribution_type}_{distribution_index}/@generic_houdini_version_name.{distribution_type}_{distribution_index}.{HSEQ}.{ext_cache_houdini}'
     Asset_HoudiniCache_Private_Distributed_File: '@Asset_HoudiniCache_PrivateArea/{cache_type_houdini}/@generic_houdini_version_name/{distribution_type}_{distribution_index}/@generic_houdini_version_name.{distribution_type}_{distribution_index}.{ext_cache_houdini}'
     Asset_HoudiniCache_Private_Checkpoints_Sequence: '@Asset_HoudiniCache_PrivateArea/{cache_type_houdini}/@generic_houdini_version_name/sim/@generic_houdini_version_name.@HSIMSEQ.sim'
     # Published Rendered Caches
-    # from Mikros vfx
+    # from  vfx
     Asset_HoudiniCache_Publish_Sequence: '@Asset_Cache_Publish_Area_Secondary/{cache_type_houdini}/@generic_houdini_version_name-houdini/@generic_houdini_version_name.{HSEQ}.{ext_cache_houdini}'
     Asset_HoudiniCache_Publish_File: '@Asset_Cache_Publish_Area_Secondary/{cache_type_houdini}/@generic_houdini_version_name-houdini/@generic_houdini_version_name.{ext_cache_houdini}'
     Asset_HoudiniCache_Publish_Distributed_Sequence: '@Asset_Cache_Publish_Area_Secondary/{cache_type_houdini}/@generic_houdini_version_name-houdini/{distribution_type}_{distribution_index}/@generic_houdini_version_name.{distribution_type}_{distribution_index}.{HSEQ}.{ext_cache_houdini}'
     Asset_HoudiniCache_Publish_Distributed_File: '@Asset_Cache_Publish_Area_Secondary/{cache_type_houdini}/@generic_houdini_version_name-houdini/{distribution_type}_{distribution_index}/@generic_houdini_version_name.{distribution_type}_{distribution_index}.{ext_cache_houdini}'
     # Flipbook
-    # from Mikros Vfx
+    # from  Vfx
     Asset_HoudiniFlip_Work_Generic_Name:                '@Asset_Image_WorkArea/@generic_version_name-flip'
     Asset_HoudiniFlip_Work_Camera:                      '@Asset_HoudiniFlip_Work_Generic_Name/{camera}'
     Asset_HoudiniFlip_Work_Sequence:                    '@Asset_HoudiniFlip_Work_Camera/@generic_version_name-{camera}.{HSEQ}.{image_ext}'
@@ -881,29 +861,29 @@ paths:
     # Nuke
     #
     # define the location of a work area
-    # from Mikros Anim
+    # from  Anim
     Asset_NukeScene_WorkArea:              '@asset_root/{Task}/nuke/wip'
     # define the location of a publish area
-    # from Mikros Anim
+    # from  Anim
     Asset_NukeScene_PublishArea:           '@asset_root/{Task}/nuke/publish'
     # review output
     # from Shotgun
     nuke_asset_render_movie:               '@asset_root/common/review/{name}_{Task}_{output}_v{version}.mov'
     # The location of WIP script files
-    # from Mikros Anim
+    # from  Anim
     Asset_NukeScene_Work:                  '@Asset_NukeScene_WorkArea/@generic_version_name.nk'
     # from Shotgun
     nuke_asset_work_render:                '@Asset_NukeScene_WorkArea/renders/@generic_version_name_r{render_iteration}.nk'
     # The location of backups of WIP files
-    # from Mikros Anim
+    # from  Anim
     Asset_NukeScene_Snapshot:              '@Asset_NukeScene_WorkArea/@generic_version_name.{timestamp}.nk'
     # The location of published nuke script files
-    # from Mikros Anim
+    # from  Anim
     Asset_NukeScene_Publish:               '@Asset_NukeScene_PublishArea/@generic_version_name.nk'
-    # from Mikros Anim
+    # from  Anim
     Asset_NukeScene_PublishSpecial:        '@Asset_NukeScene_PublishArea/{name}-{Task}-{variant}-{special_version}.nk'
     # Outputs from the Shotgun Write Node for assets
-    # from Mikros Vfx
+    # from  Vfx
     Asset_NukeRender_Work_Generic_Name:   '@Asset_Image_WorkArea/@generic_image_dirname_nuke'
     Asset_NukeRender_Work_Sequence:       '@Asset_NukeRender_Work_Generic_Name/@nuke_image_name.{SEQ}.{ext_render_nuke}'
     Asset_NukeRender_Publish_Generic_Name: '@Asset_Image_PublishArea/@generic_image_dirname_nuke'
@@ -956,7 +936,7 @@ paths:
 #
 strings:
     # Define generic scene name
-    # from Mikros Anim
+    # from  Anim
     generic_version_name:               '{name}-{Task}-{variant}-v{version}'
     generic_houdini_version_name:       '{name}-{Task}-{variant}-{extra_variant}-v{version}'
     generic_cache_version_name:         '{name}-{Task}-{variant}-{cache_variant}-v{version}'
@@ -964,31 +944,31 @@ strings:
     generic_version_name_c4d:           '{name}-{Task}-{variant}-v{version}-{image_variant}'
     generic_golaem_cache_version_name:  '{name}-{Task}-{variant}[-{extra_variant}]-v{version}'
     # Define the name of the image directory
-    # From Mikros Vfx Maya
+    # From  Vfx Maya
     generic_image_dirname:              '@generic_version_name-{render_source}'
-    # From Mikros Vfx Houdini
+    # From  Vfx Houdini
     generic_image_dirname_houdini:      '@generic_houdini_version_name-{houdini_render_source}'
-    # From Mikros Vfx Nuke
+    # From  Vfx Nuke
     generic_image_dirname_nuke:         '{name}-{Task}-{variant}-{render_source}-{write_node}-v{version}-{colorspace}-{ext_render_nuke}'
-    # From Mikros Vfx Flame
+    # From  Vfx Flame
     generic_image_dirname_flame:        '{name}-{Task}-{variant}-{flame_render_source}-{write_node}-v{version}-{colorspace}-{ext_render_flame}'
-    # From Mikros Vfx C4d
+    # From  Vfx C4d
     generic_image_dirname_c4d:          '@generic_version_name_c4d-c4dtoa'
-    # From Mikros Vfx After Effects
+    # From  Vfx After Effects
     generic_image_dirname_afterfx:      '@afterfx_image_name-{ext_render_afterfx}'
-    # From Mikros Vfx Blender
+    # From  Vfx Blender
     generic_image_dirname_blender:      '@blender_image_name-{ext_render_blender}'
-    # From Mikros Vfx Nuke
+    # From  Vfx Nuke
     nuke_image_name:                    '{name}-{Task}-{variant}-{render_source}-{write_node}-v{version}-{colorspace}'
-    # From Mikros Vfx Flame
+    # From  Vfx Flame
     flame_image_name:                   '{name}-{Task}-{variant}-{flame_render_source}-{write_node}-v{version}-{colorspace}'
-    # From Mikros Vfx Photoshop
+    # From  Vfx Photoshop
     photoshop_image_name:               '{name}-{Task}-{variant}-{photoshop_render_source}-{write_node}-v{version}-{colorspace}'
-    # From Mikros Vfx Harmony
+    # From  Vfx Harmony
     harmony_image_name:                 '{name}-{Task}-{variant}-{harmony_render_source}-{write_node}-v{version}-{colorspace}'
-    # From Mikros Vfx After Effects
+    # From  Vfx After Effects
     afterfx_image_name:                 '{name}-{Task}-{variant}-{afterfx_render_source}-{write_node}-v{version}-{colorspace}'
-    # From Mikros Vfx Blender
+    # From  Vfx Blender
     blender_image_name:                 '{name}-{Task}-{variant}-{blender_render_source}-{write_node}-v{version}-{colorspace}'
     # when a review version in shotgun is created inside of nuke, this is the
     # name that is being given to it (the code field)

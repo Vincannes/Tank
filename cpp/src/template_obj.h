@@ -25,6 +25,7 @@ public:
 	std::string getDefinition() const;
 	std::vector<std::string> getStaticTokens() const;
 	std::vector<std::string> getOrderedKeys() const;
+	std::vector<std::string> getDefinitionVariants() const;
 	std::map<std::string, std::string> getFields(std::string);
 	std::vector<std::string> missingKeys(std::map<std::string, std::string>);
 
@@ -40,6 +41,7 @@ private:
 	std::string _pattern_definition;
 	std::vector<std::string>_ordered_keys;
 	std::vector<std::string> _static_tokens;
+	std::vector<std::string> _definition_variations;
 
 	std::map<std::string, TemplateKey*> _keys;
 	std::map<std::string, TemplateKey*> _all_keys;
@@ -50,8 +52,9 @@ private:
 	std::vector<std::string> getTokensFromPath(std::string);
 	std::map<std::string, TemplateKey*> _keys_from_definition();
 	std::string _getValueFromKeyObject(std::string, std::string);
+	std::vector<std::string> _get_definition_variations(const std::string definition);
+	std::vector<std::string> _generateVariants(const std::string& definition);
 
-	
 };
 
 #endif // TEMPLATE_H
