@@ -64,7 +64,7 @@ int main() {
 	fields["variant"] = "base";
 	fields["colorspace"] = "aces";
 	fields["name"] = "sh_010";
-	fields["project_resolution"] = "19201080";
+	fields["project_resolution"] = "192010.80";
 	fields["path_additional"] = "caca";
 	// fields["ext_render_nuke"] = "exr";
 	fields["playlist_name"] = "TEST";
@@ -78,7 +78,7 @@ int main() {
 	// std::cout << "Applw" << std::endl;
 	// #endif
 	// pathsDict = generatePathsDictionnaryFromString(paths);
-	// keysDict  = generateKeysDictionnaryFromString(keys);
+	keysDict  = generateKeysDictionnaryFromString(keys);
 	// strsDict  = generateStringsDictionnaryFromString(strs);
 
 	// std::cout << "Strings" << std::endl;
@@ -92,16 +92,16 @@ int main() {
     //     std::cout << key.first << ":" << key.second << std::endl;
 	// }
 	// std::cout << " " << std::endl;
-	// std::cout << "" << std::endl;
-	// // std::cout << "Keys" << std::endl;
-	// for (const auto& key : keysDict) {
-    //     std::cout << key.first << ":" << std::endl;
-    //     for (const auto& subkey : key.second) {
-    //         std::cout << "    " << subkey.first << ":" << subkey.second << std::endl;
-    //     }
-	// }
+	std::cout << "" << std::endl;
+	std::cout << "Keys" << std::endl;
+	for (const auto& key : keysDict) {
+        std::cout << key.first << ":" << std::endl;
+        for (const auto& subkey : key.second) {
+            std::cout << "    " << subkey.first << ":" << subkey.second << std::endl;
+        }
+	}
 	// std::cout << " Get Keys " << std::endl;
-	// std::cout << "" << std::endl;
+	std::cout << "" << std::endl;
 	
 
 
@@ -111,7 +111,8 @@ int main() {
 	// for(const auto& key : tank_test.getAllKeys()) {
 	// 	const std::string& cle = key.first;
 	// 	const std::string& valeur = key.second->getDefault();
-	// 	std::cout << cle << " : " << valeur << std::endl;
+	// 	// const std::string& value = key.second->getValue();
+	// 	std::cout << cle << " : " << valeur << " : " << std::endl;
 	// }
 
 	// std::cout << "" << std::endl;
@@ -158,8 +159,8 @@ int main() {
 
 	std::cout << "" << std::endl;
 	std::cout << delviery.getName() << std::endl;
-	// std::cout << delviery.getDefinition() << std::endl;
-	// std::cout << delviery.getDefinitionVariants()[0] << std::endl;
+	std::cout << delviery.getDefinition() << std::endl;
+	std::cout << delviery.getDefinitionVariants()[0] << std::endl;
 	std::cout << delviery.apply_fields(fields) << std::endl;
 	// std::cout << "" << std::endl;
 	// std::cout << delviery.getDefinitionVariants().size() << std::endl;
