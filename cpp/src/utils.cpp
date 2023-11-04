@@ -175,8 +175,8 @@ std::map<std::string, std::map<std::string, std::string>> generateKeysDictionnar
 		std::string keystring = *iter ;
 		std::string::size_type colonPos = keystring.find(":");
 
-		std::string key          = keystring.substr(0, colonPos);
-		std::string value        = keystring.substr(colonPos + 1);
+		std::string key = keystring.substr(0, colonPos);
+		std::string value = keystring.substr(colonPos + 1);
 
 		key.erase(std::remove(key.begin(), key.end(), '\''), key.end()); // Remove ' from string
 		value.erase(std::remove(value.begin(), value.end(), '{'), value.end()); // Remove { from string
@@ -186,14 +186,18 @@ std::map<std::string, std::map<std::string, std::string>> generateKeysDictionnar
 		std::smatch match;
 		std::string valueRefacto = value;
 		std::regex re("\\[([^\\]]*)\\]");
+
+		// has choice
   		std::vector<std::string> choices;
-		while (std::regex_search(valueRefacto, match, re)) {
-			std::string match_refacto = match[1].str();
-			match_refacto.erase(std::remove(match_refacto.begin(), match_refacto.end(), '\''), match_refacto.end());
-			choices.push_back(match_refacto);
-			valueRefacto = match.suffix().str();
-			value = std::regex_replace(value, std::regex("\\[[^\\]]*\\]"), ""); // remove ['..', '..']
-			value = std::regex_replace(value, std::regex(", 'choices':"), "");  // remove 'choices'
+		if(valueRefacto.find("choices") != std::string::npos) {
+			while (std::regex_search(valueRefacto, match, re)) {
+				std::string match_refacto = match[1].str();
+				match_refacto.erase(std::remove(match_refacto.begin(), match_refacto.end(), '\''), match_refacto.end());
+				choices.push_back(match_refacto);
+				valueRefacto = match.suffix().str();
+				value = std::regex_replace(value, std::regex("\\[[^\\]]*\\]"), ""); // remove ['..', '..']
+				value = std::regex_replace(value, std::regex(", 'choices':"), "");  // remove 'choices'
+			}
 		}
 
 		// Parse all other element for each ','

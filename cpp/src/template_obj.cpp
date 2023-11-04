@@ -359,9 +359,9 @@ std::vector<std::string> TemplatePath::_generateVariants(const std::string& defi
 int TemplatePath::_getDefinitionFromFields(std::map<std::string, std::string> fields)
 {
 	int variant_index = -1;
-	for (const std::string& definaaition : this->_definition_variations) {
+	for (const std::string& definition : this->_definition_variations) {
 		variant_index ++;
-		std::map<std::string, TemplateKey*> def_keys = _keys_from_definition(definaaition);
+		std::map<std::string, TemplateKey*> def_keys = _keys_from_definition(definition);
 		int size = _missing_key_from_field(def_keys, fields).size();
 		if (size == 0){ // no missing key find == good template
 			return variant_index;
@@ -473,9 +473,8 @@ std::string TemplatePath::_apply_fields_to_definition(std::string definition, st
 			pos = pos + 2;
 		}
 	}
+
 	// missings multiple fields ?
-	std::cout << "fieldsMissing   "<< fieldsMissing.size() << std::endl;
-	std::cout << "result   "<< result << std::endl;
 	if(fieldsMissing.size() > 0){ 
 		throw TankApplyFieldsTemplateError(getName(), getDefinition(), fieldsMissing);
 	}

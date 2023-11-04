@@ -13,18 +13,18 @@ namespace py = pybind11;
 
 Tank::Tank(std::string _templatePathsString, std::string _templateKeysString, std::string _templateStringsString, std::string root_path)
 {
-	this->_root_path           = root_path;
-    this->keydict              = generateKeysDictionnaryFromString(_templateKeysString);
-    this->pathsdict            = generatePathsDictionnaryFromString(_templatePathsString);
-    this->stringsdict          = generateStringsDictionnaryFromString(_templateStringsString);
+	this->_root_path = root_path;
+    this->keydict = generateKeysDictionnaryFromString(_templateKeysString);
+    this->pathsdict = generatePathsDictionnaryFromString(_templatePathsString);
+    this->stringsdict = generateStringsDictionnaryFromString(_templateStringsString);
 
 	// Merge StringsDict with PathsDict
 	for (const auto& kvp : this->stringsdict) {
         this->pathsdict.insert(kvp);
     }
 	
-    this->_allKeys             = dictOfAllKeys();
-    this->_templates           = _getTemplates();
+    this->_allKeys = dictOfAllKeys();
+    this->_templates = _getTemplates();
 
 }
 
