@@ -104,14 +104,18 @@ if __name__ == "__main__":
     # print(path)
     pathTestWork = "D:/Desk/python/Projects/sequence/sh/sh_010/cmp/image/wip/sh_010-cmp-caca-nk-out-v0001-linear-exr/sh_010-cmp-caca-nk-out-v0001-linear.####.exr"
     pathTest = "D:/Desk/python/Tank/tests/project/sequence/test_020/010/cmp/nuke/wip/010-cmp-base-v0001.nk"
-    aa = 'D:/Desk/python/Tank/tests/project/sequence/sh/sh_010/cmp/image/wip/sh_010-cmp-caca-nk-out-v001-linear-exr/sh_010-cmp-caca-nk-out-v001-linear.####.exr'
-    pprint(templates)
-    pprint(templates.get('Sequence', None))
-    # template = tk.template_from_path(aa)
-    # print()
-    # print("definition")
-    # print(template.definition())
-    # print()
+    aa            = 'D:/Desk/python/Tank/tests/project/sequence/sh/sh_010/cmp/image/wip/sh_010-cmp-caca-nk-out-v001-linear-exr/sh_010-cmp-caca-nk-out-v001-linear.####.exr'
+    zz            = "D:/Desk/python/Tank/tests/project/sequence/sh/sh_010/common/footage/sh_010-src-master01-v001-aces-exr/sh_010-src-master01-v001-aces.####.exr"
+    sequence_path = "D:/Desk/python/Tank/tests/project/sequence/sh/sh_010/common/footage/sh_010-src-master01-v001-aces-exr"
+    
+    # pprint(templates)
+    # pprint(templates.get('Sequence', None))
+    template = tk.template_from_path(sequence_path)
+    print()
+    print("definition")
+    print(template.name())
+    print(template.definition())
+    print()
     # # print("Order Key")
     # # print(template.ordered_keys())
     # # print()

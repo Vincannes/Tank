@@ -31,7 +31,7 @@ const char* TankApplyFieldsTemplateError::what() const noexcept
     full_message = "Tried to resolve path from the template '" + m_template_name + "' : " + m_definition;
     full_message += " but the following required fields were missing from the input: ";
     for(int i=0; i<m_fields.size(); i++){
-        full_message += m_fields[i];
+        full_message += "{" + m_fields[i] + "}";
         full_message += " ";
     }
     return full_message.c_str();
