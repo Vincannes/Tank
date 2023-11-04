@@ -41,12 +41,14 @@ const char* TankApplyFieldsTemplateError::what() const noexcept
 TankTemplateWrongValue::TankTemplateWrongValue(
     const std::string& key, 
     const std::string& value, 
+    const std::string& filter_by, 
     std::vector<std::string> choices
     )
     {
         m_key = key;
         m_value = value;
         m_choices = choices;
+        m_filter = filter_by;
     }
 
 // Implémentation de la méthode what()
@@ -60,6 +62,10 @@ const char* TankTemplateWrongValue::what() const noexcept
     }
     full_message.erase(full_message.end() - 2, full_message.end());
     full_message += "]";
+    if(!this->m_filter.empty()){
+        full_message += "   filter is: ";
+        full_message += this->m_filter;
+    }
     return full_message.c_str();
 }
 

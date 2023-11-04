@@ -37,7 +37,7 @@ class TankTemplateWrongValue : public std::exception
 {
 public:
     // Constructeur prenant un message d'erreur en argument
-    TankTemplateWrongValue(const std::string& key, const std::string& value, std::vector<std::string> choices);
+    TankTemplateWrongValue(const std::string& key, const std::string& value, const std::string& filter_by, std::vector<std::string> choices);
 
     // Redéfinition de la méthode what() pour retourner le message d'erreur
     const char* what() const noexcept override;
@@ -45,6 +45,7 @@ public:
 private:
     std::string m_key; // Message d'erreur
     std::string m_value; // Message d'erreur
+    std::string m_filter; // Message d'erreur
     std::vector<std::string> m_choices; // Message d'erreur
 };
 
