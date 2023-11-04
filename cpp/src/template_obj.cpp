@@ -13,16 +13,16 @@
 
 TemplatePath::TemplatePath(std::string name, std::map<std::string, TemplateKey*> keys, std::string definition, std::string root_path)
 {
-	this->_root_path          = root_path;
-	this->_name               = name;
-	this->_all_keys           = keys;
-	this->_orig_definition    = definition;
-	this->_definition         = _get_clean_definition(definition);
-	this->_pattern_definition = _get_pattern_definition(definition);
-	this->_keys               = _keys_from_definition();
-	this->_ordered_keys       = _get_ordered_keys();
-	this->_static_tokens      = _get_static_token();
+	this->_root_path             = root_path;
+	this->_name                  = name;
+	this->_all_keys              = keys;
+	this->_orig_definition       = definition;
+	this->_definition            = _get_clean_definition(definition);
+	this->_pattern_definition    = _get_pattern_definition(definition);
 	this->_definition_variations = _get_definition_variations(definition);
+	this->_keys                  = _keys_from_origin_definition();
+	this->_ordered_keys          = _get_ordered_keys();
+	this->_static_tokens         = _get_static_token();
 
 }
 
@@ -34,6 +34,11 @@ std::string TemplatePath::getName() const
 std::string TemplatePath::getDefinition() const
 {
 	return this->_definition;
+}
+
+std::map<std::string, TemplateKey*> TemplatePath::getKeys() const
+{
+	return this->_keys;
 }
 
 bool TemplatePath::validate(std::string path)
@@ -64,65 +69,12 @@ std::vector<std::string> TemplatePath::getDefinitionVariants() const
 
 std::string TemplatePath::apply_fields(std::map<std::string, std::string> fields, std::vector<std::string> missing_keys)
 {
-	std::string result = this->_definition;
-	std::string::size_type pos = 0;
-	std::vector<std::string> fieldsMissing;
-
-	while ((pos = result.find("%(", pos)) != std::string::npos) {
-		std::string::size_type end_pos = result.find(")", pos);
-
-		if (end_pos != std::string::npos) {
-			std::string value;
-			std::string key = result.substr(pos + 2, end_pos - pos - 2);
-			std::string oldSubstring = "%(" + key +")";
-			auto it = fields.find(key);
-			bool isMissingKey = false;
-
-			// If find key from definition inside fields parameter
-			if (it != fields.end()) { 
-
-				// Check if key is part of missing_keys parameter
-				for (const auto& str : missing_keys) {
-					if (str == key) {
-						isMissingKey = true;
-						break;
-					}
-				}
-				// If not key in missing_fields parameter 
-				if(!isMissingKey){
-					value = _getValueFromKeyObject(it->first, it->second);
-				}else{
-					value = it->second;
-				}
-				result = removePatternInString(result, oldSubstring, value);
-				pos += it->second.length();
-			}
-
-			// Key not find in fields
-			else {
-				pos = end_pos + 1;
-				value = _getValueFromKeyObject(key, "");
-				// If default value inside Key Template
-				if(!value.empty()){
-					size_t _pos = result.find(oldSubstring);
-					if (_pos != std::string::npos) { 
-						result = removePatternInString(result, oldSubstring, value);
-					}
-				}
-				// If anything find
-				else{
-					fieldsMissing.push_back(key);
-				}
-			}
-		}
-		else {
-			// Parenthese fermante manquante
-			pos = pos + 2;
-		}
+	int variant_index = _getDefinitionFromFields(fields);
+	if(variant_index == -1){ 
+		std::vector<std::string> fieldsMissing = _missing_key_from_field(this->_keys, fields);
+		throw TankApplyFieldsTemplateError(getName(), getDefinition(), fieldsMissing);
 	}
-	// missings multiple fields ?
-	if(fieldsMissing.size() > 0) throw TankApplyFieldsTemplateError(getName(), getDefinition(), fieldsMissing);
-	return stringPathJoin(this->_root_path, result, "", "");
+	return _apply_fields_to_definition(this->_definition_variations[variant_index], fields, missing_keys);
 }
 
 
@@ -247,14 +199,7 @@ std::vector<std::string> TemplatePath::missingKeys(std::map<std::string, std::st
     // >>> tk.templates["max_asset_work"].missing_keys({"name": "foo"})
     //         ['Step', 'sg_asset_type', 'Asset', 'version']
 
-	std::vector<std::string> _missing_keys;
-
-	for (const auto& field : this->_all_keys) {
-        if (fields.count(field.first) == 0) {
-			_missing_keys.push_back(field.first);
-        }
-    }
-	return _missing_keys;
+	return _missing_key_from_field(this->_keys, fields);
 }
 
 
@@ -271,27 +216,29 @@ std::string TemplatePath::_get_clean_definition(const std::string definition) {
 	std::regex pattern("[{]");
 	std::regex pattern2("[}]");
 
+	std::string tmp2 = removePatternInString(definition, "[", "");
+	tmp2 = removePatternInString(tmp2, "]", "");
+
 	std::string tmp;
 	std::string result;
 
-	std::regex_replace(std::back_inserter(tmp), definition.begin(), definition.end(), pattern, "%(");
+	std::regex_replace(std::back_inserter(tmp), tmp2.begin(), tmp2.end(), pattern, "%(");
 	std::regex_replace(std::back_inserter(result), tmp.begin(), tmp.end(), pattern2, ")");
-	
+
 	return result;
 }
+
 
 std::vector<std::string> TemplatePath::_get_definition_variations(const std::string definition) {
 	
 	std::vector<std::string> variants;
 
 	for (const std::string& variant : _generateVariants(definition)) {
-		std::string new_var = removePatternInString(variant, "[", "");
-		new_var = removePatternInString(new_var, "]", "");
-		variants.push_back(new_var);
+		variants.push_back(_get_clean_definition(variant));
 	}
-
 	return variants;
 }
+
 
 std::string TemplatePath::_get_pattern_definition(const std::string definition) {
 
@@ -351,28 +298,17 @@ std::vector<std::string> TemplatePath::_get_ordered_keys() const
 }
 
 
-std::map<std::string, TemplateKey*> TemplatePath::_keys_from_definition()
+std::map<std::string, TemplateKey*> TemplatePath::_keys_from_origin_definition()
 {
-	std::map<std::string, TemplateKey*> keys;
-
 	std::regex re("\\{(.*?)\\}");
-	std::sregex_iterator next(this->_orig_definition.begin(), this->_orig_definition.end(), re);
-	std::sregex_iterator end;
+	return _sub_keys_from_definition(this->_orig_definition, re);
+}
 
-	while (next != end) {
 
-		std::smatch match = *next;
-		std::string key_name = match.str(1);
-
-		for (auto const& pair : this->_all_keys) {
-        	if(key_name == pair.first){
-				keys.insert(std::make_pair(key_name, pair.second));
-			}
-    	}
-		next++;
-	}
-
-	return keys;
+std::map<std::string, TemplateKey*> TemplatePath::_keys_from_definition(std::string definition)
+{
+    std::regex re("%\\(([^)]+)\\)");
+	return _sub_keys_from_definition(definition, re);
 }
 
 
@@ -411,7 +347,7 @@ std::vector<std::string> TemplatePath::_generateVariants(const std::string& defi
             variants.push_back(before + recursiveVariant);
         }
     } else {
-        variants.push_back(_get_clean_definition(definition));
+        variants.push_back(definition);
     }
 
     return variants;
@@ -419,6 +355,34 @@ std::vector<std::string> TemplatePath::_generateVariants(const std::string& defi
 
 
 // PRIVATE FUNCTIONS
+
+int TemplatePath::_getDefinitionFromFields(std::map<std::string, std::string> fields)
+{
+	int variant_index = -1;
+	for (const std::string& definaaition : this->_definition_variations) {
+		variant_index ++;
+		std::map<std::string, TemplateKey*> def_keys = _keys_from_definition(definaaition);
+		int size = _missing_key_from_field(def_keys, fields).size();
+		if (size == 0){ // no missing key find == good template
+			return variant_index;
+		}
+    }
+	return -1;
+}
+
+
+std::vector<std::string> TemplatePath::_missing_key_from_field(std::map<std::string, TemplateKey*> keys, std::map<std::string, std::string> fields)
+{
+	std::vector<std::string> _missing_keys;
+
+	for (const auto& field : keys) {
+        if (fields.count(field.first) == 0) {
+			_missing_keys.push_back(field.first);
+        }
+    }
+	return _missing_keys;
+}
+
 
 std::string TemplatePath::_getValueFromKeyObject(std::string tokenKey, std::string fieldValue)
 {
@@ -448,5 +412,109 @@ std::string TemplatePath::_getValueFromKeyObject(std::string tokenKey, std::stri
 	}
 
 	return value;
+}
+
+
+std::string TemplatePath::_apply_fields_to_definition(std::string definition, std::map<std::string, std::string> fields, std::vector<std::string> missing_keys)
+{
+	std::string result = definition;
+	std::string::size_type pos = 0;
+	std::vector<std::string> fieldsMissing;
+
+	while ((pos = result.find("%(", pos)) != std::string::npos) {
+		std::string::size_type end_pos = result.find(")", pos);
+
+		if (end_pos != std::string::npos) {
+			std::string value;
+			std::string key = result.substr(pos + 2, end_pos - pos - 2);
+			std::string oldSubstring = "%(" + key +")";
+			auto it = fields.find(key);
+			bool isMissingKey = false;
+
+			// If find key from definition inside fields parameter
+			if (it != fields.end()) { 
+
+				// Check if key is part of missing_keys parameter
+				for (const auto& str : missing_keys) {
+					if (str == key) {
+						isMissingKey = true;
+						break;
+					}
+				}
+				// If not key in missing_fields parameter 
+				if(!isMissingKey){
+					value = _getValueFromKeyObject(it->first, it->second);
+				}else{
+					value = it->second;
+				}
+				result = removePatternInString(result, oldSubstring, value);
+				pos += it->second.length();
+			}
+
+			// Key not find in fields
+			else {
+				pos = end_pos + 1;
+				value = _getValueFromKeyObject(key, "");
+				// If default value inside Key Template
+				if(!value.empty()){
+					size_t _pos = result.find(oldSubstring);
+					if (_pos != std::string::npos) { 
+						result = removePatternInString(result, oldSubstring, value);
+					}
+				}
+				// If anything find
+				else{
+					fieldsMissing.push_back(key);
+				}
+			}
+		}
+		else {
+			// Parenthese fermante manquante
+			pos = pos + 2;
+		}
+	}
+	// missings multiple fields ?
+	std::cout << "fieldsMissing   "<< fieldsMissing.size() << std::endl;
+	std::cout << "result   "<< result << std::endl;
+	if(fieldsMissing.size() > 0){ 
+		throw TankApplyFieldsTemplateError(getName(), getDefinition(), fieldsMissing);
+	}
+	return stringPathJoin(this->_root_path, result, "", "");
+}
+
+
+std::string TemplatePath::_get_longest_variant(std::vector<std::string> definition_variants)
+{
+	std::string def_variant = definition_variants[0];
+
+	for (const std::string &chaine : definition_variants) {
+        if (chaine.length() > def_variant.length()) {
+            def_variant = chaine;
+        }
+    }
+	return def_variant;
+}
+
+
+std::map<std::string, TemplateKey*> TemplatePath::_sub_keys_from_definition(std::string definition, std::regex re)
+{
+	std::map<std::string, TemplateKey*> keys;
+	std::sregex_iterator next(definition.begin(), definition.end(), re);
+	std::sregex_iterator end;
+
+	while (next != end) {
+
+		std::smatch match = *next;
+		std::string key_name = match.str(1);
+
+		for (auto const& pair : this->_all_keys) {
+        	if(key_name == pair.first){
+				keys.insert(std::make_pair(key_name, pair.second));
+			}
+    	}
+		next++;
+	}
+
+	return keys;
 }
 

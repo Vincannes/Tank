@@ -26,6 +26,7 @@ public:
 	std::vector<std::string> getStaticTokens() const;
 	std::vector<std::string> getOrderedKeys() const;
 	std::vector<std::string> getDefinitionVariants() const;
+	std::map<std::string, TemplateKey*> getKeys() const;
 	std::map<std::string, std::string> getFields(std::string);
 	std::vector<std::string> missingKeys(std::map<std::string, std::string>);
 
@@ -50,10 +51,16 @@ private:
 	std::vector<std::string> _get_static_token() const;
 	std::vector<std::string> _get_ordered_keys() const;
 	std::vector<std::string> getTokensFromPath(std::string);
-	std::map<std::string, TemplateKey*> _keys_from_definition();
 	std::string _getValueFromKeyObject(std::string, std::string);
+	int _getDefinitionFromFields(std::map<std::string, std::string> fields);
+	std::map<std::string, TemplateKey*> _keys_from_origin_definition();
+	std::map<std::string, TemplateKey*> _keys_from_definition(std::string definition);
+	std::map<std::string, TemplateKey*> _sub_keys_from_definition(std::string definition, std::regex re);
 	std::vector<std::string> _get_definition_variations(const std::string definition);
 	std::vector<std::string> _generateVariants(const std::string& definition);
+	std::string _apply_fields_to_definition(std::string definition, std::map<std::string, std::string> fields, std::vector<std::string> missing_keys);
+	std::string _get_longest_variant(std::vector<std::string> definition_variants);
+	std::vector<std::string> _missing_key_from_field(std::map<std::string, TemplateKey*> keys, std::map<std::string, std::string> fields);
 
 };
 
