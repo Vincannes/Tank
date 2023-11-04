@@ -13,18 +13,18 @@ namespace py = pybind11;
 
 Tank::Tank(std::string _templatePathsString, std::string _templateKeysString, std::string _templateStringsString, std::string root_path)
 {
-	this->_root_path           = root_path;
-    this->keydict              = generateKeysDictionnaryFromString(_templateKeysString);
-    this->pathsdict            = generatePathsDictionnaryFromString(_templatePathsString);
-    this->stringsdict          = generateStringsDictionnaryFromString(_templateStringsString);
+	this->_root_path = root_path;
+    this->keydict = generateKeysDictionnaryFromString(_templateKeysString);
+    this->pathsdict = generatePathsDictionnaryFromString(_templatePathsString);
+    this->stringsdict = generateStringsDictionnaryFromString(_templateStringsString);
 
 	// Merge StringsDict with PathsDict
 	for (const auto& kvp : this->stringsdict) {
         this->pathsdict.insert(kvp);
     }
 	
-    this->_allKeys             = dictOfAllKeys();
-    this->_templates           = _getTemplates();
+    this->_allKeys = dictOfAllKeys();
+    this->_templates = _getTemplates();
 
 }
 
@@ -126,6 +126,7 @@ std::map<std::string, TemplateKey*> Tank::dictOfAllKeys()
 		bool hasAlias = false;
 		bool isDefault = false;
 		std::string aliasKey = "";
+		std::string filter_by = ""; 
 		std::string isTypeValue = "";
 		std::string isDefaultValue = "";
 		std::string hasFormatSpec = "2"; 
@@ -151,7 +152,9 @@ std::map<std::string, TemplateKey*> Tank::dictOfAllKeys()
 			else if (key == "choices"){
 				choices = listFromString(value);
 			}
-			else if (key == "filter_by"){}
+			else if (key == "filter_by"){
+				filter_by = value;
+			}
 			else if (key == "shotgun_entity_type"){}
 			else if (key == "shotgun_field_name"){}
 
@@ -166,7 +169,7 @@ std::map<std::string, TemplateKey*> Tank::dictOfAllKeys()
 		}
 
 		if (isTypeValue == "str") {
-			StringTemplateKey* s1 = new StringTemplateKey(name, isDefaultValue, choices);
+			StringTemplateKey* s1 = new StringTemplateKey(name, isDefaultValue, choices, filter_by);
 			keysList[name] = s1;
 		}
 		if (isTypeValue == "int") {

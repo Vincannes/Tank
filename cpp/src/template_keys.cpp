@@ -1,3 +1,4 @@
+#include <regex>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -42,13 +43,19 @@ std::string TemplateKey::getValue()
 
 // ######## StringTemplateKey ######## 
 
-StringTemplateKey::StringTemplateKey(std::string name, std::string default_value, std::vector<std::string>choices) noexcept : TemplateKey(name, default_value)
+StringTemplateKey::StringTemplateKey(std::string name, std::string default_value, std::vector<std::string>choices, std::string filter_by) noexcept : TemplateKey(name, default_value)
 {
 	this->_choices = choices;
+	this->_filter_by = filter_by;
 }
 
 void StringTemplateKey::setValue(std::string value)
 {
+	// Check if value is valid from filter filter
+	if(!_filter_value(value)){
+		throw TankTemplateWrongValue(getName(), value, this->_filter_by, this->_choices);
+	}
+
 	if(value.empty() && !getDefault().empty()){
 		this->_value = getDefault();
 	}
@@ -61,7 +68,7 @@ void StringTemplateKey::setValue(std::string value)
 			}
 		}
 		if(this->_value.empty()){
-			throw TankTemplateWrongValue(getName(), value, this->_choices);
+			throw TankTemplateWrongValue(getName(), value, this->_filter_by, this->_choices);
 		}
 	}
 	else{
@@ -72,6 +79,21 @@ void StringTemplateKey::setValue(std::string value)
 std::string StringTemplateKey::getValue() 
 {
 	return this->_value;
+}
+
+bool StringTemplateKey::_filter_value(std::string value)
+{
+	std::cout << "this->_filter_by   "<< this->_filter_by << std::endl;
+	// if not filter
+	if(this->_filter_by.empty()) return true;
+
+	std::regex pattern(this->_filter_by);
+	if(std::regex_search(value, pattern)){
+		return true;
+	}
+	else {
+		return false;
+	}
 }
 
 
