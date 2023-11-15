@@ -83,7 +83,6 @@ std::string StringTemplateKey::getValue()
 
 bool StringTemplateKey::_filter_value(std::string value)
 {
-	std::cout << "this->_filter_by   "<< this->_filter_by << std::endl;
 	// if not filter
 	if(this->_filter_by.empty()) return true;
 
