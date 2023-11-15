@@ -1,4 +1,7 @@
 import os
 import sys
-sys.path.append(os.path.dirname(__file__))
-from python.api import *
+tank_dir = os.path.dirname(__file__)
+sys.path.append(tank_dir)
+sys.path.append(os.path.join(tank_dir, "yaml"))
+from python import yaml
+from python import sgtk

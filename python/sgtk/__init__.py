@@ -1,12 +1,10 @@
 import os
 import sys
-import yaml
+from python import yaml
 from pprint import pprint
 
-TANK_DIR =  os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+TANK_DIR = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 MODULE_PATH = os.path.join(TANK_DIR, "cpp", "bin")
-CONFIG_PATH = os.path.join(TANK_DIR, "config", "templates.yml")
-
 sys.path.append(MODULE_PATH)
 
 ROOT_PATH = "D:/Desk/python/Projects"
@@ -14,49 +12,52 @@ ROOT_PATH = "D:/Desk/python/Projects"
 import tank_module
 from tank_module import TankMatchingTemplatesError
 
-def read_templates():
+def read_templates(conf_path):
     templates = {}
-    with open(CONFIG_PATH, "r") as config:
+    with open(conf_path, "r") as config:
         templates = yaml.safe_load(config)
 
     return templates
 
-keys = read_templates().get("keys")
-paths = read_templates().get("paths")
-strings = read_templates().get("strings")
-# print(paths)
-# print(keys)
-# print(strings)
 
-class tank(tank_module.Tank):
-    
+class Tank(tank_module.Tank):
+
     def __init__(self, path=None):
+        CONFIG_PATH = os.environ.get("CONFIG_PATH")
+
+        if not CONFIG_PATH:
+            CONFIG_PATH = os.path.join(TANK_DIR, "config", "templates.yml")
+
+        keys = read_templates(CONFIG_PATH).get("keys")
+        paths = read_templates(CONFIG_PATH).get("paths")
+        strings = read_templates(CONFIG_PATH).get("strings")
+
         path = path if path else ROOT_PATH
         super().__init__(str(paths), str(keys), str(strings), path)
 
 
 def test_all_fields():
-    fields = {"Shot": "sh_010", "Sequence": "sh", "Task":"src", "colorspace":"aces", 
-              "extension": "exr", "ext_render_nuke": "jpg", "variant":"master01", 
-              "version": "1", "SEQ": "%04d", "name": "sh_010", "Asset": "test", 
-              "render_aov":"path_test", "image_ext":"png", "ext_render_flame":"tiff", 
-              "ext_cache_houdini":"abc", "ext_proxy":"jpg", "ext_scene_photoshop":"psd", 
-              "cache_type_houdini":"adc", "ext_render_clarisse":"jpg", "ext_render_afterfx": "exr",
-              "ext_render_blender":"png", "ext_render_c4d":"tiff", "ext_cache_maya": "abc",
-              "flame_render_source":"fl", "photoshop_render_source":"ps", "afterfx_render_source": "ae",
-              "blender_render_source":"bl", "harmony_render_source":"ha", "houdini_render_source": "htoa",
-              "footage_source":"aucune_idee", "write_node_parent":"aucune_idee", "node": "aucune_idee",
-              "export_ass_set_suffix":"aucune_idee", "cache_variant":"aucune_idee", "image_variant": "aucune_idee",
-              "export_ass_top_namespace":"aucune_idee", "vendor":"bangalor", "extra_variant": "aucune_idee",
-              "segment_name":"aucune_idee", "export_fur_top_namespace":"aucune_idee", "camera": "test",
-              "project_resolution": "1920x1080", "render_source" : "nk", "render_layer": "beauty",
-              "write_node": "out", "slate_frame" : "1001", "delivery_image_type": "exr",
-              "client_step": "prep", "delivery_quicktime_suffix" : "test", "cut_name": "caca",
-              "cut_revision":"cut_revision", "tool":"nuke", "output":"output", "HSEQ":"HSEQ",
-        }
-    #print(tk.templates()["Hiero_Footage_Sequence"].apply_fields(s))
+    fields = {"Shot": "sh_010", "Sequence": "sh", "Task": "src", "colorspace": "aces",
+              "extension": "exr", "ext_render_nuke": "jpg", "variant": "master01",
+              "version": "1", "SEQ": "%04d", "name": "sh_010", "Asset": "test",
+              "render_aov": "path_test", "image_ext": "png", "ext_render_flame": "tiff",
+              "ext_cache_houdini": "abc", "ext_proxy": "jpg", "ext_scene_photoshop": "psd",
+              "cache_type_houdini": "adc", "ext_render_clarisse": "jpg", "ext_render_afterfx": "exr",
+              "ext_render_blender": "png", "ext_render_c4d": "tiff", "ext_cache_maya": "abc",
+              "flame_render_source": "fl", "photoshop_render_source": "ps", "afterfx_render_source": "ae",
+              "blender_render_source": "bl", "harmony_render_source": "ha", "houdini_render_source": "htoa",
+              "footage_source": "aucune_idee", "write_node_parent": "aucune_idee", "node": "aucune_idee",
+              "export_ass_set_suffix": "aucune_idee", "cache_variant": "aucune_idee", "image_variant": "aucune_idee",
+              "export_ass_top_namespace": "aucune_idee", "vendor": "bangalor", "extra_variant": "aucune_idee",
+              "segment_name": "aucune_idee", "export_fur_top_namespace": "aucune_idee", "camera": "test",
+              "project_resolution": "1920x1080", "render_source": "nk", "render_layer": "beauty",
+              "write_node": "out", "slate_frame": "1001", "delivery_image_type": "exr",
+              "client_step": "prep", "delivery_quicktime_suffix": "test", "cut_name": "caca",
+              "cut_revision": "cut_revision", "tool": "nuke", "output": "output", "HSEQ": "HSEQ",
+              }
+    # print(tk.templates()["Hiero_Footage_Sequence"].apply_fields(s))
 
-    #template = tk.template_from_path(aa)
+    # template = tk.template_from_path(aa)
 
     print("")
     index = 0
@@ -64,9 +65,9 @@ def test_all_fields():
         try:
             index += 1
             template = tk.templates()[i]
-            path = template.apply_fields(fields)            
+            path = template.apply_fields(fields)
             print(index, len(tk.templates()), i, path)
-            template_path = tk.template_from_path(path) 
+            template_path = tk.template_from_path(path)
             if template_path:
                 print("       ", template_path.name())
         except:
@@ -104,10 +105,10 @@ if __name__ == "__main__":
     # print(path)
     pathTestWork = "D:/Desk/python/Projects/sequence/sh/sh_010/cmp/image/wip/sh_010-cmp-caca-nk-out-v0001-linear-exr/sh_010-cmp-caca-nk-out-v0001-linear.####.exr"
     pathTest = "D:/Desk/python/Tank/tests/project/sequence/test_020/010/cmp/nuke/wip/010-cmp-base-v0001.nk"
-    aa            = 'D:/Desk/python/Tank/tests/project/sequence/sh/sh_010/cmp/image/wip/sh_010-cmp-caca-nk-out-v001-linear-exr/sh_010-cmp-caca-nk-out-v001-linear.####.exr'
-    zz            = "D:/Desk/python/Tank/tests/project/sequence/sh/sh_010/common/footage/sh_010-src-master01-v001-aces-exr/sh_010-src-master01-v001-aces.####.exr"
+    aa = 'D:/Desk/python/Tank/tests/project/sequence/sh/sh_010/cmp/image/wip/sh_010-cmp-caca-nk-out-v001-linear-exr/sh_010-cmp-caca-nk-out-v001-linear.####.exr'
+    zz = "D:/Desk/python/Tank/tests/project/sequence/sh/sh_010/common/footage/sh_010-src-master01-v001-aces-exr/sh_010-src-master01-v001-aces.####.exr"
     sequence_path = "D:/Desk/python/Tank/tests/project/sequence/sh/sh_010/common/footage/sh_010-src-master01-v001-aces-exr"
-    
+
     # pprint(templates)
     # pprint(templates.get('Sequence', None))
     template = tk.template_from_path(sequence_path)
@@ -120,6 +121,4 @@ if __name__ == "__main__":
     # # print(template.ordered_keys())
     # # print()
     # # print("Fields")
-        # pprint(template.get_fields(aa))
-
-    
+    # pprint(template.get_fields(aa))
