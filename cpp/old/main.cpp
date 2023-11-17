@@ -25,7 +25,7 @@ int main() {
 	std::map<std::string, std::string> pathsDict;
 	std::map<std::string, std::map<std::string, std::string>> keysDict;
 
-	std::string root = "D:\\Desk\\python\\Projects";
+	std::string root = "D:\\Desk\\python\\Projects\\Project3";
 	// std::string test_image = "D:\\Desk\\python\\Projects\\sequence\\sh\\sh_010\\cmp\\image\\wip\\sh_010-cmp-caca-nk-out-v0001-linear-exr\\sh_010-cmp-caca-nk-out-v0001-linear.####.exr";
 
 	std::string zz = "D:/Desk/python/Tank/tests/project/sequence/test/test_010/cmp/nuke/wip/test_010-cmp-base-v001.nk";
@@ -64,9 +64,9 @@ int main() {
 	fields["variant"] = "base";
 	fields["colorspace"] = "aces";
 	fields["name"] = "sh_010";
-	fields["project_resolution"] = "192010.80";
+	fields["project_resolution"] = "19201080";
 	fields["path_additional"] = "caca";
-	// fields["ext_render_nuke"] = "exr";
+	fields["ext_render_nuke"] = "exr";
 	fields["playlist_name"] = "TEST";
 
 	// #if defined(_WIN32)
@@ -78,7 +78,7 @@ int main() {
 	// std::cout << "Applw" << std::endl;
 	// #endif
 	// pathsDict = generatePathsDictionnaryFromString(paths);
-	keysDict  = generateKeysDictionnaryFromString(keys);
+	// keysDict  = generateKeysDictionnaryFromString(keys);
 	// strsDict  = generateStringsDictionnaryFromString(strs);
 
 	// std::cout << "Strings" << std::endl;
@@ -92,16 +92,16 @@ int main() {
     //     std::cout << key.first << ":" << key.second << std::endl;
 	// }
 	// std::cout << " " << std::endl;
-	std::cout << "" << std::endl;
-	std::cout << "Keys" << std::endl;
-	for (const auto& key : keysDict) {
-        std::cout << key.first << ":" << std::endl;
-        for (const auto& subkey : key.second) {
-            std::cout << "    " << subkey.first << ":" << subkey.second << std::endl;
-        }
-	}
-	// std::cout << " Get Keys " << std::endl;
-	std::cout << "" << std::endl;
+	// std::cout << "" << std::endl;
+	// std::cout << "Keys" << std::endl;
+	// for (const auto& key : keysDict) {
+    //     std::cout << key.first << ":" << std::endl;
+    //     for (const auto& subkey : key.second) {
+    //         std::cout << "    " << subkey.first << ":" << subkey.second << std::endl;
+    //     }
+	// }
+	// // std::cout << " Get Keys " << std::endl;
+	// std::cout << "" << std::endl;
 	
 
 
@@ -123,13 +123,14 @@ int main() {
 	// }
 	// return 1;
 
-	// std::cout << "" << std::endl;
+	std::cout << "" << std::endl;
 	// TemplatePath nuke_tpl = templates["Shot_NukeRender_Work_Sequence"];
-	// // TemplatePath nuke_tpl = templates["shot_task_root"];
-	// std::cout << "definition" << std::endl;
-	// std::cout << nuke_tpl.getName() << std::endl;
-	// std::cout << nuke_tpl.getDefinition() << std::endl;
-	// // // std::cout << "" << std::endl;
+	TemplatePath nuke_tpl = templates["shot_task_root"];
+	std::cout << "definition" << std::endl;
+	std::cout << nuke_tpl.getName() << std::endl;
+	std::cout << nuke_tpl.getDefinition() << std::endl;
+	std::cout << "" << std::endl;
+	nuke_tpl.createFile(fields);
 	// // std::vector<std::string> test = nuke_tpl.getOrderedKeys();
 	// // for(int i=0; i<test.size(); i++){	
 	// // 	std::cout << test[i] << std::endl;
@@ -146,7 +147,9 @@ int main() {
 	// 	std::cout << test[i] << std::endl;
 	// }
 	
-	TemplatePath delviery = templates["Quicktime_Delivery"];
+	// TemplatePath delviery = templates["Shot_NukeScene_WorkArea"];
+	TemplatePath delviery = templates["Shot_NukeRender_Work_Sequence"];
+	// TemplatePath delviery = templates["Quicktime_Delivery"];
 	// TemplatePath sequence_tpl = templates["Shot_NukeRender_Work_Sequence"];
 	// TemplatePath nuke_tpl = templates["shot_task_root"];
 	// std::cout << "definition" << std::endl;
@@ -156,12 +159,14 @@ int main() {
 	// std::cout << "" << std::endl;
 
 	std::string test_image = "D:\\Desk\\python\\Projects\\sequence\\sh\\sh_010\\cmp\\image\\wip\\sh_010-cmp-caca-nk-out-v0001-linear-exr\\sh_010-cmp-caca-nk-out-v0001-linear.####.exr";
+	std::string test_image2 = "D:\\Desk\\python\\Projects\\sequence\\sh\\sh_010\\cmp\\image\\wip\\sh_010-cmp-caca-nk-out-v0001-linear-exr";
 
 	std::cout << "" << std::endl;
-	std::cout << delviery.getName() << std::endl;
-	std::cout << delviery.getDefinition() << std::endl;
-	std::cout << delviery.getDefinitionVariants()[0] << std::endl;
-	std::cout << delviery.apply_fields(fields) << std::endl;
+	delviery.createFile(fields);
+	// std::cout << delviery.getName() << std::endl;
+	// std::cout << delviery.getDefinition() << std::endl;
+	// std::cout << delviery.getDefinitionVariants()[0] << std::endl;
+	// std::cout << delviery.apply_fields(fields) << std::endl;
 	// std::cout << "" << std::endl;
 	// std::cout << delviery.getDefinitionVariants().size() << std::endl;
 	// for (const std::string& variant : delviery.getDefinitionVariants()) {
