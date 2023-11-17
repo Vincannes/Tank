@@ -29,3 +29,7 @@ std::string removeLeadingSlash(const std::string&);
 std::vector<std::string> walkDir(std::string directory);
 void addElementToList(std::vector<std::string>& myList, const std::string& elementToAdd);
 // void addElementToList(std::vector<TypeList>& myList, const TypeList& elementToAdd);
+bool isDir(const std::string& path);
+bool isFile(const std::string& path);
+bool isDirExist(std::string path);
+bool isFileExist(std::string path);

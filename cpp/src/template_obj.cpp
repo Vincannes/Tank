@@ -4,6 +4,14 @@
 #include <vector>
 #include <sstream>
 #include <iostream>
+#include <fstream>
+#include <sys/stat.h>
+
+#ifdef _WIN32
+    #include <direct.h>  // For _mkdir on Windows
+    #define mkdir _mkdir
+#endif
+
 
 #include "utils.h"
 #include "exception.h"
@@ -206,7 +214,35 @@ std::vector<std::string> TemplatePath::missingKeys(std::map<std::string, std::st
 void TemplatePath::createFile(std::map<std::string, std::string> fields, std::vector<std::string> missing_keys)
 {
 	std::string pathToCreate = apply_fields(fields, missing_keys);
-	
+	std::cout << pathToCreate << std::endl;
+
+	const char* pathCreateChar = pathToCreate.c_str();
+
+	if(isDir(pathToCreate)){
+		std::cout << "Is Dir" << std::endl;
+		#ifdef _WIN32
+            int status = _mkdir(pathCreateChar);
+        #else
+            int status = mkdir(pathCreateChar, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+        #endif
+
+		if (status == 0) {
+        	std::cout << "Folder create successfully." << std::endl;
+		} else {
+			std::cerr << "Fail to create folder. " << pathToCreate << std::endl;
+			std::perror("");
+		}
+	}else{
+		std::cout << "Is NOT Dir" << std::endl;
+		std::ofstream folder(pathCreateChar);
+		if (folder.is_open()) {
+			folder.close();
+			std::cout << "File crerate successfully." << std::endl;
+		} else {
+			std::cerr << "Fail to create  file. " << pathToCreate << std::endl;
+			std::perror("");
+		}
+	}
 }
 
 // MAIN REGEX FUNCTIONS

@@ -7,8 +7,11 @@
 #include <algorithm>
 #include <utility> // pour std::pair
 #include <filesystem>
+#include <sys/stat.h>
 
 #include "utils.h"
+
+struct stat s;
 
 // template <typename TypeList>
 
@@ -314,4 +317,50 @@ void addElementToList(std::vector<std::string>& myList, const std::string& eleme
     if (!elementExists) {
         myList.push_back(elementToAdd);
     }
+}
+
+bool isDir(const std::string& path) {
+    //std::error_code ec;
+    //return std::filesystem::is_directory(path, ec);
+	if(isFile(path)){
+		return false;
+	}
+	else if(path.empty() && (!path.back() == '/' || !path.back() == '\\')){
+		return false;
+	}
+	return true;
+}
+
+bool isFile(const std::string& path) {
+	//std::error_code ec;
+    //return std::filesystem::is_regular_file(path, ec);
+	const std::string extensionRegex = "\\.[a-zA-Z0-9]+";
+	std::regex regexPattern(extensionRegex);
+    return std::regex_search(path, regexPattern);
+}
+
+bool isDirExist(std::string path) {
+
+	const char* path_char = path.c_str();
+
+    struct stat info;
+    if (stat(path_char, &info) != 0) {
+        std::perror("Erreur: ");
+        return false;
+    }
+
+    return S_ISDIR(info.st_mode);
+}
+
+bool isFileExist(std::string path) {
+
+	const char* path_char = path.c_str();
+
+	struct stat info;
+    if (stat(path_char, &info) != 0) {
+        std::perror("Erreur: ");
+        return false;
+    }
+
+    return S_ISREG(info.st_mode);
 }
