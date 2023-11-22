@@ -135,123 +135,74 @@ std::pair<std::string, std::string> getKeyValueFromString(std::string pathToPars
     return std::make_pair(key, value);
 }
 
-std::map<std::string, std::string> generatePathsDictionnaryFromString(std::string templatesStr){
+std::map<std::string, std::string> generatePathsDictionnaryFromString(std::string config_path){
 
     std::map<std::string, std::string> pathsDict;
 
-    // Supprime les accolades de la chaîne de caractères
-    templatesStr.erase(0, 1);
-    templatesStr.erase(templatesStr.size() - 1, 1);
+	YAML::Node config = YAML::LoadFile(config_path);
+	const YAML::Node& pathsNodes = config["paths"];
 
-    // Parcourt la chaîne de caractères pour extraire les clés et les valeurs
-    std::string::size_type pos = 0, prev = 0;
-    while ((pos = templatesStr.find(",", pos + 1)) != std::string::npos) {
-        std::string pair = templatesStr.substr(prev, pos - prev);
-        auto result = getKeyValueFromString(pair);
-		std::string key = removePatternInString(result.first, "'", "");
-        pathsDict[key] = result.second;
-        prev = pos + 1;
+    for (const auto& pathNode : pathsNodes) {
+        std::string pathName = pathNode.first.as<std::string>();
+        std::string path = pathNode.second.as<std::string>();
+
+        std::cout << pathName << "  " << path << std::endl;
+        pathsDict[pathName] = path;
     }
 
-    // Ajoute la dernière paire clé/valeur
-    std::string pair = templatesStr.substr(prev);
-    auto result = getKeyValueFromString(pair);
-	std::string last_key = removePatternInString(result.first, "'", "");
-    pathsDict[last_key] = result.second;
-    return pathsDict;
+	return pathsDict;
 }
 
-std::map<std::string, std::map<std::string, std::string>> generateKeysDictionnaryFromString(std::string templatesStr){
-    
-	std::map<std::string, std::map<std::string, std::string>> keysDict;
+std::map<std::string, std::map<std::string, std::string>> generateKeysDictionnaryFromString(std::string config_path){
+	std::map<std::string, std::map<std::string, std::string>> result;
 
-	// Supprime les accolades de la chaîne de caractères
-	templatesStr = removeSpaceInString(templatesStr);
-    templatesStr.erase(0, 1);
-    templatesStr.erase(templatesStr.size() - 1, 1);
-    
-	std::regex regex_splited("\\},'"); // splited at }, '
-	std::sregex_token_iterator iter(templatesStr.begin(), templatesStr.end(), regex_splited, -1);
-    std::sregex_token_iterator ende;
+	YAML::Node config = YAML::LoadFile(config_path);
+	const YAML::Node& keysNode = config["keys"];
 
-    for (; iter != ende; ++iter) {
-		std::string keystring = *iter ;
-		std::string::size_type colonPos = keystring.find(":");
+    for (const auto& keyNode : keysNode) {
+        std::string keyName = keyNode.first.as<std::string>();
 
-		std::string key = keystring.substr(0, colonPos);
-		std::string value = keystring.substr(colonPos + 1);
+        if (keyNode.second.IsMap()) {
 
-		key.erase(std::remove(key.begin(), key.end(), '\''), key.end()); // Remove ' from string
-		value.erase(std::remove(value.begin(), value.end(), '{'), value.end()); // Remove { from string
-		value.erase(std::remove(value.begin(), value.end(), '}'), value.end()); // Remove } from string		
+            for (const auto& element : keyNode.second) {
+                std::string subKeyName = element.first.as<std::string>();
+                std::string subKeyValue = "";
 
-		// if list in value, ie: "choices" = ['..', '..'] 
-		std::smatch match;
-		std::string valueRefacto = value;
-		std::regex re("\\[([^\\]]*)\\]");
+                if(subKeyName == "choices") {
+                    const YAML::Node& choicesNode = element.second;
+                    std::stringstream choicesString;
+                    for (std::size_t i = 0; i < choicesNode.size(); ++i) {
+                        choicesString << choicesNode[i].as<std::string>();
+                        if (i < choicesNode.size() - 1) {
+                            choicesString << ", ";
+                        }
+                    }
+                    subKeyValue = choicesString.str();
+                } else{
+                    subKeyValue = element.second.as<std::string>();
+                }
+                result[keyName][subKeyName] = subKeyValue;
+            }
+        }
+    }
 
-		// has choice
-  		std::vector<std::string> choices;
-		if(valueRefacto.find("choices") != std::string::npos) {
-			while (std::regex_search(valueRefacto, match, re)) {
-				std::string match_refacto = match[1].str();
-				match_refacto.erase(std::remove(match_refacto.begin(), match_refacto.end(), '\''), match_refacto.end());
-				choices.push_back(match_refacto);
-				valueRefacto = match.suffix().str();
-				value = std::regex_replace(value, std::regex("\\[[^\\]]*\\]"), ""); // remove ['..', '..']
-				value = std::regex_replace(value, std::regex(", 'choices':"), "");  // remove 'choices'
-			}
-		}
-
-		// Parse all other element for each ','
-    	std::string item;
-		std::stringstream ss(value);
-		while (std::getline(ss, item, ',')) {
-			std::string::size_type colonPosValue = item.find(":");
-			std::string keyValue = item.substr(0, colonPosValue);
-			std::string valValue = item.substr(colonPosValue+1);
-			keyValue.erase(std::remove(keyValue.begin(), keyValue.end(), '\''), keyValue.end()); // Remove ' from string
-			valValue.erase(std::remove(valValue.begin(), valValue.end(), '\''), valValue.end()); // Remove ' from string
-			keyValue = removeSpaceInString(keyValue);
-			valValue = removeSpaceInString(valValue);
-			keysDict[key][keyValue] = valValue;
-		}
-
-		// add choices if exist as string
-		std::string choice = joinListWithSeparator(choices, ',');
-		if(!choice.empty()){
-			keysDict[key]["choices"] = choice;
-		}
-	}
-    return keysDict;
+	return result;
 }
 
-std::map<std::string, std::string> generateStringsDictionnaryFromString(std::string templatesStr)
+std::map<std::string, std::string> generateStringsDictionnaryFromString(std::string config_path)
 {
 	std::map<std::string, std::string> stringsOutput;
-	// Supprime les accolades de la chaîne de caractères
-    templatesStr.erase(0, 1);
-    templatesStr.erase(templatesStr.size() - 1, 1);
 
-	// Parcourt la chaîne de caractères pour extraire les clés et les valeurs
-    std::string::size_type pos = 0, prev = 0;
-	while ((pos = templatesStr.find(",", pos + 1)) != std::string::npos) {
-        std::string pair = templatesStr.substr(prev, pos - prev);
-        auto result      = getKeyValueFromString(pair);
-		std::string key  = removePatternInString(result.first, "'", "");
-        stringsOutput[key] = result.second;
-        prev = pos + 1;
+    YAML::Node config = YAML::LoadFile(config_path);
+	const YAML::Node& pathsNodes = config["strings"];
+
+    for (const auto& pathNode : pathsNodes) {
+        std::string pathName = pathNode.first.as<std::string>();
+        std::string path = pathNode.second.as<std::string>();
+        stringsOutput[pathName] = path;
     }
 
-	// Ajoute la dernière paire clé/valeur
-	try{
-		std::string pair     = templatesStr.substr(prev);
-		auto result          = getKeyValueFromString(pair);
-		std::string last_key = removePatternInString(result.first, "'", "");
-		stringsOutput[last_key] = result.second;
-	}
-	catch(const std::exception& e) {}
-	return stringsOutput;
+    return stringsOutput;
 }
 
 std::vector<std::string> walkDir(std::string directory)
@@ -363,4 +314,19 @@ bool isFileExist(std::string path) {
     }
 
     return S_ISREG(info.st_mode);
+}
+
+void processNode(const YAML::Node& node, const std::string& indent="") {
+    if (node.IsScalar()) {
+        std::cout << indent << "value: " << node.as<std::string>() << std::endl;
+    } else if (node.IsMap()) {
+        for (const auto& pair : node) {
+            std::cout << indent << "key : " << pair.first.as<std::string>() << std::endl;
+            processNode(pair.second, indent + "  "); // Appel récursif pour traiter la valeur
+        }
+    } else if (node.IsSequence()) {
+        for (const auto& element : node) {
+            processNode(element, indent + "- "); // Ajouter un préfixe "- " pour indiquer un élément de séquence
+        }
+    }
 }
