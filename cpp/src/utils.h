@@ -7,6 +7,7 @@
 #include <sstream>
 #include <utility> // pour std::pair
 #include <filesystem>
+#include <yaml-cpp/yaml.h>
 
 // template <typename TypeList>
 
@@ -33,3 +34,4 @@ bool isDir(const std::string& path);
 bool isFile(const std::string& path);
 bool isDirExist(std::string path);
 bool isFileExist(std::string path);
+void processNode(const YAML::Node& node, const std::string& indent);

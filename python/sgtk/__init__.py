@@ -1,7 +1,8 @@
 import os
 import sys
-from python import yaml
 from pprint import pprint
+
+# & "C:\Users\User\AppData\Local\Programs\Python\Python37\python.exe" d:/Desk/python/Tank/python/sgtk/__init__.py
 
 TANK_DIR = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 MODULE_PATH = os.path.join(TANK_DIR, "cpp", "bin")
@@ -12,13 +13,6 @@ ROOT_PATH = "D:/Desk/python/Projects"
 import tank_module
 from tank_module import TankMatchingTemplatesError
 
-def read_templates(conf_path):
-    templates = {}
-    with open(conf_path, "r") as config:
-        templates = yaml.safe_load(config)
-
-    return templates
-
 
 class Tank(tank_module.Tank):
 
@@ -28,12 +22,8 @@ class Tank(tank_module.Tank):
         if not CONFIG_PATH:
             CONFIG_PATH = os.path.join(TANK_DIR, "config", "templates.yml")
 
-        keys = read_templates(CONFIG_PATH).get("keys")
-        paths = read_templates(CONFIG_PATH).get("paths")
-        strings = read_templates(CONFIG_PATH).get("strings")
-
         path = path if path else ROOT_PATH
-        super().__init__(str(paths), str(keys), str(strings), path)
+        super().__init__(CONFIG_PATH, path)
 
 
 def test_all_fields():
@@ -77,7 +67,7 @@ def test_all_fields():
 if __name__ == "__main__":
     # pprint(keys)
 
-    tk = tank("D:/Desk/python/Tank/tests/project")
+    tk = Tank("D:/Desk/python/Tank/tests/project")
 
     templates = tk.templates()
     nuke_template = templates["Shot_NukeRender_Work_Sequence"]

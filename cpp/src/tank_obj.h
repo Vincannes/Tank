@@ -14,7 +14,7 @@ class Tank
 {
 public:
     // prototypes
-    Tank(std::string, std::string, std::string, std::string);
+    Tank(std::string config_path, std::string root_path);
     std::map<std::string, TemplatePath> getTemplates();
     TemplatePath templateFromPath(std::string);
     std::vector<TemplatePath> templatesFromPath(std::string);
@@ -23,6 +23,7 @@ public:
 
 private:
 
+    std::string _config_path;
     std::string _root_path;
     std::map<std::string, TemplateKey*> _allKeys;
     std::map<std::string, TemplatePath> _templates;

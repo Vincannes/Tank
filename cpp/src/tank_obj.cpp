@@ -11,12 +11,13 @@
 
 namespace py = pybind11;
 
-Tank::Tank(std::string _templatePathsString, std::string _templateKeysString, std::string _templateStringsString, std::string root_path)
+Tank::Tank(std::string config_path, std::string root_path)
 {
+	this->_config_path = config_path;
 	this->_root_path = root_path;
-    this->keydict = generateKeysDictionnaryFromString(_templateKeysString);
-    this->pathsdict = generatePathsDictionnaryFromString(_templatePathsString);
-    this->stringsdict = generateStringsDictionnaryFromString(_templateStringsString);
+    this->keydict = generateKeysDictionnaryFromString(config_path);
+    this->pathsdict = generatePathsDictionnaryFromString(config_path);
+    this->stringsdict = generateStringsDictionnaryFromString(config_path);
 
 	// Merge StringsDict with PathsDict
 	for (const auto& kvp : this->stringsdict) {
@@ -139,10 +140,10 @@ std::map<std::string, TemplateKey*> Tank::dictOfAllKeys()
 			std::string value = innerIt->second;
 			key   = removeSpaceInString(key); // remove space if exist in key
 			value = removeSpaceInString(value); // remove space if exist in key
-			if (key == "type") {
+			if (key == "type"){
 				isTypeValue = value;
 			}
-			else if (key == "default") {
+			else if (key == "default"){
 				isDefault = true;
 				isDefaultValue = value;
 			}
@@ -208,7 +209,7 @@ PYBIND11_MODULE(tank_module, m)
     m.doc() = "Tank module";
 
     py::class_<Tank>(m, "Tank")
-        .def(py::init<std::string, std::string, std::string, std::string>())
+        .def(py::init<std::string, std::string>())
         .def("templates", &Tank::getTemplates, "Get all templates")
         .def("templates_from_path", &Tank::templatesFromPath)
         .def("template_from_path", &Tank::templateFromPath)
