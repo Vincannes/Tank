@@ -145,8 +145,6 @@ std::map<std::string, std::string> generatePathsDictionnaryFromString(std::strin
     for (const auto& pathNode : pathsNodes) {
         std::string pathName = pathNode.first.as<std::string>();
         std::string path = pathNode.second.as<std::string>();
-
-        std::cout << pathName << "  " << path << std::endl;
         pathsDict[pathName] = path;
     }
 

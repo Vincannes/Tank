@@ -18,26 +18,20 @@ cls & g++ *.cpp -o main.exe -ID:\Desk\python\Tank\cpp\libraries\yaml-cpp\include
 
 cls & g++ -o test.exe test.cpp -ID:\Desk\python\Tank\cpp\libraries\yaml-cpp\include -LD:\Desk\python\Tank\cpp\libraries\yaml-cpp\build -lyaml-cpp & test.exe
 
-cls & g++ *.cpp -o main.exe -ID:\Desk\python\Tank\cpp\libraries\yaml-cpp\include -LD:\Desk\python\Tank\cpp\libraries\yaml-cpp\build -lyaml-cpp & main.exe
+cls & g++ *.cpp -o main.exe -ID:\Desk\python\Tank\cpp\libraries\yaml-cpp\include -LD:\Desk\python\Tank\cpp\libraries\yaml-cpp\build -lyaml-cpp & set PATH=%PATH%;D:\Desk\python\Tank\cpp\libraries\yaml-cpp\build & main.exe
 ```
-
-
-
-cmake -DCMAKE_C_COMPILER="C:/mingw64/bin/gcc.exe" -DCMAKE_CXX_COMPILER="C:/mingw64/bin/g++.exe" -G "MinGW Makefiles" -Dyaml-cpp_DIR=D:\Desk\python\Tank\cpp\libraries\yaml-cpp ..
-
 
 
 From folder cpp/build
 ```bash
 cls & 
-cmake -DCMAKE_C_COMPILER="C:/mingw64/bin/gcc.exe" -DCMAKE_CXX_COMPILER="C:/mingw64/bin/g++.exe" -G "MinGW Makefiles" .. & cmake --build . --config Release 
+cmake -DCMAKE_C_COMPILER="C:/mingw64/bin/gcc.exe" -DCMAKE_CXX_COMPILER="C:/mingw64/bin/g++.exe" -G "MinGW Makefiles" -Dyaml-cpp_DIR=D:\Desk\python\Tank\cpp\libraries\yaml-cpp .. & cmake --build . --config Release 
 & mklink /J D:\Desk\python\Tank\cpp\bin D:\Desk\python\Tank\cpp\build\Release 
 ```
 ```
 cd /d D:\Desk\python\Tank\cpp\build & cls & cmake .. & cmake --build . --config Release & mklink /J D:\Desk\python\Tank\cpp\bin D:\Desk\python\Tank\cpp\build\Release 
 ```
 
-C:\msys64\ucrt64\bin
 
 ## SimLink build cpp to ../cpp/lib 
 ```bash

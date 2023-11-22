@@ -140,10 +140,10 @@ std::map<std::string, TemplateKey*> Tank::dictOfAllKeys()
 			std::string value = innerIt->second;
 			key   = removeSpaceInString(key); // remove space if exist in key
 			value = removeSpaceInString(value); // remove space if exist in key
-			if (key == "type") {
+			if (key == "type"){
 				isTypeValue = value;
 			}
-			else if (key == "default") {
+			else if (key == "default"){
 				isDefault = true;
 				isDefaultValue = value;
 			}

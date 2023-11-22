@@ -106,7 +106,6 @@ int main() {
 	Tank tank_test(config, root);
 	// std::map<std::string, TemplatePath> templates =  tank_test.getTemplates();
 
-
 	for(const auto& key : tank_test.getAllKeys()) {
 
 		const std::string& cle = key.first;
