@@ -5,10 +5,11 @@ from pprint import pprint
 # & "C:\Users\User\AppData\Local\Programs\Python\Python37\python.exe" d:/Desk/python/Tank/python/sgtk/__init__.py
 
 TANK_DIR = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-MODULE_PATH = os.path.join(TANK_DIR, "cpp", "bin")
+MODULE_PATH = os.path.join(TANK_DIR, "cpp", "bin39")
 sys.path.append(MODULE_PATH)
-
 ROOT_PATH = "D:/Desk/python/Projects"
+
+pprint(sys.path)
 
 import tank_module
 from tank_module import TankMatchingTemplatesError
@@ -22,7 +23,7 @@ class Tank(tank_module.Tank):
         if not CONFIG_PATH:
             CONFIG_PATH = os.path.join(TANK_DIR, "config", "templates.yml")
 
-        path = path if path else ROOT_PATH
+        path = path if path is not None else ROOT_PATH
         super().__init__(CONFIG_PATH, path)
 
 

@@ -289,8 +289,7 @@ bool isFile(const std::string& path) {
 }
 
 bool isDirExist(std::string path) {
-
-	const char* path_char = path.c_str();
+    const char* path_char = path.c_str();
 
     struct stat info;
     if (stat(path_char, &info) != 0) {
@@ -298,20 +297,27 @@ bool isDirExist(std::string path) {
         return false;
     }
 
-    return S_ISDIR(info.st_mode);
+    #ifdef _WIN32
+        return (info.st_mode & _S_IFDIR) == _S_IFDIR;
+    #else
+        return S_ISDIR(info.st_mode);
+    #endif
 }
 
 bool isFileExist(std::string path) {
+    const char* path_char = path.c_str();
 
-	const char* path_char = path.c_str();
-
-	struct stat info;
+    struct stat info;
     if (stat(path_char, &info) != 0) {
         std::perror("Erreur: ");
         return false;
     }
 
+#ifdef _WIN32
+    return (info.st_mode & _S_IFREG) == _S_IFREG;
+#else
     return S_ISREG(info.st_mode);
+#endif
 }
 
 void processNode(const YAML::Node& node, const std::string& indent="") {
